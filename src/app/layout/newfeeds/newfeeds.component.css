@@ -14,6 +14,7 @@
   height: 40px;
 }
 .cardbox-comments .comment-body {
+  padding-top: 10px;
   overflow: auto;
 }
 .search {
@@ -58,4 +59,9 @@
   font-size: 20px;
   line-height: 30px;
   display: block;
+}
+
+.card gedf-card{
+  padding-bottom: 20px;
+  padding-top: 20px;
 }

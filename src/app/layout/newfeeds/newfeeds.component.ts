@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Post} from "../../model/newfeedpost";
+import {NewfeedservicesService} from "../../services/newfeedservices.service";
 
 @Component({
   selector: 'app-newfeeds',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewfeedsComponent implements OnInit {
 
-  constructor() { }
+  postList: Post[] = [];
+
+  constructor(public ps : NewfeedservicesService) { }
 
   ngOnInit(): void {
+    this.ps.getAllPost().subscribe(response =>{
+      this.postList = response.data;
+    })
   }
 
 }
