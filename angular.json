@@ -124,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "FE-social-networt-MazkZTeam"
+  "defaultProject": "FE-social-networt-MazkZTeam",
+  "cli": {
+    "analytics": "fa65c13e-f9bb-46bf-a813-7338bc5dafc8"
+  }
 }
