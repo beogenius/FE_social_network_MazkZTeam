@@ -1,0 +1,70 @@
+<div class="card-header">
+  <h1 class="text-capitalize text-primary">User List</h1>
+  <div class="row">
+    <div class="col-6">
+      <button class="btn btn-warning btn-sm shadow" routerLink="/admin/user/create">New User</button>
+    </div>
+    <div class="col-6 input-group">
+      <input class="form-control" type="text" name="search" [(ngModel)]="search" (ngModelChange)="onSearch()" (change)="onSearch()"
+             placeholder="Search">
+    </div>
+  </div>
+</div>
+<table class="table table-bordered table-hover">
+  <thead class="thead-light">
+  <tr>
+    <th class="colSize5">
+      <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
+             (change)="checkUncheckAll()"/>
+      <i class="fa fa-trash ml-2 font-weight-bolder trash" aria-hidden="true"
+         (click)="onRemoveCheckedList()"></i>
+    </th>
+    <th scope="col" class="colSize5" (click)="sort('id')" ># <i class="fa fa-sort ml-2"></i></th>
+    <th scope="col">Avatar</th>
+    <th scope="col" (click)="sort('username')" >Username <i class="fa fa-sort ml-2"> </i></th>
+    <th scope="col" (click)="sort('lastName')" >Last-Name <i class="fa fa-sort ml-2"> </i></th>
+    <th scope="col" (click)="sort('firstName')" >First-Name <i class="fa fa-sort ml-2"> </i></th>
+    <th scope="col">Email</th>
+    <th scope="col">Phone</th>
+    <th scope="col">Address</th>
+    <th scope="col">Gender</th>
+    <th scope="col">DoB</th>
+    <th scope="col">Role</th>
+    <th>Action</th>
+    <th>Block account</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users | orderBy: key : reverse | paginate: {itemsPerPage: 10, currentPage: page}">
+    <td>
+      <input type="checkbox" [(ngModel)]="user.isSelected" name="list_name" value="{{user.id}}"
+             (change)="isAllSelected()"/>
+    </td>
+    <td scope="row">{{user.id}}</td>
+    <td>
+      <img src="{{user.avatar}}" alt="loading" class="img-thumbnail rounded" style="width: 40px; height: 40px">
+    </td>
+    <td><a [routerLink]="['/admin/user/detail', user.id]">{{user.username}}</a></td>
+    <td>{{user.lastName}}</td>
+    <td>{{user.firstName}}</td>
+    <td>{{user.email}}</td>
+    <td>{{user.phone}}</td>
+    <td>{{user.address}}</td>
+    <td>{{user.gender}}</td>
+    <td>{{user.dateOfBirth | date: 'dd/MM/yyyy'}}</td>
+    <td>{{user.roles[0].name}}</td>
+    <td>
+      <button class="btn btn-primary btn-sm" [routerLink]="['/admin/user/edit',user.id]" [disabled]="user.blocked"> Update</button>
+      <button class="btn btn-danger btn-sm" (click)="removeUser(user.id)" [disabled]="user.blocked"> Delete</button>
+    </td>
+    <td *ngIf="user.blocked == true">
+      <button class="btn btn-primary btn-sm" type="button" (click)="blockStatus(user)">Enable</button>
+    </td>
+    <td *ngIf="user.blocked == false">
+      <button class="btn btn-dark btn-sm" type="button" (click)="blockStatus(user)" >Disable</button>
+    </td>
+  </tr>
+  </tbody>
+
+</table>
+<pagination-controls (pageChange)="page = $event"></pagination-controls>
