@@ -9,6 +9,7 @@ import {FriendComponent} from './layout/friend/friend.component';
 import {HttpClientModule} from "@angular/common/http";
 import { PersonalpageComponent } from './layout/personalpage/personalpage.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
