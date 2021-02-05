@@ -8,4 +8,5 @@ export interface Comment {
   comment?: any;
   comment_id?: number;
   createdDate?: string;
+  emoteList?: any[];
 }

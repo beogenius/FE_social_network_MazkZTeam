@@ -3,6 +3,8 @@ import {PersonalPageService} from '../../services/personal-page.service';
 import {Post} from '../../model/dung/post';
 import {User} from '../../model/dung/user';
 import {Comment} from '../../model/dung/comment';
+import {Photo} from '../../model/dung/photo';
+import Swal from 'sweetalert2';
 declare var $:any;
 
 
@@ -21,7 +23,7 @@ export class PersonalpageComponent implements OnInit {
     photoList:[]
   };
 
-  isULoginEqualUOwn = true;
+  isULoginEqualUOwn = false;
 
   //create comment
   newComment: Comment = {
@@ -29,6 +31,9 @@ export class PersonalpageComponent implements OnInit {
     post_id: 0
   };
 
+
+//edit post
+  postToEdit: Post = {};
 
 
 
@@ -83,8 +88,11 @@ export class PersonalpageComponent implements OnInit {
       this.userWhoLogin = res;
     });
 
+    if(this.userWhoLogin.username==this.userWhoOwnThisPage.username){
+      this.isULoginEqualUOwn = true;
+    }
 
-    this.sv.getListPost('dung').subscribe(res => {
+    this.sv.getListPost(this.userWhoOwnThisPage.username!).subscribe(res => {
       this.postList = res
     });
   }
@@ -94,7 +102,12 @@ export class PersonalpageComponent implements OnInit {
     this.newPost.photoList?.push({linkSrc: this.imgSrc});
     this.sv.createPost(this.newPost,this.userWhoLogin.username!).subscribe(
       res => {this.postList.unshift(res);
-        alert("success post");},
+        Swal.fire({
+          icon: 'success',
+          title: 'Post create successfully!',
+          showConfirmButton: false,
+          timer: 500
+        });},
       error => {
         alert("false to post");
       }
@@ -113,7 +126,7 @@ export class PersonalpageComponent implements OnInit {
     this.imgSrc = '';
   }
 
-  comment(postid: number) {
+  comment(postid: any) {
     this.newComment.post_id = postid;
     this.newComment.user_id = this.userWhoLogin.id;
     this.sv.createComment(this.newComment,this.userWhoLogin.username!).subscribe(res => {
@@ -131,25 +144,84 @@ export class PersonalpageComponent implements OnInit {
     this.newComment.content = event.target.value;
   }
 
-  deletePost(postid: number) {
-    let a = confirm("are you sure want to delete this post?");
-    console.log(a);
-    if(a){
-    this.sv.deletePost(this.userWhoLogin.username!,postid).subscribe(res=>{
-      if(res){
-        let a = 0;
-        for (let i = 0; i < this.postList.length; i++) {
-          if(this.postList[i].id == postid){
-            a = i;
+  deletePost(postid: any) {
+    Swal.fire({
+      title: 'Are you sure to Delete this POST ? ',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.sv.deletePost(this.userWhoLogin.username!, postid).subscribe(res => {
+          if (res) {
+            let a = 0;
+            for (let i = 0; i < this.postList.length; i++) {
+              if (this.postList[i].id == postid) {
+                a = i;
+              }
+            }
+            this.postList.splice(a, 1);
+            Swal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            );
           }
-        }
-        this.postList.splice(a,1);
-        alert("delete post success");
+        });
       }
-      else {
-        alert("delete post false");
+    })
+  };
+
+  EditPost(p: Post) {
+    function getPL(photoList: any[]) {
+      let a = [];
+
+      for (let i = 0;i < photoList.length;i++){
+        a.push({
+          linkSrc: photoList[i].linkSrc
+        })
       }
-    },error => {alert("delete post false");});
+      return a;
     }
+
+    this.postToEdit = {
+      id: p.id,
+      content: p.content,
+      user: p.user,
+      user_id: p.user_id,
+      createdDate: p.createdDate,
+      modifiedAt: p.modifiedAt,
+      photoList: getPL(p.photoList!),
+      commentList: p.commentList
+    };
+
+
+
+    $('#editPostModal').modal('show');
+  }
+
+  deletePhoto(i: number) {
+    this.postToEdit.photoList?.splice(i,1);
+  }
+
+  saveEditPhoto() {
+    this.postToEdit.photoList?.push({
+      linkSrc: this.imgSrc,
+    });
+    this.imgSrc = '';
+  }
+
+  saveEditPost() {
+    this.sv.updatePost(this.userWhoLogin.username,this.postToEdit).subscribe(res=>{
+      for (let i = 0; i < this.postList.length; i++) {
+        if(this.postList[i].id == res.id){
+          this.postList[i] = res;
+          $('#editPostModal').modal('toggle');
+        }
+      }
+    },error => {alert("server false to update post")});
   }
 }

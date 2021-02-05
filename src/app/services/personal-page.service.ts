@@ -31,4 +31,8 @@ export class PersonalPageService {
   deletePost(username: string,postid: number){
     return this.http.delete<boolean>(`${this.url}/${username}/delete/post/${postid}`)
   }
+
+  updatePost(username: any,post : Post){
+    return this.http.put<Post>(`${this.url}/${username}/update/post`,post)
+  }
 }

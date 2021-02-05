@@ -7,6 +7,7 @@ export interface Post {
   modifiedAt?:string;
   photoList?:any[];
   commentList?:any[];
+  emoteList?: any[];
 
 }
 
