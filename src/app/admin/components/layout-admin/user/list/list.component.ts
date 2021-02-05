@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from "../../../../service/user.service";
-
-
+import Swal from 'sweetalert2';
+declare var $:any;
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -10,10 +10,9 @@ import {UserService} from "../../../../service/user.service";
 export class ListComponent implements OnInit {
   users : any = [];
   public search !: any;
-  user: any;
   masterSelected !: boolean;
   checkedList:any =[];
-
+  user: any;
   page: number = 1;
   constructor(
     private userService: UserService
@@ -108,13 +107,57 @@ export class ListComponent implements OnInit {
   };
 
   blockStatus(user:any) {
-    user.blocked = !user.blocked;
-    this.userService.updateUser(user.id, user).subscribe(data => {
-      console.log(data);
-      this.ngOnInit();
-    },
-      error => {
-      console.log(error);
-      });
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "To change user status ?!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, change it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        user.blocked = !user.blocked;
+        console.log(user);
+        this.userService.updateUser(user.id, user).subscribe(data => {
+            // console.log(data);
+            this.ngOnInit();
+          },
+          error => {
+            console.log(error);
+          });
+        Swal.fire(
+          'Changed!',
+          'Your selected User has been changed.',
+          'success'
+        )
+      }
+    })
   }
+
+
+  // showModalBlock(user:any): void {
+  //   this.user = user;
+  //   $('#blockNotification').modal('show');
+  //   $('#blockNotification').on('shown.bs.modal', function () {
+  //     console.log("a");
+  //     // $('#myInput').trigger('focus')
+  //   })
+  // }
+  //
+  // changeBlocked() {
+  //   this.blockStatus();
+  //
+  // }
+  // blockStatus() {
+  //   this.user.blocked = !this.user.blocked;
+  //   this.userService.updateUser(this.user.id, this.user).subscribe(data => {
+  //       console.log(data);
+  //       this.ngOnInit();
+  //       $('#blockNotification').modal('hide');
+  //     },
+  //     error => {
+  //       console.log(error);
+  //     });
+  // }
 }

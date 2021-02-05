@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {LoginInfor} from "../admin/model/login-infor";
 import {first} from "rxjs/operators";
 
+declare var $:any;
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -39,10 +40,16 @@ export class LoginComponent implements OnInit {
           this.errorMessage = "Username or password is wrong";
         } else {
           this.errorMessage = error.error;
+          this.openModal();
         }
         console.log(error)
         this.isLoginFailed = true;
       }
     )
   }
+
+  openModal(): void {
+    $('#blockNoti').modal('show');
+  }
+
 }

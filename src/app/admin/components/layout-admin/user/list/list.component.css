@@ -9,3 +9,6 @@
 .colSize5 {
   width: 5%;
 }
+body.modal-open div.modal-backdrop {
+  z-index: 0;
+}

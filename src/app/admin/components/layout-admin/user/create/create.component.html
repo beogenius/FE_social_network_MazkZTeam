@@ -68,7 +68,11 @@
       </div>
       <div class="form-group ">
         <label for="phone">Phone Number</label>
-        <input type="text" class="form-control" name="phone" id="phone" [(ngModel)]="form.phone" #phone ="ngModel">
+        <input type="text" class="form-control" name="phone" id="phone" [(ngModel)]="form.phone" #phone ="ngModel" minlength="10" maxlength="11">
+      </div>
+      <div *ngIf="f.submitted">
+        <div *ngIf="phone.errors?.minlength" class="text-danger">Phone number at least 10 characters</div>
+        <div *ngIf="phone.errors?.maxlength" class="text-danger">Phone number max 11 characters</div>
       </div>
       <div class="form-group ">
         <label for="detail">Detail</label>

@@ -44,6 +44,8 @@
     <td>
       <img src="{{user.avatar}}" alt="loading" class="img-thumbnail rounded" style="width: 40px; height: 40px">
     </td>
+
+
     <td><a [routerLink]="['/admin/user/detail', user.id]">{{user.username}}</a></td>
     <td>{{user.lastName}}</td>
     <td>{{user.firstName}}</td>
@@ -68,3 +70,4 @@
 
 </table>
 <pagination-controls (pageChange)="page = $event"></pagination-controls>
+
