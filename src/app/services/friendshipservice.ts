@@ -24,4 +24,7 @@ export class FriendShipService{
   acceptFriend(idSender: any, idReceiver: any):Observable<any>{
     return this.http.get(this.baseUrl + '/accept?senderId='+idSender+'&receiverId='+idReceiver)
   }
+  cancelFriendRequest(idSender: any, idReceiver: any):Observable<any>{
+    return this.http.get(this.baseUrl + '/cancel?senderId='+idSender+'&receiverId='+idReceiver)
+  }
 }

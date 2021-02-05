@@ -30,14 +30,15 @@ export class FriendComponent implements OnInit {
 
   deleteFriend(userId1: any, userId2: any){
     console.log(userId1, userId2);
-    this.friendShipService.deleteFriend(userId1,userId2).subscribe(data => {
-      console.log(data)
-    });
-    this.friendShipService.getFriendList();
+    this.friendShipService.deleteFriend(userId1,userId2).subscribe(data => {this.reloaddata()});
   }
 
   acceptFriend(idSender: any, idReceiver: any) {
     this.friendShipService.acceptFriend(idSender,idReceiver).subscribe(data =>{this.reloaddata()} )
 
+  }
+
+  cancelFriendRequest(idSender: any, idReceiver: any) {
+    this.friendShipService.cancelFriendRequest(idSender,idReceiver).subscribe(data =>{this.reloaddata()} )
   }
 }
