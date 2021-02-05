@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {Post} from "../model/newfeedpost";
 import {Comment} from "../model/hai/Comment";
 import {User} from "../model/hai/user";
+import {Emote} from "src/app/model/hai/emote"
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,17 @@ export class NewfeedservicesService {
 
   deletePost(username: string,postid: number){
     return this.http.delete<boolean>(`${this.url}/${username}/delete/post/${postid}`)
+  }
+
+  addLike(like: Emote, username: string) {
+    return this.http.post(`${this.url}/${username}/create/like`,like);
+  }
+
+  checkIsLiked (postId: any, username:string){
+    return this.http.get<any>(`${this.url}/${username}/checkliked/${postId}`);
+  }
+
+  disLike(post_id: any, s: string) {
+    return this.http.delete<boolean>(`${this.url}/${s}/dislike/${post_id}`);
   }
 }

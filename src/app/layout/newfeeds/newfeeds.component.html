@@ -104,9 +104,19 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-      <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-      <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+      <div class="row">
+        <div class="col-4" *ngIf="!p.isLiked">
+          <a (click)="likePostAction(p.id)" class="likes btn"><i class="black2 fa fa-gittip"></i> Like</a>
+        </div>
+        <div class="col-4"  *ngIf="p.isLiked">
+          <a (click)="dislikeAction(p.id)" class="dislikes btn"><i class="blue2 fa fa-gittip"></i> DisLike</a>
+        </div>
+        <div class="col-8" *ngIf="p&& p.emoteList && p.emoteList.length!=0">
+          <p>{{p.emoteList.length}} Likes</p>
+        </div>
+      </div>
+
+
     </div>
     <!--    List comment-->
     <div *ngIf="p.commentList!.length!=0" >

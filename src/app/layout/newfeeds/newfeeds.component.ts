@@ -4,6 +4,7 @@ import {NewfeedservicesService} from "../../services/newfeedservices.service";
 import {User} from "../../model/hai/user";
 import {Comment} from "src/app/model/hai/Comment"
 import Swal from 'sweetalert2';
+import {Emote} from "../../model/hai/emote";
 
 declare var $: any;
 
@@ -65,18 +66,38 @@ export class NewfeedsComponent implements OnInit {
     post_id: 0
   };
 
+  like: Emote = {
+    id: '',
+    post_id: '',
+    user_id: '',
+    comment_id: '',
+  };
+
 
   constructor(public ps: NewfeedservicesService) {
   }
 
   ngOnInit(): void {
+    this.reloadData();
+
+  }
+
+  reloadData() {
     this.ps.getUser(this.userWhoLogin.username!).subscribe(res => {
       this.userWhoLogin = res;
-    });
-    this.ps.getAllPost(this.userWhoLogin.username!).subscribe(response => {
-      this.postList = response.data;
+      this.ps.getAllPost(this.userWhoLogin.username!).subscribe(response => {
+        this.postList = response.data;
+        this.postList.map(async post => {
+          let isLike = await this.isLiked(this.userWhoLogin.username, post.id);
+          post.isLiked = isLike.data > 0;
+        })
+      });
     });
 
+  }
+
+  isLiked(username: any, postId: any){
+    return this.ps.checkIsLiked(postId,username).toPromise();
   }
 
 
@@ -90,9 +111,7 @@ export class NewfeedsComponent implements OnInit {
     this.newPost.photoList?.push({linkSrc: this.imgSrc});
     this.ps.createPost(this.newPost, this.userWhoLogin.username!).subscribe(
       res => {
-        this.ps.getAllPost(this.userWhoLogin.username!).subscribe(response => {
-          this.postList = response.data;
-        });
+        this.reloadData();
         Swal.fire({
           icon: 'success',
           title: 'Post create successfully!',
@@ -105,7 +124,7 @@ export class NewfeedsComponent implements OnInit {
       }
     );
     this.newPost = {
-      content : '',
+      content: '',
       photoList: []
     };
     this.imgSrc = '';
@@ -144,7 +163,7 @@ export class NewfeedsComponent implements OnInit {
   };
 
 
-   onCommentChance(event: any) {
+  onCommentChance(event: any) {
     this.newComment.content = event.target.value;
   }
 
@@ -159,11 +178,32 @@ export class NewfeedsComponent implements OnInit {
           this.postList[i].commentList?.push(res);
           $(`#inputComment${this.postList[i].id}`).val('');
           break;
-        }
-        else{
+        } else {
           console.log("sai logic");
         }
       }
     })
   }
+
+
+
+  likePostAction(postid: any) {
+    console.log(postid);
+    this.like.post_id = postid;
+    this.like.user_id = this.userWhoLogin.id;
+    this.ps.addLike(this.like, this.userWhoLogin.username!).subscribe(res =>{
+      this.reloadData();
+    });
+  }
+
+  dislikeAction(postid: any) {
+    console.log(postid);
+    this.like.post_id = postid;
+    this.like.user_id = this.userWhoLogin.id;
+    this.ps.disLike(this.like.post_id, this.userWhoLogin.username!).subscribe(res => {
+      this.reloadData();
+    })
+  }
+
+
 }

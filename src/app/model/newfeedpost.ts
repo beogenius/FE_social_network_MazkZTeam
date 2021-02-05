@@ -7,4 +7,6 @@ export class Post {
   modifiedAt ?: any;
   photoList ?: any[];
   commentList ?: any[];
+  emoteList ?: any[];
+  isLiked?: any;
 }
