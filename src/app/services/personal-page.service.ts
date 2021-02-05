@@ -35,4 +35,12 @@ export class PersonalPageService {
   updatePost(username: any,post : Post){
     return this.http.put<Post>(`${this.url}/${username}/update/post`,post)
   }
+
+  deleteComment(username: any,comment_id: any){
+    return this.http.delete<boolean>(`${this.url}/${username}/delete/comment/${comment_id}`)
+  }
+
+  updateComment(username: any,comment: Comment){
+    return this.http.put<Comment>(`${this.url}/${username}/update/comment`,comment)
+  }
 }

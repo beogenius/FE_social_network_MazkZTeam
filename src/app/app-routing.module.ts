@@ -35,9 +35,9 @@ export const routes: Routes = [
         component: FriendComponent,
       },
       {
-        path: 'personal',
+        path: 'personal/:username',
         component: PersonalpageComponent,
-      },
+      }
 
     ]
   },
