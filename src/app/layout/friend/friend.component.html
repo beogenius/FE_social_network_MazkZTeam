@@ -1,1 +1,28 @@
-<p>friend works!</p>
+<div class="card">
+  <div class="card-header">
+    <span><i class="fas fa-users"></i></span> Friend List
+  </div>
+  <ul class="list-group list-group-flush" *ngFor="let f of friends">
+    <li class="list-group-item">
+      <span>{{f.avatar}} {{f.first_name }} {{f.last_name}} {{f.username}}</span>
+      <span><button type="button" class="btn btn-sm btn-primary" (click)="deleteFriend(1,f.id)">Unfriend</button></span> <br>
+      <small>{{f.address}}</small>
+    </li>
+  </ul>
+</div>
+
+
+<div class="card-group" style="padding-top: 20px">
+<div class="card">
+  <div class="card-header">
+    <span><i class="fas fa-users"></i></span> Friend Request
+  </div>
+  <ul class="list-group list-group-flush" *ngFor="let f of receiverFriend">
+    <li class="list-group-item">
+      <span>{{f.avatar}} {{f.first_name }} {{f.last_name}} {{f.username}}</span>
+      <span><button type="button" class="btn btn-sm btn-primary" (click)="acceptFriend(1,f.id)">Accept</button></span><br>
+      <small>{{f.address}}</small>
+    </li>
+  </ul>
+</div>
+</div>
