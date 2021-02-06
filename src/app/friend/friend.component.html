@@ -1,0 +1,268 @@
+<div id="content">
+
+<nav class="navbar navbar-dark bg-primary" id="nav">
+  <a href="#" class="navbar-brand">Bootsbook</a>
+  <form class="form-inline">
+    <div class="input-group">
+      <input type="text" class="form-control border-dark " aria-label="Recipient's username" aria-describedby="button-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-light" type="button" id="button-addon2">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</nav>
+
+<div class="container-fluid gedf-wrapper mt-5">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header"  id="card-headfl">
+          <span><i class="fas fa-users"></i></span> Friend List
+        </div>
+        <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let f of friends">
+          <li class="list-group-item">
+            <div class="row">
+              <div>
+          <span><img src="{{f.avatar}}" alt="" class="img-thumbnail"
+                     style="width: 70px;height: 70px;border-radius: 50%;"></span>
+              </div>
+              <div class="ml-2">
+                <span style="font-size: large;font-weight: bold"> {{f.first_name }} {{f.last_name}}</span>
+                <div>
+                  <small class="inforFriend">{{f.address}}</small>
+                </div>
+                <div>
+                  <small class="inforFriend">{{f.date_of_birth | date:'dd/MM/yyyy'}}</small>
+                </div>
+              </div>
+              <div class="ml-auto">
+          <span><button type="button" class="btn btn-sm btn-primary"
+                        (click)="deleteFriend(user.id,f.id)">Unfriend</button></span>
+              </div>
+            </div>
+
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header" id="card-headmk" >
+          <span ><i class="fas fa-users"></i></span> Friend You May Know
+        </div>
+        <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let n of friendNotRequestList">
+          <li class="list-group-item">
+            <div class="row">
+              <div>
+          <span><img src="{{n.avatar}}" alt="" class="img-thumbnail"
+                     style="width: 70px;height: 70px;border-radius: 50%;"></span>
+              </div>
+              <div class="ml-2">
+                <span style="font-size: large;font-weight: bold"> {{n.first_name }} {{n.last_name}}</span>
+                <div>
+                  <small class="inforFriend">{{n.address}}</small>
+                </div>
+                <div>
+                  <small class="inforFriend">{{n.date_of_birth | date:'dd/MM/yyyy'}}</small>
+                </div>
+              </div>
+              <div class="ml-auto">
+          <span><button type="button" class="btn btn-sm btn-primary"
+                        (click)="addFriend(user.id,n.id)">Add Friend</button></span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header" id="card-headfr">
+          <span><i class="fas fa-users"></i></span> Friend Request
+        </div>
+        <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let r of receiverFriend">
+          <li class="list-group-item">
+            <div class="row">
+              <div>
+          <span><img src="{{r.avatar}}" alt="" class="img-thumbnail"
+                     style="width: 70px;height: 70px;border-radius: 50%;"></span>
+              </div>
+              <div class="ml-2">
+                <span style="font-size: large;font-weight: bold"> {{r.first_name }} {{r.last_name}}</span>
+                <div>
+                  <small class="inforFriend">{{r.address}}</small>
+                </div>
+                <div class="inforFriend">
+                  <small>{{r.date_of_birth | date:'dd/MM/yyyy'}}</small>
+                </div>
+              </div>
+              <div class="ml-auto">
+                <button type="button" class="btn btn-sm btn-success"
+                        (click)="acceptFriend(user.id,r.id)">Accept
+                </button>
+                <button type="button" class="btn btn-sm btn-dark ml-1"
+                        (click)="cancelFriendRequest(user.id,r.id)">Cancel
+                </button>
+
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header" id="card-headrr">
+          <span><i class="fas fa-users"></i></span> Friends were Received Request
+        </div>
+        <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let s of senderFriendList">
+          <li class="list-group-item">
+            <div class="row">
+              <div>
+          <span><img src="{{s.avatar}}" alt="" class="img-thumbnail"
+                     style="width: 70px;height: 70px;border-radius: 50%;"></span>
+              </div>
+              <div class="ml-2">
+                <span style="font-size: large;font-weight: bold"> {{s.first_name }} {{s.last_name}}</span>
+                <div>
+                  <small class="inforFriend">{{s.address}}</small>
+                </div>
+                <div>
+                  <small class="inforFriend">{{s.date_of_birth | date:'dd/MM/yyyy'}}</small>
+                </div>
+              </div>
+              <div class="ml-auto">
+          <span><button type="button" class="btn btn-sm btn-dark"
+                        (click)="cancelFriendRequest(s.id,user.id)">Cancel</button></span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!--<div class="card">-->
+<!--  <div class="card-header bg-success">-->
+<!--    <span><i class="fas fa-users"></i></span> Friend List-->
+<!--  </div>-->
+<!--  <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let f of friends">-->
+<!--    <li class="list-group-item">-->
+<!--      <div class="row">-->
+<!--        <div>-->
+<!--          <span><img src="{{f.avatar}}" alt="" class="img-thumbnail"-->
+<!--                     style="width: 70px;height: 70px;border-radius: 50%;"></span>-->
+<!--        </div>-->
+<!--        <div class="ml-2">-->
+<!--          <span style="font-size: large;font-weight: bold"> {{f.first_name }} {{f.last_name}}</span>-->
+<!--          <div>-->
+<!--            <small class="inforFriend">{{f.address}}</small>-->
+<!--          </div>-->
+<!--          <div>-->
+<!--            <small class="inforFriend">{{f.date_of_birth | date:'dd/MM/yyyy'}}</small>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="ml-auto">-->
+<!--          <span><button type="button" class="btn btn-sm btn-primary"-->
+<!--                        (click)="deleteFriend(user.id,f.id)">Unfriend</button></span>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--    </li>-->
+<!--  </ul>-->
+<!--</div>-->
+<!--<div class="card-group">-->
+<!--  <div class="card">-->
+<!--    <div class="card-header bg-info">-->
+<!--      <span><i class="fas fa-users"></i></span> Friend Request-->
+<!--    </div>-->
+<!--    <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let r of receiverFriend">-->
+<!--      <li class="list-group-item">-->
+<!--        <div class="row">-->
+<!--          <div>-->
+<!--          <span><img src="{{r.avatar}}" alt="" class="img-thumbnail"-->
+<!--                     style="width: 70px;height: 70px;border-radius: 50%;"></span>-->
+<!--          </div>-->
+<!--          <div class="ml-2">-->
+<!--            <span style="font-size: large;font-weight: bold"> {{r.first_name }} {{r.last_name}}</span>-->
+<!--            <div>-->
+<!--              <small class="inforFriend">{{r.address}}</small>-->
+<!--            </div>-->
+<!--            <div class="inforFriend">-->
+<!--              <small>{{r.date_of_birth | date:'dd/MM/yyyy'}}</small>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="ml-auto">-->
+<!--            <button type="button" class="btn btn-sm btn-success"-->
+<!--                    (click)="acceptFriend(user.id,r.id)">Accept-->
+<!--            </button>-->
+<!--            <button type="button" class="btn btn-sm btn-dark ml-1"-->
+<!--                    (click)="cancelFriendRequest(user.id,r.id)">Cancel-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="card">-->
+<!--  <div class="card-header bg-success">-->
+<!--    <span><i class="fas fa-users"></i></span> Friend You May Know-->
+<!--  </div>-->
+<!--  <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let n of friendNotRequestList">-->
+<!--    <li class="list-group-item">-->
+<!--      <div class="row">-->
+<!--        <div>-->
+<!--          <span><img src="{{n.avatar}}" alt="" class="img-thumbnail"-->
+<!--                     style="width: 70px;height: 70px;border-radius: 50%;"></span>-->
+<!--        </div>-->
+<!--        <div class="ml-2">-->
+<!--          <span style="font-size: large;font-weight: bold"> {{n.first_name }} {{n.last_name}}</span>-->
+<!--          <div>-->
+<!--            <small class="inforFriend">{{n.address}}</small>-->
+<!--          </div>-->
+<!--          <div>-->
+<!--            <small class="inforFriend">{{n.date_of_birth | date:'dd/MM/yyyy'}}</small>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="ml-auto">-->
+<!--          <span><button type="button" class="btn btn-sm btn-primary"-->
+<!--                        (click)="addFriend(user.id,n.id)">Add Friend</button></span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </li>-->
+<!--  </ul>-->
+<!--</div>-->
+
+<!--<div class="card">-->
+<!--  <div class="card-header bg-success">-->
+<!--    <span><i class="fas fa-users"></i></span> Friends were Received Request-->
+<!--  </div>-->
+<!--  <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let s of senderFriendList">-->
+<!--    <li class="list-group-item">-->
+<!--      <div class="row">-->
+<!--        <div>-->
+<!--          <span><img src="{{s.avatar}}" alt="" class="img-thumbnail"-->
+<!--                     style="width: 70px;height: 70px;border-radius: 50%;"></span>-->
+<!--        </div>-->
+<!--        <div class="ml-2">-->
+<!--          <span style="font-size: large;font-weight: bold"> {{s.first_name }} {{s.last_name}}</span>-->
+<!--          <div>-->
+<!--            <small class="inforFriend">{{s.address}}</small>-->
+<!--          </div>-->
+<!--          <div>-->
+<!--            <small class="inforFriend">{{s.date_of_birth | date:'dd/MM/yyyy'}}</small>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="ml-auto">-->
+<!--          <span><button type="button" class="btn btn-sm btn-dark"-->
+<!--                        (click)="cancelFriendRequest(s.id,user.id)">Cancel</button></span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </li>-->
+<!--  </ul>-->
+<!--</div>-->>>>
