@@ -1,5 +1,4 @@
 <div id="content">
-
 <nav class="navbar navbar-dark bg-primary" id="nav">
   <a href="#" class="navbar-brand">Bootsbook</a>
   <form class="form-inline">
@@ -16,7 +15,7 @@
 
 <div class="container-fluid gedf-wrapper mt-5">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="card">
         <div class="card-header"  id="card-headfl">
           <span><i class="fas fa-users"></i></span> Friend List
@@ -47,7 +46,7 @@
         </ul>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="card">
         <div class="card-header" id="card-headmk" >
           <span ><i class="fas fa-users"></i></span> Friend You May Know
@@ -77,10 +76,10 @@
         </ul>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="card">
         <div class="card-header" id="card-headfr">
-          <span><i class="fas fa-users"></i></span> Friend Request
+          <span><i class="fas fa-users"></i></span> Friend Request <i class="fas fa-arrow-left"></i>
         </div>
         <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let r of receiverFriend">
           <li class="list-group-item">
@@ -114,7 +113,7 @@
 
       <div class="card">
         <div class="card-header" id="card-headrr">
-          <span><i class="fas fa-users"></i></span> Friends were Received Request
+          <span><i class="fas fa-users"></i></span> Friends Sent Request <i class="fas fa-arrow-right"></i>
         </div>
         <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let s of senderFriendList">
           <li class="list-group-item">
@@ -265,4 +264,4 @@
 <!--      </div>-->
 <!--    </li>-->
 <!--  </ul>-->
-<!--</div>-->>>>
+<!--</div>-->
