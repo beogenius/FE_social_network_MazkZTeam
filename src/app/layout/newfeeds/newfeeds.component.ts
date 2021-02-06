@@ -5,6 +5,7 @@ import {User} from "../../model/hai/user";
 import {Comment} from "src/app/model/hai/Comment"
 import Swal from 'sweetalert2';
 import {Emote} from "../../model/hai/emote";
+import {ActivatedRoute, Router} from "@angular/router";
 
 declare var $: any;
 
@@ -14,35 +15,9 @@ declare var $: any;
   styleUrls: ['./newfeeds.component.css']
 })
 export class NewfeedsComponent implements OnInit {
-
+  //get post LIST
   postList: Post[] = [];
 
-  imgSrc = '';
-
-  newPost: Post = {
-    content: '',
-    photoList: []
-  };
-
-  isULoginEqualUOwn = true;
-  // commentList : any[] = [];
-  userWhoLoginFriends: User = {
-    address: '',
-    avatar: '',
-    blocked: false,
-    createdDate: '',
-    dateOfBirth: '',
-    detail: '',
-    email: '',
-    firstName: '',
-    gender: '',
-    id: 0,
-    lastName: '',
-    password: '',
-    phone: '',
-    roles: [],
-    username: 'bacsihai' + "a"
-  };
   userWhoLogin: User = {
     address: '',
     avatar: '',
@@ -58,14 +33,50 @@ export class NewfeedsComponent implements OnInit {
     password: '',
     phone: '',
     roles: [],
-    username: 'bacsihai'
+    username: ''
     //se~ get user by session
   };
+
+
+  //Create posst
+  imgSrc = '';
+
+  newPost: Post = {
+    content: '',
+    photoList: []
+  };
+
+  //Bien edit post
+  postToEdit: Post = {};
+
+  // isULoginEqualUOwn = true;
+
+  // commentList : any[] = [];
+  // userWhoLoginFriends: User = {
+  //   address: '',
+  //   avatar: '',
+  //   blocked: false,
+  //   createdDate: '',
+  //   dateOfBirth: '',
+  //   detail: '',
+  //   email: '',
+  //   firstName: '',
+  //   gender: '',
+  //   id: 0,
+  //   lastName: '',
+  //   password: '',
+  //   phone: '',
+  //   roles: [],
+  //   username: 'bacsihai' + "a"
+  // };
+
+  //create comment
   newComment: Comment = {
     content: '',
     post_id: 0
   };
 
+  // nut like
   like: Emote = {
     id: '',
     post_id: '',
@@ -74,41 +85,62 @@ export class NewfeedsComponent implements OnInit {
   };
 
 
-  constructor(public ps: NewfeedservicesService) {
+  constructor(public ps: NewfeedservicesService, private router: Router, private aRouter: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.reloadData();
-
   }
 
   reloadData() {
+    // @ts-ignore
+    this.userWhoLogin.username = sessionStorage.getItem('AuthUsername');
     this.ps.getUser(this.userWhoLogin.username!).subscribe(res => {
       this.userWhoLogin = res;
-      this.ps.getAllPost(this.userWhoLogin.username!).subscribe(response => {
-        this.postList = response.data;
-        this.postList.map(async post => {
-          let isLike = await this.isLiked(this.userWhoLogin.username, post.id);
-          post.isLiked = isLike.data > 0;
-        })
-      });
     });
-
+    this.ps.getAllPost(this.userWhoLogin.username!).subscribe(res => {
+      this.postList = res.data;
+      for (let i = 0; i < this.postList.length; i++) {
+        this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+        for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+          this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+        }
+      }
+    });
   }
 
-  isLiked(username: any, postId: any){
-    return this.ps.checkIsLiked(postId,username).toPromise();
+  isUserWhoLoginLikeThisComment(cm: Comment) {
+    for (let i = 0; i < cm.emoteList?.length!; i++) {
+      if (cm.emoteList![i].user.id == this.userWhoLogin.id) {
+        return true;
+      }
+    }
+    return false;
   }
+
+  isUserWhoLoginLikeThisPost(p: Post) {
+    for (let i = 0; i < p.emoteList?.length!; i++) {
+      if (p.emoteList![i].user.id == this.userWhoLogin.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
 
   moreImg() {
     var linkSrc = this.imgSrc;
-    this.newPost.photoList?.push({linkSrc: linkSrc});
-    this.imgSrc = '';
+    if(this.imgSrc !==''){
+      this.newPost.photoList?.push({linkSrc: linkSrc});
+      this.imgSrc = '';
+    }
   }
 
   submit() {
-    this.newPost.photoList?.push({linkSrc: this.imgSrc});
+    if(this.imgSrc !==''){
+      this.newPost.photoList?.push({linkSrc: this.imgSrc});
+    }
     this.ps.createPost(this.newPost, this.userWhoLogin.username!).subscribe(
       res => {
         this.reloadData();
@@ -168,7 +200,6 @@ export class NewfeedsComponent implements OnInit {
   }
 
   comment(postid: number) {
-    console.log(postid);
 
     this.newComment.post_id = postid;
     this.newComment.user_id = this.userWhoLogin.id;
@@ -179,7 +210,7 @@ export class NewfeedsComponent implements OnInit {
           $(`#inputComment${this.postList[i].id}`).val('');
           break;
         } else {
-          console.log("sai logic");
+
         }
       }
     })
@@ -187,23 +218,206 @@ export class NewfeedsComponent implements OnInit {
 
 
 
-  likePostAction(postid: any) {
-    console.log(postid);
-    this.like.post_id = postid;
-    this.like.user_id = this.userWhoLogin.id;
-    this.ps.addLike(this.like, this.userWhoLogin.username!).subscribe(res =>{
-      this.reloadData();
+  likePostAction(post_id: any) {
+    let emote: Emote = {
+      post_id: post_id,
+      user_id: this.userWhoLogin.id
+    };
+
+    this.ps.addLike(this.userWhoLogin.username!, emote).subscribe(res => {
+      for (let i = 0; i < this.postList.length; i++) {
+        if (this.postList[i].id == post_id) {
+          this.postList[i].emoteList!.push(res);
+          this.postList[i].isLiked = true;
+        }
+      }
+    }, error => {
+      console.log('false to like');
     });
   }
 
-  dislikeAction(postid: any) {
-    console.log(postid);
-    this.like.post_id = postid;
-    this.like.user_id = this.userWhoLogin.id;
-    this.ps.disLike(this.like.post_id, this.userWhoLogin.username!).subscribe(res => {
-      this.reloadData();
-    })
+
+
+
+  editPost(p: Post) {
+    //edit post begin
+    function getPL(photoList: any[]) {
+      let a = [];
+
+      for (let i = 0; i < photoList.length; i++) {
+        a.push({
+          linkSrc: photoList[i].linkSrc
+        });
+      }
+      return a;
+    }
+    this.postToEdit = {
+      id: p.id,
+      content: p.content,
+      user: p.user,
+      user_id: p.user_id,
+      createdDate: p.createdDate,
+      modifiedAt: p.modifiedAt,
+      photoList: getPL(p.photoList!),
+      commentList: p.commentList
+    };
+
+    $('#editPostModal').modal('show');
+    //edit post end - > show modal
+  }
+
+  deletePhoto(i: number) {
+    this.postToEdit.photoList?.splice(i, 1);
+  }
+
+  saveEditPhoto() {
+    this.postToEdit.photoList?.push({
+      linkSrc: this.imgSrc,
+    });
+    this.imgSrc = '';
+  }
+
+  saveEditPost() {
+    this.ps.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
+      for (let i = 0; i < this.postList.length; i++) {
+        if (this.postList[i].id == res.id) {
+          this.postList[i] = res;
+          $('#editPostModal').modal('toggle');
+          this.reloadData();
+        }
+      }
+    }, error => {
+      alert('server false to update post');
+    });
+  }
+
+  //router
+  onSelect(commentUserName: string) {
+    console.log(commentUserName);
+    this.router.navigate(['/index/personal', commentUserName]).then(() => {
+      window.location.reload();
+    });
+  }
+
+  isULoginEqualUOwnthisComment(username: any) {
+    if (username == this.userWhoLogin.username) {
+      return true;
+    }
+    return false;
+  }
+
+  //Bien edit comment
+  commentToEdit: Comment = {};
+
+  editComment(cm: Comment) {
+    this.commentToEdit = {
+      id: cm.id,
+      content: cm.content
+    };
+
+    $('#editCommentModal').modal('show');
   }
 
 
+  deleteComment(comment_id: any, post_index: any, comment_index: any) {
+    this.ps.deleteComment(this.userWhoLogin.username, comment_id).subscribe(res => {
+      if (res) {
+        this.postList[post_index].commentList!.splice(comment_index, 1);
+      }
+    });
+  }
+
+
+  saveEditComment() {
+    this.ps.updateComment(this.userWhoLogin.username, this.commentToEdit).subscribe(res => {
+        let post: Post = {};
+        for (let i = 0; i < this.postList.length; i++) {
+          if (this.postList[i].id == res.post_id) {
+            post = this.postList[i];
+          }
+        }
+
+        post.commentList;
+
+        for (let i = 0; i < post.commentList!.length; i++) {
+          if (post.commentList![i].id == res.id) {
+            post.commentList![i] = res;
+          }
+        }
+
+        $('#editCommentModal').modal('toggle');
+      },
+      error => {
+        $('#editCommentModal').modal('toggle');
+        alert('server false to update comment');
+      });
+  }
+
+  dislikePostAction(post_id: any) {
+    this.ps.disLike( post_id,this.userWhoLogin.username!).subscribe(res => {
+      if (res) {
+        for (let i = 0; i < this.postList.length; i++) {
+          if (this.postList[i].id == post_id) {
+            this.removeEmote(this.postList[i].emoteList!);
+            this.postList[i].isLiked = false;
+          }
+        }
+      } else {
+        alert('loi server');
+      }
+
+    });
+  }
+  removeEmote(emoteList: Emote[]) {
+    for (let i = 0; i < emoteList.length; i++) {
+      if (emoteList[i].user_id == this.userWhoLogin.id) {
+        emoteList.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  likeCommentAction(cm_id: any, post_id: any) {
+    let emote: Emote = {
+      comment_id: cm_id,
+      user_id: this.userWhoLogin.id
+    };
+    this.ps.addLike(this.userWhoLogin.username!, emote).subscribe(res => {
+      for (let i = 0; i < this.postList.length; i++) {
+        if (this.postList[i].id == post_id) {
+          for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+            if (this.postList[i].commentList![j].id == cm_id) {
+              this.postList[i].commentList![j].emoteList.push(res);
+              this.postList[i].commentList![j].isLiked = true;
+            }
+          }
+        }
+      }
+    }, error => {
+      console.log('false to like');
+    });
+  }
+
+  dislikeCommentAction(cm_id: any, post_id: any) {
+    this.ps.disLikeComment(this.userWhoLogin.username, cm_id).subscribe(res => {
+      if (res) {
+        for (let i = 0; i < this.postList.length; i++) {
+          if (this.postList[i].id == post_id) {
+            for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+              if (this.postList[i].commentList![j].id == cm_id) {
+                this.removeEmote(this.postList[i].commentList![j].emoteList);
+                this.postList[i].commentList![j].isLiked = false;
+              }
+            }
+          }
+        }
+      } else {
+        alert('loi server');
+      }
+    });
+  }
+
+  deletePhotoNewPost(i: any) {
+    this.newPost.photoList?.splice(i, 1);
+  }
 }

@@ -80,3 +80,23 @@
 .blue2{
   color: deepskyblue;
 }
+.align-items-center{
+  align-items: center;
+}
+.float-left{
+  float: left;
+  align-items: center;
+}
+.float-right{
+  float: right;
+  align-items: center;
+}
+
+.dislikes .blue2 fa fa-gittip{
+  float: right;
+  align-items: center;
+}
+
+.content-2{
+  word-break: break-all;
+}

@@ -43,15 +43,29 @@ export class NewfeedservicesService {
     return this.http.delete<boolean>(`${this.url}/${username}/delete/post/${postid}`)
   }
 
-  addLike(like: Emote, username: string) {
-    return this.http.post(`${this.url}/${username}/create/like`,like);
+  addLike(username: string,like: Emote ) {
+    return this.http.post(`${this.url}/${username}/create/emote`,like);
   }
 
-  checkIsLiked (postId: any, username:string){
-    return this.http.get<any>(`${this.url}/${username}/checkliked/${postId}`);
-  }
 
   disLike(post_id: any, s: string) {
     return this.http.delete<boolean>(`${this.url}/${s}/dislike/${post_id}`);
+  }
+
+  updatePost(username: any,post : Post){
+    return this.http.put<Post>(`${this.url}/${username}/update/post`,post)
+  }
+
+  deleteComment(username: any,comment_id: any){
+    return this.http.delete<boolean>(`${this.url}/${username}/delete/comment/${comment_id}`);
+  }
+
+  updateComment(username: any,comment: Comment){
+    return this.http.put<Comment>(`${this.url}/${username}/update/comment`,comment);
+  }
+
+
+  disLikeComment(username: any, cm_id: any) {
+    return this.http.delete<boolean>(`${this.url}/${username}/delete/emote/comment/${cm_id}`)
   }
 }
