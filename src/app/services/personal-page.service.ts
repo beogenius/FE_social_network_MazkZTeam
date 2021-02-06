@@ -45,11 +45,17 @@ export class PersonalPageService {
     return this.http.put<Comment>(`${this.url}/${username}/update/comment`,comment);
   }
 
-  pressLike(username: any,emote: Emote){
+  pressLike(username: any, emote: Emote){
     return this.http.post<Emote>(`${this.url}/${username}/create/emote`,emote);
   }
 
-  disLike(username: any,post_id:any){
+  disLikePost(username: any, post_id:any){
     return this.http.delete<boolean>(`${this.url}/${username}/delete/emote/post/${post_id}`)
   }
+
+  disLikeComment(username: any, comment_id:any){
+    return this.http.delete<boolean>(`${this.url}/${username}/delete/emote/comment/${comment_id}`)
+  }
+
+
 }

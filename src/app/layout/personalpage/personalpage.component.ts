@@ -102,11 +102,15 @@ export class PersonalpageComponent implements OnInit {
     this.sv.getListPost(this.userWhoOwnThisPage.username!).subscribe(res => {
       this.postList = res;
       for (let i = 0; i < this.postList.length; i++) {
-        this.postList[i].isLiked = this.isUserWhoLoginLikesThisPost(this.postList[i]);
+        this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+        for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+          this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+        }
       }
     });
   }
- //Post
+
+  //Post
   createPost() {
     if (this.imgSrc != '') {
       this.newPost.photoList?.push({linkSrc: this.imgSrc});
@@ -181,7 +185,6 @@ export class PersonalpageComponent implements OnInit {
   }
 
 
-
   saveEditPost() {
     this.sv.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
       for (let i = 0; i < this.postList.length; i++) {
@@ -225,7 +228,6 @@ export class PersonalpageComponent implements OnInit {
       }
     });
   }
-
 
 
   creatComment(postid: any) {
@@ -298,6 +300,7 @@ export class PersonalpageComponent implements OnInit {
         alert('server false to update comment');
       });
   }
+
 //router
   onSelect(username: string) {
     console.log(username);
@@ -306,9 +309,18 @@ export class PersonalpageComponent implements OnInit {
     });
   }
 
-  isUserWhoLoginLikesThisPost(p: Post) {
+  isUserWhoLoginLikeThisPost(p: Post) {
     for (let i = 0; i < p.emoteList?.length!; i++) {
-      if(p.emoteList![i].user.id == this.userWhoLogin.id){
+      if (p.emoteList![i].user.id == this.userWhoLogin.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isUserWhoLoginLikeThisComment(cm: Comment) {
+    for (let i = 0; i < cm.emoteList?.length!; i++) {
+      if (cm.emoteList![i].user.id == this.userWhoLogin.id) {
         return true;
       }
     }
@@ -316,40 +328,89 @@ export class PersonalpageComponent implements OnInit {
   }
 
   likePostAction(post_id: any) {
-    let emote:Emote = {
+    let emote: Emote = {
       post_id: post_id,
       user_id: this.userWhoLogin.id
-    }
+    };
 
-    this.sv.pressLike(this.userWhoLogin.username,emote).subscribe(res=>{
-      for (let i = 0;i < this.postList.length;i++){
-        if(this.postList[i].id == post_id){
+    this.sv.pressLike(this.userWhoLogin.username, emote).subscribe(res => {
+      for (let i = 0; i < this.postList.length; i++) {
+        if (this.postList[i].id == post_id) {
           this.postList[i].emoteList!.push(res);
           this.postList[i].isLiked = true;
         }
       }
-    },error => {console.log("false to like")});
-  }
-
-  dislikePostAction(post_id: any) {
-    this.sv.disLike(this.userWhoLogin.username,post_id).subscribe(res => {
-      for (let i = 0;i < this.postList.length;i++){
-        if(this.postList[i].id == post_id){
-          this.removeEmote(this.postList[i].emoteList!);
-          this.postList[i].isLiked = false;
-        }
-      }
+    }, error => {
+      console.log('false to like');
     });
   }
 
-  removeEmote(emoteList:Emote[]){
+  dislikePostAction(post_id: any) {
+    this.sv.disLikePost(this.userWhoLogin.username, post_id).subscribe(res => {
+      if(res){
+        for (let i = 0; i < this.postList.length; i++) {
+          if (this.postList[i].id == post_id) {
+            this.removeEmote(this.postList[i].emoteList!);
+            this.postList[i].isLiked = false;
+          }
+        }
+      }else{
+        alert("loi server");
+      }
+
+    });
+  }
+
+  removeEmote(emoteList: Emote[]) {
     console.log(emoteList.length);
-    for(let i = 0;i < emoteList.length;i++){
-      if(emoteList[i].user_id == this.userWhoLogin.id){
-        emoteList.splice(i,1);
+    for (let i = 0; i < emoteList.length; i++) {
+      if (emoteList[i].user_id == this.userWhoLogin.id) {
+        emoteList.splice(i, 1);
         break;
       }
     }
     console.log(emoteList.length);
+  }
+
+  likeCommentAction(cm_id:any,post_id: any) {
+    let emote: Emote = {
+      comment_id: cm_id,
+      user_id: this.userWhoLogin.id
+    };
+    this.sv.pressLike(this.userWhoLogin.username, emote).subscribe(res =>{
+      for(let i = 0;i < this.postList.length ;i++){
+        if(this.postList[i].id == post_id){
+          for(let j = 0;j <  this.postList[i].commentList!.length;j++){
+            if(this.postList[i].commentList![j].id == cm_id){
+              this.postList[i].commentList![j].emoteList.push(res);
+              this.postList[i].commentList![j].isLiked = true;
+            }
+          }
+        }
+      }
+    }, error => {
+      console.log('false to like');
+    });
+  }
+
+
+
+  dislikeCommentAction(cm_id:any,post_id: any) {
+    this.sv.disLikeComment(this.userWhoLogin.username, cm_id).subscribe(res =>{
+      if(res){
+        for(let i = 0;i < this.postList.length ;i++){
+          if(this.postList[i].id == post_id){
+            for(let j = 0;j <  this.postList[i].commentList!.length;j++){
+              if(this.postList[i].commentList![j].id == cm_id){
+                this.removeEmote(this.postList[i].commentList![j].emoteList);
+                this.postList[i].commentList![j].isLiked = false;
+              }
+            }
+          }
+        }
+      }else{
+        alert("loi server");
+      }
+    })
   }
 }

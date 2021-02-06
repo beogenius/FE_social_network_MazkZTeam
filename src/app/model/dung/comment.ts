@@ -9,4 +9,5 @@ export interface Comment {
   comment_id?: number;
   createdDate?: string;
   emoteList?: any[];
+  isLiked?: boolean;
 }
