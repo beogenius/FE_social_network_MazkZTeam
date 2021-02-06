@@ -64,3 +64,19 @@
   padding-bottom: 20px;
   padding-top: 20px;
 }
+
+.likes{
+  color: black;
+}
+.dislikes{
+  color: deepskyblue;
+  text-decoration: deepskyblue;
+}
+
+.black2{
+  color: black;
+}
+
+.blue2{
+  color: deepskyblue;
+}

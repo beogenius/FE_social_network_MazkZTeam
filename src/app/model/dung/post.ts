@@ -8,6 +8,6 @@ export interface Post {
   photoList?:any[];
   commentList?:any[];
   emoteList?: any[];
-
+  isLiked?: boolean;
 }
 

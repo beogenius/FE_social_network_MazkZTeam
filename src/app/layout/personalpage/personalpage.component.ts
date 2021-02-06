@@ -5,6 +5,7 @@ import {User} from '../../model/dung/user';
 import {Comment} from '../../model/dung/comment';
 import {Photo} from '../../model/dung/photo';
 import Swal from 'sweetalert2';
+import {Emote} from '../../model/dung/emote';
 
 declare var $: any;
 import {Router, ActivatedRoute} from '@angular/router';
@@ -16,7 +17,7 @@ import {Router, ActivatedRoute} from '@angular/router';
   styleUrls: ['./personalpage.component.css']
 })
 export class PersonalpageComponent implements OnInit {
-  //createpost
+
   imgSrc = '';
 
   newPost: Post = {
@@ -26,19 +27,14 @@ export class PersonalpageComponent implements OnInit {
 
   isULoginEqualUOwn = false;
 
-  //create comment
   newComment: Comment = {
     content: '',
     post_id: 0
   };
 
-
-//edit post
   postToEdit: Post = {};
   commentToEdit: Comment = {};
 
-
-  // get post List
   userWhoOwnThisPage: User = {
     address: '',
     avatar: '',
@@ -56,6 +52,7 @@ export class PersonalpageComponent implements OnInit {
     roles: [],
     username: ''
   };
+
   userWhoLogin: User = {
     address: '',
     avatar: '',
@@ -73,6 +70,7 @@ export class PersonalpageComponent implements OnInit {
     roles: [],
     username: ''
   };
+
   postList: Post[] = [];
 
 
@@ -80,7 +78,6 @@ export class PersonalpageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
 
     // @ts-ignore
     this.userWhoOwnThisPage.username = this.aRouter.snapshot.paramMap.get('username');
@@ -104,11 +101,13 @@ export class PersonalpageComponent implements OnInit {
 
     this.sv.getListPost(this.userWhoOwnThisPage.username!).subscribe(res => {
       this.postList = res;
+      for (let i = 0; i < this.postList.length; i++) {
+        this.postList[i].isLiked = this.isUserWhoLoginLikesThisPost(this.postList[i]);
+      }
     });
   }
-
-  //createpost
-  submit() {
+ //Post
+  createPost() {
     if (this.imgSrc != '') {
       this.newPost.photoList?.push({linkSrc: this.imgSrc});
     }
@@ -143,22 +142,57 @@ export class PersonalpageComponent implements OnInit {
     this.imgSrc = '';
   }
 
-  comment(postid: any) {
-    this.newComment.post_id = postid;
-    this.newComment.user_id = this.userWhoLogin.id;
-    this.sv.createComment(this.newComment, this.userWhoLogin.username!).subscribe(res => {
-      for (let i = 0; i < this.postList.length; i++) {
-        if (this.postList[i].id == postid) {
-          this.postList[i].commentList!.push(res);
-          $(`#inputComment${this.postList[i].id}`).val('');
-        }
-        break;
+
+  editPost(p: Post) {
+    function getPL(photoList: any[]) {
+      let a = [];
+
+      for (let i = 0; i < photoList.length; i++) {
+        a.push({
+          linkSrc: photoList[i].linkSrc
+        });
       }
-    });
+      return a;
+    }
+
+    this.postToEdit = {
+      id: p.id,
+      content: p.content,
+      user: p.user,
+      user_id: p.user_id,
+      createdDate: p.createdDate,
+      modifiedAt: p.modifiedAt,
+      photoList: getPL(p.photoList!),
+      commentList: p.commentList
+    };
+
+    $('#editPostModal').modal('show');
   }
 
-  onCommentChance(event: any) {
-    this.newComment.content = event.target.value;
+  saveEditPhoto() {
+    this.postToEdit.photoList?.push({
+      linkSrc: this.imgSrc,
+    });
+    this.imgSrc = '';
+  }
+
+  deletePhoto(i: number) {
+    this.postToEdit.photoList?.splice(i, 1);
+  }
+
+
+
+  saveEditPost() {
+    this.sv.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
+      for (let i = 0; i < this.postList.length; i++) {
+        if (this.postList[i].id == res.id) {
+          this.postList[i] = res;
+          $('#editPostModal').modal('toggle');
+        }
+      }
+    }, error => {
+      alert('server false to update post');
+    });
   }
 
   deletePost(postid: any) {
@@ -190,59 +224,30 @@ export class PersonalpageComponent implements OnInit {
         });
       }
     });
-  };
-
-  editPost(p: Post) {
-    function getPL(photoList: any[]) {
-      let a = [];
-
-      for (let i = 0; i < photoList.length; i++) {
-        a.push({
-          linkSrc: photoList[i].linkSrc
-        });
-      }
-      return a;
-    }
-
-    this.postToEdit = {
-      id: p.id,
-      content: p.content,
-      user: p.user,
-      user_id: p.user_id,
-      createdDate: p.createdDate,
-      modifiedAt: p.modifiedAt,
-      photoList: getPL(p.photoList!),
-      commentList: p.commentList
-    };
-
-
-    $('#editPostModal').modal('show');
   }
 
-  deletePhoto(i: number) {
-    this.postToEdit.photoList?.splice(i, 1);
-  }
 
-  saveEditPhoto() {
-    this.postToEdit.photoList?.push({
-      linkSrc: this.imgSrc,
-    });
-    this.imgSrc = '';
-  }
 
-  saveEditPost() {
-    this.sv.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
+  creatComment(postid: any) {
+    this.newComment.post_id = postid;
+    this.newComment.user_id = this.userWhoLogin.id;
+
+    this.sv.createComment(this.newComment, this.userWhoLogin.username!).subscribe(res => {
+
       for (let i = 0; i < this.postList.length; i++) {
-        if (this.postList[i].id == res.id) {
-          this.postList[i] = res;
-          $('#editPostModal').modal('toggle');
+        if (this.postList[i].id == postid) {
+          debugger
+          this.postList[i].commentList!.push(res);
+          $(`#inputComment${this.postList[i].id}`).val('');
+          break;
         }
       }
-    }, error => {
-      alert('server false to update post');
     });
   }
 
+  onCommentChange(event: any) {
+    this.newComment.content = event.target.value;
+  }
 
   isULoginEqualUOwnthisComment(username: any) {
     if (username == this.userWhoLogin.username) {
@@ -293,11 +298,58 @@ export class PersonalpageComponent implements OnInit {
         alert('server false to update comment');
       });
   }
-
+//router
   onSelect(username: string) {
     console.log(username);
     this.router.navigate(['/index/personal', username]).then(() => {
       window.location.reload();
     });
+  }
+
+  isUserWhoLoginLikesThisPost(p: Post) {
+    for (let i = 0; i < p.emoteList?.length!; i++) {
+      if(p.emoteList![i].user.id == this.userWhoLogin.id){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  likePostAction(post_id: any) {
+    let emote:Emote = {
+      post_id: post_id,
+      user_id: this.userWhoLogin.id
+    }
+
+    this.sv.pressLike(this.userWhoLogin.username,emote).subscribe(res=>{
+      for (let i = 0;i < this.postList.length;i++){
+        if(this.postList[i].id == post_id){
+          this.postList[i].emoteList!.push(res);
+          this.postList[i].isLiked = true;
+        }
+      }
+    },error => {console.log("false to like")});
+  }
+
+  dislikePostAction(post_id: any) {
+    this.sv.disLike(this.userWhoLogin.username,post_id).subscribe(res => {
+      for (let i = 0;i < this.postList.length;i++){
+        if(this.postList[i].id == post_id){
+          this.removeEmote(this.postList[i].emoteList!);
+          this.postList[i].isLiked = false;
+        }
+      }
+    });
+  }
+
+  removeEmote(emoteList:Emote[]){
+    console.log(emoteList.length);
+    for(let i = 0;i < emoteList.length;i++){
+      if(emoteList[i].user_id == this.userWhoLogin.id){
+        emoteList.splice(i,1);
+        break;
+      }
+    }
+    console.log(emoteList.length);
   }
 }
