@@ -26,6 +26,12 @@
         </div>
         <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
           <div class="form-group">
+            <div style="float: left" *ngFor="let photo of newPost.photoList;let i = index">
+              <a href="{{photo.linkSrc}}">
+                <img width="100" height="100" src="{{photo.linkSrc}}" alt="" class="img-thumbnail">
+              </a>
+              <span class="close" aria-hidden="true" (click)="deletePhotoNewPost(i)">&times;</span>
+            </div>
             <div>
               <input type="text" class="form-control" id="customFile" placeholder="image link" [(ngModel)]="imgSrc"
                      name="imgSrc">
@@ -131,20 +137,20 @@
               </div>
               <div class="row">
 
-                    <div class="col-4 align-items-center" *ngIf="!cm.isLiked">
-                      <a (click)="likeCommentAction(cm.id,p.id)" class="likes btn"><i class="black2 fa fa-gittip"></i>
-                        Like</a>
-                    </div>
-                    <div class="col-4 align-items-center" *ngIf="cm.isLiked">
-                      <a (click)="dislikeCommentAction(cm.id,p.id)" class="dislikes btn"><i class="blue2 fa fa-gittip"></i>
-                        DisLike</a>
-                    </div>
-                    <div class="col-4 align-items-center float-right" *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">
-                      <small>{{cm.emoteList.length}} <i class="black2 fa fa-gittip"></i></small>
-                    </div>
-                    <div class="col-4">
+                <div class="col-4 align-items-center" *ngIf="!cm.isLiked">
+                  <a (click)="likeCommentAction(cm.id,p.id)" class="likes btn"><i class="black2 fa fa-gittip"></i>
+                    Like</a>
+                </div>
+                <div class="col-4 align-items-center" *ngIf="cm.isLiked">
+                  <a (click)="dislikeCommentAction(cm.id,p.id)" class="dislikes btn"><i class="blue2 fa fa-gittip"></i>
+                    DisLike</a>
+                </div>
+                <div class="col-4 align-items-center float-right" *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">
+                  <small>{{cm.emoteList.length}} <i class="black2 fa fa-gittip"></i></small>
+                </div>
+                <div class="col-4">
 
-                    </div>
+                </div>
 
               </div>
             </div>
@@ -201,14 +207,13 @@
 </div>
 
 
-
 <!--modal edit post-->
 <div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Post</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -224,12 +229,16 @@
               </div>
             </div>
             <div>
+
+
               <div style="float: left" *ngFor="let photo of postToEdit.photoList;let i = index">
                 <a href="{{photo.linkSrc}}">
                   <img width="100" height="100" src="{{photo.linkSrc}}" alt="" class="img-thumbnail">
                 </a>
                 <span class="close" aria-hidden="true" (click)="deletePhoto(i)">&times;</span>
               </div>
+
+
             </div>
             <div class="formGroup">
               <div>
@@ -254,7 +263,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New message</h5>
+        <h5 class="modal-title">Edit Comment</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -264,7 +273,7 @@
           <div class="tab-content">
             <div aria-labelledby="posts-tab">
               <div class="form-group">
-                <label class="sr-only" for="message">post</label>
+                <label class="sr-only" for="message">comment</label>
                 <textarea class="form-control" rows="3" placeholder="What are you thinking?"
                           [(ngModel)]="commentToEdit.content" name="content"></textarea>
               </div>

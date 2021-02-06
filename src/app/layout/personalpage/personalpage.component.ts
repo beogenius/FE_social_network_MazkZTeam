@@ -238,7 +238,6 @@ export class PersonalpageComponent implements OnInit {
 
       for (let i = 0; i < this.postList.length; i++) {
         if (this.postList[i].id == postid) {
-          debugger
           this.postList[i].commentList!.push(res);
           $(`#inputComment${this.postList[i].id}`).val('');
           break;
@@ -347,15 +346,15 @@ export class PersonalpageComponent implements OnInit {
 
   dislikePostAction(post_id: any) {
     this.sv.disLikePost(this.userWhoLogin.username, post_id).subscribe(res => {
-      if(res){
+      if (res) {
         for (let i = 0; i < this.postList.length; i++) {
           if (this.postList[i].id == post_id) {
             this.removeEmote(this.postList[i].emoteList!);
             this.postList[i].isLiked = false;
           }
         }
-      }else{
-        alert("loi server");
+      } else {
+        alert('loi server');
       }
 
     });
@@ -372,16 +371,16 @@ export class PersonalpageComponent implements OnInit {
     console.log(emoteList.length);
   }
 
-  likeCommentAction(cm_id:any,post_id: any) {
+  likeCommentAction(cm_id: any, post_id: any) {
     let emote: Emote = {
       comment_id: cm_id,
       user_id: this.userWhoLogin.id
     };
-    this.sv.pressLike(this.userWhoLogin.username, emote).subscribe(res =>{
-      for(let i = 0;i < this.postList.length ;i++){
-        if(this.postList[i].id == post_id){
-          for(let j = 0;j <  this.postList[i].commentList!.length;j++){
-            if(this.postList[i].commentList![j].id == cm_id){
+    this.sv.pressLike(this.userWhoLogin.username, emote).subscribe(res => {
+      for (let i = 0; i < this.postList.length; i++) {
+        if (this.postList[i].id == post_id) {
+          for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+            if (this.postList[i].commentList![j].id == cm_id) {
               this.postList[i].commentList![j].emoteList.push(res);
               this.postList[i].commentList![j].isLiked = true;
             }
@@ -394,23 +393,26 @@ export class PersonalpageComponent implements OnInit {
   }
 
 
-
-  dislikeCommentAction(cm_id:any,post_id: any) {
-    this.sv.disLikeComment(this.userWhoLogin.username, cm_id).subscribe(res =>{
-      if(res){
-        for(let i = 0;i < this.postList.length ;i++){
-          if(this.postList[i].id == post_id){
-            for(let j = 0;j <  this.postList[i].commentList!.length;j++){
-              if(this.postList[i].commentList![j].id == cm_id){
+  dislikeCommentAction(cm_id: any, post_id: any) {
+    this.sv.disLikeComment(this.userWhoLogin.username, cm_id).subscribe(res => {
+      if (res) {
+        for (let i = 0; i < this.postList.length; i++) {
+          if (this.postList[i].id == post_id) {
+            for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+              if (this.postList[i].commentList![j].id == cm_id) {
                 this.removeEmote(this.postList[i].commentList![j].emoteList);
                 this.postList[i].commentList![j].isLiked = false;
               }
             }
           }
         }
-      }else{
-        alert("loi server");
+      } else {
+        alert('loi server');
       }
-    })
+    });
+  }
+
+  deletePhotoNewPost(i: any) {
+    this.newPost.photoList?.splice(i, 1);
   }
 }
