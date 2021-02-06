@@ -112,8 +112,11 @@
         <div class="col-4" *ngIf="p.isLiked">
           <a (click)="dislikePostAction(p.id)" class="dislikes btn"><i class="blue2 fa fa-gittip"></i> DisLike</a>
         </div>
-        <div class="col-8" *ngIf="p && p.emoteList && p.emoteList.length!=0">
-          <p>{{p.emoteList.length}} Likes</p>
+        <div class="col-4" *ngIf="p && p.emoteList && p.emoteList.length!=0">
+          <p style="align-content: center">{{p.emoteList.length}} Likes</p>
+        </div>
+        <div class="col-4" *ngIf="p&&p.commentList&&p.commentList.length!==0">
+          <p>{{p.commentList.length}} Comment</p>
         </div>
       </div>
     </div>
