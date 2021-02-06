@@ -30,41 +30,41 @@ export class FriendComponent implements OnInit {
   }
 
   async reloaddata() {
-    let user = await this.getUser();
+    let user = await this.getUser(this.username);
     this.user = user.data;
-    let friendResponse = await this.getFriendList();
+    let friendResponse = await this.getFriendList(this.username);
     this.friends = friendResponse.data;
-    let receiverFriendRes = await this.getReceiverList();
+    let receiverFriendRes = await this.getReceiverList(this.username);
     this.receiverFriend = receiverFriendRes.data;
-    let friendNotRequest = await this.getFriendListNotRequest();
+    let friendNotRequest = await this.getFriendListNotRequest(this.username);
     this.friendNotRequestList = friendNotRequest.data;
-    let senderList = await this.getSenderFriendList();
+    let senderList = await this.getSenderFriendList(this.username);
     this.senderFriendList = senderList.data;
 
     console.log(this.user);
   }
 
-  getUser() {
-    return this.friendShipService.getUser().toPromise();
+  getUser(username: any) {
+    return this.friendShipService.getUser(username).toPromise();
   }
 
-  getFriendList() {
-    return this.friendShipService.getFriendList().toPromise();
+  getFriendList(username: any) {
+    return this.friendShipService.getFriendList(username).toPromise();
   }
 
-  getReceiverList() {
-    return this.friendShipService.getReceiverList().toPromise();
+  getReceiverList(username: any) {
+    return this.friendShipService.getReceiverList(username).toPromise();
   }
 
-  getFriendListNotRequest() {
-    return this.friendShipService.getFriendNotRequest().toPromise();
+  getFriendListNotRequest(username: any) {
+    return this.friendShipService.getFriendNotRequest(username).toPromise();
   }
 
-  getSenderFriendList(){
-    return this.friendShipService.getSenderFriendList().toPromise();
+  getSenderFriendList(username: any){
+    return this.friendShipService.getSenderFriendList(username).toPromise();
   }
 
-  deleteFriend(userId1: any, userId2: any) {
+  deleteFriend(username: any,userId1: any, userId2: any) {
     console.log(userId1, userId2);
     Swal.fire({
       title: 'Are you sure to Unfriend ?',
@@ -76,7 +76,7 @@ export class FriendComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.friendShipService.deleteFriend(userId1, userId2).subscribe(data => {
+        this.friendShipService.deleteFriend(username,userId1, userId2).subscribe(data => {
           this.reloaddata();
           Swal.fire(
             'Unfriended!',
@@ -89,21 +89,21 @@ export class FriendComponent implements OnInit {
 
   }
 
-  acceptFriend(idSender: any, idReceiver: any) {
-    this.friendShipService.acceptFriend(idSender, idReceiver).subscribe(data => {
+  acceptFriend(username: any, idSender: any, idReceiver: any) {
+    this.friendShipService.acceptFriend(username,idSender, idReceiver).subscribe(data => {
       this.reloaddata();
     });
 
   }
 
-  cancelFriendRequest(idSender: any, idReceiver: any) {
-    this.friendShipService.cancelFriendRequest(idSender, idReceiver).subscribe(data => {
+  cancelFriendRequest(username: any, idSender: any, idReceiver: any) {
+    this.friendShipService.cancelFriendRequest(username,idSender, idReceiver).subscribe(data => {
       this.reloaddata();
     });
   }
 
-  addFriend(idSender: any, idReceiver: any) {
-    this.friendShipService.addFriend(idSender, idReceiver).subscribe(data => {
+  addFriend(username: any ,idSender: any, idReceiver: any) {
+    this.friendShipService.addFriend(username,idSender, idReceiver).subscribe(data => {
       this.reloaddata();
       console.log(data.data);
     });

@@ -38,7 +38,7 @@
               </div>
               <div class="ml-auto">
           <span><button type="button" class="btn btn-sm btn-primary"
-                        (click)="deleteFriend(user.id,f.id)">Unfriend</button></span>
+                        (click)="deleteFriend(username,user.id,f.id)">Unfriend</button></span>
               </div>
             </div>
 
@@ -69,7 +69,7 @@
               </div>
               <div class="ml-auto">
           <span><button type="button" class="btn btn-sm btn-primary"
-                        (click)="addFriend(user.id,n.id)">Add Friend</button></span>
+                        (click)="addFriend(username,user.id,n.id)">Add Friend</button></span>
               </div>
             </div>
           </li>
@@ -99,10 +99,10 @@
               </div>
               <div class="ml-auto">
                 <button type="button" class="btn btn-sm btn-success"
-                        (click)="acceptFriend(user.id,r.id)">Accept
+                        (click)="acceptFriend(username,user.id,r.id)">Accept
                 </button>
                 <button type="button" class="btn btn-sm btn-dark ml-1"
-                        (click)="cancelFriendRequest(user.id,r.id)">Cancel
+                        (click)="cancelFriendRequest(username,user.id,r.id)">Cancel
                 </button>
 
               </div>

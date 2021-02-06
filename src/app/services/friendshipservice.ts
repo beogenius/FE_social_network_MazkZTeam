@@ -8,37 +8,37 @@ import {Observable} from 'rxjs';
 })
 
 export class FriendShipService{
-  private baseUrl = 'http://localhost:8080/friendlist/hai'
+  private baseUrl = 'http://localhost:8080/friendlist/'
   constructor(private http: HttpClient) {
   }
-  getSenderFriendList():Observable<any>{
-    return this.http.get(this.baseUrl + '/sendedrequest')
+  getSenderFriendList(username: any):Observable<any>{
+    return this.http.get(this.baseUrl + username + '/sendedrequest')
   }
-  getUser():Observable<any>{
-    return this.http.get(this.baseUrl + '/getuser')
+  getUser(username: any):Observable<any>{
+    return this.http.get(this.baseUrl + username + '/getuser')
   }
-  getFriendNotRequest():Observable<any>{
-    return this.http.get(this.baseUrl + '/friendnotrequest')
+  getFriendNotRequest(username: any):Observable<any>{
+    return this.http.get(this.baseUrl + username +  '/friendnotrequest')
   }
-  getFriendList():Observable<any>{
-    return this.http.get('http://localhost:8080/friendlist/hai')
+  getFriendList(username: any):Observable<any>{
+    return this.http.get(this.baseUrl + username)
   }
-  getReceiverList():Observable<any>{
-    return this.http.get('http://localhost:8080/friendlist/hai/friendreceiver')
+  getReceiverList(username: any):Observable<any>{
+    return this.http.get(this.baseUrl +username + '/friendreceiver')
   }
-  deleteFriend( idReceiver: any, idSender: any):Observable<any>{
+  deleteFriend(username: any, idReceiver: any, idSender: any):Observable<any>{
     console.log("weqweqweq")
-    return this.http.delete(this.baseUrl + '/delete?senderId='+idSender + '&receiverId=' + idReceiver)
+    return this.http.delete(this.baseUrl + username +  '/delete?senderId='+idSender + '&receiverId=' + idReceiver)
   }
-  acceptFriend(idReceiver: any,idSender: any):Observable<any>{
-    return this.http.get(this.baseUrl + '/accept?senderId='+idSender+'&receiverId='+idReceiver)
+  acceptFriend(username: any, idReceiver: any,idSender: any):Observable<any>{
+    return this.http.get(this.baseUrl + username +  '/accept?senderId='+idSender+'&receiverId='+idReceiver)
   }
-  cancelFriendRequest(idReceiver: any,idSender: any):Observable<any>{
-    return this.http.get(this.baseUrl + '/cancel?senderId='+idSender+'&receiverId='+idReceiver)
+  cancelFriendRequest(username: any, idReceiver: any,idSender: any):Observable<any>{
+    return this.http.get(this.baseUrl + username +  '/cancel?senderId='+idSender+'&receiverId='+idReceiver)
   }
-  addFriend(idSender: any,idReceiver: any):Observable<any>{
+  addFriend(username: any, idSender: any,idReceiver: any):Observable<any>{
     console.log(idSender);
     console.log(idReceiver);
-    return this.http.get(this.baseUrl + '/addfriend?senderId='+idSender+'&receiverId='+idReceiver)
+    return this.http.get(this.baseUrl + username +  '/addfriend?senderId='+idSender+'&receiverId='+idReceiver)
   }
 }
