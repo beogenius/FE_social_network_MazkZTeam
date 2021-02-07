@@ -35,7 +35,7 @@ export const routes: Routes = [
         component: NewfeedsComponent ,
       },
       {
-        path: 'personal',
+        path: 'personal/:username',
         component: PersonalpageComponent,
       },
 

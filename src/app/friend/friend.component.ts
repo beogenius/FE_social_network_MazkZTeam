@@ -108,4 +108,8 @@ export class FriendComponent implements OnInit {
       console.log(data.data);
     });
   }
+
+  goToPersonal(username: any) {
+    this.router.navigate(['index/personal',username])
+  }
 }

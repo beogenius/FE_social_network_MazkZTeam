@@ -1,6 +1,6 @@
 <div id="content">
 <nav class="navbar navbar-dark bg-primary" id="nav">
-  <a href="#" class="navbar-brand">Bootsbook</a>
+  <a routerLink="/index"  class="navbar-brand">Bootsbook</a>
   <form class="form-inline">
     <div class="input-group">
       <input type="text" class="form-control border-dark " aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -23,12 +23,12 @@
         <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let f of friends">
           <li class="list-group-item">
             <div class="row">
-              <div>
+              <div (click)="goToPersonal(f.username)">
           <span><img src="{{f.avatar}}" alt="" class="img-thumbnail"
                      style="width: 70px;height: 70px;border-radius: 50%;"></span>
               </div>
-              <div class="ml-2">
-                <span style="font-size: large;font-weight: bold"> {{f.first_name }} {{f.last_name}}</span>
+              <div class="ml-2" >
+                <span (click)="goToPersonal(f.username)" style="font-size: large;font-weight: bold"> {{f.first_name }} {{f.last_name}}</span>
                 <div>
                   <small class="inforFriend">{{f.address}}</small>
                 </div>
@@ -54,12 +54,12 @@
         <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let n of friendNotRequestList">
           <li class="list-group-item">
             <div class="row">
-              <div>
+              <div (click)="goToPersonal(n.username)">
           <span><img src="{{n.avatar}}" alt="" class="img-thumbnail"
                      style="width: 70px;height: 70px;border-radius: 50%;"></span>
               </div>
               <div class="ml-2">
-                <span style="font-size: large;font-weight: bold"> {{n.first_name }} {{n.last_name}}</span>
+                <span (click)="goToPersonal(n.username)" style="font-size: large;font-weight: bold"> {{n.first_name }} {{n.last_name}}</span>
                 <div>
                   <small class="inforFriend">{{n.address}}</small>
                 </div>
@@ -84,12 +84,12 @@
         <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let r of receiverFriend">
           <li class="list-group-item">
             <div class="row">
-              <div>
+              <div (click)="goToPersonal(r.username)">
           <span><img src="{{r.avatar}}" alt="" class="img-thumbnail"
                      style="width: 70px;height: 70px;border-radius: 50%;"></span>
               </div>
               <div class="ml-2">
-                <span style="font-size: large;font-weight: bold"> {{r.first_name }} {{r.last_name}}</span>
+                <span (click)="goToPersonal(r.username)" style="font-size: large;font-weight: bold"> {{r.first_name }} {{r.last_name}}</span>
                 <div>
                   <small class="inforFriend">{{r.address}}</small>
                 </div>
@@ -118,12 +118,12 @@
         <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let s of senderFriendList">
           <li class="list-group-item">
             <div class="row">
-              <div>
+              <div (click)="goToPersonal(s.username)">
           <span><img src="{{s.avatar}}" alt="" class="img-thumbnail"
                      style="width: 70px;height: 70px;border-radius: 50%;"></span>
               </div>
               <div class="ml-2">
-                <span style="font-size: large;font-weight: bold"> {{s.first_name }} {{s.last_name}}</span>
+                <span (click)="goToPersonal(s.username)" style="font-size: large;font-weight: bold"> {{s.first_name }} {{s.last_name}}</span>
                 <div>
                   <small class="inforFriend">{{s.address}}</small>
                 </div>
@@ -133,7 +133,7 @@
               </div>
               <div class="ml-auto">
           <span><button type="button" class="btn btn-sm btn-dark"
-                        (click)="cancelFriendRequest(s.id,user.id)">Cancel</button></span>
+                        (click)="cancelFriendRequest(username,s.id,user.id)">Cancel</button></span>
               </div>
             </div>
           </li>
