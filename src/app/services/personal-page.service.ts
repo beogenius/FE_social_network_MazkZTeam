@@ -10,7 +10,7 @@ import {Emote} from '../model/dung/emote';
 })
 export class PersonalPageService {
 
-  url = "http://localhost:8080";
+  url = "http://localhost:8080/personal";
   constructor(private http: HttpClient) { }
 
   createPost(post: Post,username: string) {

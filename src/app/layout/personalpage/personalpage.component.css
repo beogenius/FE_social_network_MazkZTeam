@@ -101,3 +101,28 @@
   word-break: break-all;
 }
 
+.comment-count{
+  position: relative;
+  align-self: center;
+  text-align: center;
+}
+
+
+.comment-count p {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-self: center;
+  text-align: center;
+}
+
+.comment-avatar {
+  text-align: center;
+}
+
+
+#comment-box{
+  padding-left: 60px;
+}

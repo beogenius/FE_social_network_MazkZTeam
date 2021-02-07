@@ -87,7 +87,7 @@ export class PersonalpageComponent implements OnInit {
     });
 
     // @ts-ignore
-    this.userWhoLogin.username = sessionStorage.getItem('username');
+    this.userWhoLogin.username = sessionStorage.getItem('AuthUsername');
 
     console.log(this.userWhoLogin.username);
 
@@ -361,14 +361,12 @@ export class PersonalpageComponent implements OnInit {
   }
 
   removeEmote(emoteList: Emote[]) {
-    console.log(emoteList.length);
     for (let i = 0; i < emoteList.length; i++) {
       if (emoteList[i].user_id == this.userWhoLogin.id) {
         emoteList.splice(i, 1);
         break;
       }
     }
-    console.log(emoteList.length);
   }
 
   likeCommentAction(cm_id: any, post_id: any) {
