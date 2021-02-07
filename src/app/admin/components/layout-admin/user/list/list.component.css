@@ -1,0 +1,14 @@
+.trash {
+  font-size: x-large;
+  color: blue;
+}
+.trash:hover {
+  color: red;
+  cursor: pointer;
+}
+.colSize5 {
+  width: 5%;
+}
+body.modal-open div.modal-backdrop {
+  z-index: 0;
+}
