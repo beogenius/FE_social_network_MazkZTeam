@@ -1,0 +1,128 @@
+.cardbox-comments{
+  padding: 10px !important;
+  font-size: medium;
+  width: 100%;
+  height: 100%;
+}
+.cardbox-comments .comment-avatar img{
+  font-size: large;
+  margin-top: 1px;
+  margin-right: 10px;
+  position: relative;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+}
+.cardbox-comments .comment-body {
+  padding-top: 10px;
+  overflow: auto;
+  font-size: large;
+}
+.search {
+  position: relative;
+
+  border: 2px solid #f4f4f4;
+  width: 100%;
+  overflow: hidden;
+}
+.search input[type="text"] {
+  background-color: #fff;
+  line-height: 10px;
+  padding: 15px 60px 20px 10px;
+  border: none;
+  border-radius: 4px;
+  width: 750px;
+  font-family: 'Rokkitt', serif;
+  font-size: 14px;
+  color: #8d8d8d;
+  height: inherit;
+  font-weight: 700;
+}
+.search button {
+  position: absolute;
+  right: 0;
+  top: 0px;
+  border: none;
+  background-color: transparent;
+  color: #bbbbbb;
+  padding: 15px 25px;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.search button i {
+  font-size: 20px;
+  line-height: 30px;
+  display: block;
+}
+
+.card gedf-card{
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.likes{
+  color: black;
+}
+.dislikes{
+  color: deepskyblue;
+  text-decoration: deepskyblue;
+}
+
+.black2{
+  color: black;
+}
+
+.blue2{
+  color: deepskyblue;
+}
+.align-items-center{
+  align-items: center;
+}
+.float-left{
+  float: left;
+  align-items: center;
+}
+.float-right{
+  float: right;
+  align-items: center;
+}
+
+.dislikes .blue2 fa fa-gittip{
+  float: right;
+  align-items: center;
+}
+
+.content-2{
+  word-break: break-all;
+}
+
+.comment-count{
+  position: relative;
+  align-self: center;
+  text-align: center;
+}
+
+
+.comment-count p {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-self: center;
+  text-align: center;
+}
+
+.comment-avatar {
+  text-align: center;
+}
+
+
+#comment-box{
+  padding-left: 60px;
+}

@@ -1,0 +1,53 @@
+
+<form name="form" class="modal-content" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+  <div class="container">
+    <div class="form-group">
+      <h1 class="text-primary m-auto">Sign-in</h1>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" name="username" id="username" [(ngModel)]="form.username" #username="ngModel" required="required">
+    </div>
+    <div *ngIf="f.submitted && username.invalid">
+      <div *ngIf="username.errors?.required" class="text-danger">Username is required</div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="password" id="password" [(ngModel)]="form.password" #password ="ngModel" required="required" minlength="6">
+    </div>
+    <div *ngIf="f.submitted && password.invalid">
+      <div *ngIf="password.errors?.required" class="text-danger">Password is required</div>
+      <div *ngIf="password.errors?.minlength" class="text-danger">Password at least 6 characters</div>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success">Sign in</button>
+      <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger" style="max-width: 300px">
+        {{errorMessage}}
+      </div>
+    </div>
+    <a routerLink="/register">Sign Up</a>
+  </div>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="blockNoti" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="title">Notification</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <p>Tài Khoản của bạn đã bị khóa, vui lòng liên hệ với admin hoặc tổng đài:
+            <span><a href="#">19001009</a></span> để biết thêm chi tiết</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

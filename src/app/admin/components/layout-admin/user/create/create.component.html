@@ -1,10 +1,9 @@
-<div class="container border mt-5">
+
+<div class="container mt-5">
+  <h1 class="text-capitalize text-primary">Create new user</h1>
   <div class="d-block w-50 m-auto">
-    <form name="form" class="form-group" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+    <form name="form" class="form-group" (ngSubmit)="f.form.valid && saveUser()" #f="ngForm" novalidate>
       <!--  <div class="container">-->
-      <div class="form-group text-primary">
-        <h1 class="text-capitalize text-center">Sign Up</h1>
-      </div>
 
       <div class="form-group">
         <label for="username">Username<i class="text-danger ml-1">*</i></label>
@@ -47,28 +46,61 @@
         <div *ngIf="email.errors?.required" class="text-danger">Email is required</div>
         <div *ngIf="email.errors?.email" class="text-danger">Email must be a valid Email</div>
       </div>
-
+      <div class="form-group ">
+        <label for="avatar">Avatar</label>
+        <input type="text" class="form-control" name="avatar" id="avatar" [(ngModel)]="form.avatar" #avatar ="ngModel">
+      </div>
+      <div>
+        Gender:
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" name="male" id="male" [(ngModel)]="form.gender" value="Male" #gender ="ngModel">
+          <label class="form-check-label" for="male">Male</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" name="female" id="female" [(ngModel)]="form.gender" value="Female" #gender ="ngModel">
+          <label class="form-check-label" for="female">Female</label>
+        </div>
+      </div>
+      <br>
       <div class="form-group ">
         <label for="address">Address</label>
         <input type="text" class="form-control" name="address" id="address" [(ngModel)]="form.address" #address ="ngModel">
       </div>
       <div class="form-group ">
-        <label for="dob">Date of birth</label>
-        <input type="text" bsDatepicker autocomplete="OFF" class="form-control" name="dob" id="dob" [(ngModel)]="form.dob" #dob ="ngModel">
+        <label for="phone">Phone Number</label>
+        <input type="text" class="form-control" name="phone" id="phone" [(ngModel)]="form.phone" #phone ="ngModel" minlength="10" maxlength="11">
+      </div>
+      <div *ngIf="f.submitted">
+        <div *ngIf="phone.errors?.minlength" class="text-danger">Phone number at least 10 characters</div>
+        <div *ngIf="phone.errors?.maxlength" class="text-danger">Phone number max 11 characters</div>
+      </div>
+      <div class="form-group ">
+        <label for="detail">Detail</label>
+        <textarea type="text" class="form-control" name="detail" id="detail" [(ngModel)]="form.detail" #detail ="ngModel" cols="20" rows="5"></textarea>
+      </div>
+      <div class="form-group ">
+        <label for="dateOfBirth">Date of birth</label>
+        <input type="text" bsDatepicker autocomplete="OFF" class="form-control" name="dateOfBirth" id="dateOfBirth" [(ngModel)]="form.dateOfBirth" #dob ="ngModel">
+      </div>
+      <div class="form-group">
+        <label for="roles">Roles <i class="text-danger ml-1">*</i></label>
+        <select class="form-control" id="roles" name="roles" [(ngModel)]="form.roles" #roles="ngModel" required="required">
+          <option selected>user</option>
+          <option>admin</option>
+        </select>
+      </div>
+      <div *ngIf="f.submitted && roles.invalid">
+        <div *ngIf="username.errors?.required" class="text-danger">Role is required</div>
       </div>
 
       <div class="form-group">
-        <button type="submit" class="btn btn-success">Register</button>
-        <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-danger" style="max-width: 300px">
-          {{errorMessage}}
+        <button type="submit" class="btn btn-success">Create</button>
+        <button type="button" routerLink="/admin/exam" class="btn btn-warning ml-2">Back</button>
+        <div *ngIf="f.submitted && isCreateFailed" class="alert alert-danger" style="max-width: 300px">
+          Create failed
         </div>
       </div>
-      <a routerLink="/login">You already have an account</a>
       <!--  </div>-->
     </form>
-
   </div>
 </div>
-
-
-
