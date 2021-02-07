@@ -34,7 +34,8 @@
               </div>
             </div>
             <div>
-              <input type="text" class="form-control" id="customFile" placeholder="Please Input Link Image Here" [(ngModel)]="imgSrc"
+              <input type="text" class="form-control" id="customFile" placeholder="Please Input Link Image Here"
+                     [(ngModel)]="imgSrc"
                      name="imgSrc">
             </div>
             <button class="btn info" (click)="moreImg()">Click to Add Image</button>
@@ -54,7 +55,6 @@
 <!-- CREATE Post END /////-->
 
 
-
 <!--- LIST  Post-->
 <div *ngFor="let p of postList; let pi = index ">
   <div class="card gedf-card">
@@ -62,33 +62,35 @@
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex justify-content-between align-items-center">
           <div (click)="onSelect(p.user.username!)" class="d-flex justify-content-between align-items-center">
-          <div class="mr-2">
-            <img class="rounded-circle" width="45" height="45" src="{{p.user.avatar}}" alt="">
-          </div>
-          <div class="ml-2">
-            <div class="h5 m-0">{{p.user.firstName}} {{p.user.lastName}}</div>
-            <div class="h7 text-muted">{{p.user.username}}</div>
-          </div>
-        </div>
-        <div>
-          <div class="dropdown">
-            <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-ellipsis-h"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1" *ngIf="userWhoLogin.id==p.user_id">
-              <div class="h6 dropdown-header">Configuration</div>
-              <button class="dropdown-item" (click)="editPost(p)">Edit</button>
-              <button class="dropdown-item" (click)="deletePost(p.id)">Delete</button>
+            <div class="mr-2">
+              <img class="rounded-circle" width="45" height="45" src="{{p.user.avatar}}" alt="">
             </div>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1" *ngIf="userWhoLogin.id!=p.user_id">
-              <div class="h6 dropdown-header">Configuration</div>
-              <button class="dropdown-item" href="#">Share</button>
-              <button class="dropdown-item">Save</button>
+            <div class="ml-2">
+              <div class="h5 m-0">{{p.user.firstName}} {{p.user.lastName}}</div>
+              <div class="h7 text-muted">{{p.user.username}}</div>
             </div>
           </div>
+          <div>
+            <div class="dropdown">
+              <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-h"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"
+                   *ngIf="userWhoLogin.id==p.user_id">
+                <div class="h6 dropdown-header">Configuration</div>
+                <button class="dropdown-item" (click)="editPost(p)">Edit</button>
+                <button class="dropdown-item" (click)="deletePost(p.id)">Delete</button>
+              </div>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"
+                   *ngIf="userWhoLogin.id!=p.user_id">
+                <div class="h6 dropdown-header">Configuration</div>
+                <button class="dropdown-item" href="#">Share</button>
+                <button class="dropdown-item">Save</button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
       </div>
 
     </div>
@@ -103,8 +105,9 @@
           <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let photo of p.photoList">
             <figure>
               <div style="float: left">
-                <a style="float: left" class="strip" href="{{photo.linkSrc}}" title="" data-strip-group="mygroup" data-strip-group-options="loop: false">
-                  <img  src="{{photo&&photo.linkSrc}}" alt="" class="img-thumbnail">
+                <a style="float: left" class="strip" href="{{photo.linkSrc}}" title="" data-strip-group="mygroup"
+                   data-strip-group-options="loop: false">
+                  <img src="{{photo&&photo.linkSrc}}" alt="" class="img-thumbnail">
                 </a>
               </div>
             </figure>
@@ -115,15 +118,15 @@
     </div>
     <!--    like and dislike -->
     <div class="card-footer">
-      <div class="row">
+      <div class="row comment-count">
         <div class="col-4" *ngIf="!p.isLiked">
           <a (click)="likePostAction(p.id)" class="likes btn"><i class="black2 fa fa-gittip"></i> Like</a>
         </div>
         <div class="col-4" *ngIf="p.isLiked">
           <a (click)="dislikePostAction(p.id)" class="dislikes btn"><i class="blue2 fa fa-gittip"></i> DisLike</a>
         </div>
-        <div class="col-4" *ngIf="p && p.emoteList && p.emoteList.length!=0">
-          <p style="align-content: center">{{p.emoteList.length}} Likes</p>
+        <div class="col-4">
+          <p *ngIf="p && p.emoteList && p.emoteList.length!=0">{{p.emoteList.length}} Likes</p>
         </div>
         <div class="col-4" *ngIf="p&&p.commentList&&p.commentList.length!==0">
           <p>{{p.commentList.length}} Comment</p>
@@ -133,23 +136,25 @@
     <!--    List comment-->
     <div *ngIf="p&&p.commentList&&p.commentList!.length!=0">
       <div *ngFor="let cm of p.commentList;let cmi = index">
-
         <div class="cardbox-comments">
           <div class="row">
-            <div class="col-2">
-              <div class="d-flex justify-content-between align-items-center">
-                <div (click)="onSelect(cm.user.username!)" class="comment-avatar float-left">
+            <div class="col-2" style="padding-left: 40px;">
+              <div class="row">
+                <div class="align-items-center">
+                <div (click)="onSelect(cm.user.username!)" class="btn comment-avatar">
                   <img width="30" height="30" class="rounded-circle" src="{{cm.user.avatar}}" alt="...">
-                  {{cm.user.username}}
+              </div>
                 </div>
               </div>
-            </div>
+              <div class="row">
+                <p class="btn align-items-center"> {{cm.user.username}}</p>
+              </div>
+              </div>
             <div class="col-8">
               <div class="row">
                 <span class="content-2">{{cm.content}}</span>
               </div>
               <div class="row">
-
                 <div class="col-4 align-items-center" *ngIf="!cm.isLiked">
                   <a (click)="likeCommentAction(cm.id,p.id)" class="likes btn"><i class="black2 fa fa-gittip"></i>
                     Like</a>
@@ -158,8 +163,8 @@
                   <a (click)="dislikeCommentAction(cm.id,p.id)" class="dislikes btn"><i class="blue2 fa fa-gittip"></i>
                     DisLike</a>
                 </div>
-                <div class="col-4 align-items-center float-right" *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">
-                  <small>{{cm.emoteList.length}} <i class="black2 fa fa-gittip"></i></small>
+                <div class="col-4 comment-count" *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">
+                  <small>{{cm.emoteList.length}} <i class="fa fa-gittip"></i></small>
                 </div>
                 <div class="col-4">
 
@@ -197,26 +202,32 @@
       </div>
 
     </div>
+    <!--    Comment Box-->
+    <div class="form-group row ">
+      <div style="padding-left: 50px" id="comment-box" class="col-2" (click)="onSelect(p.user.username!)">
+        <div>
+          <a href="">
+            <img class="rounded-circle" width="40" height="40" src="{{userWhoLogin.avatar}}" alt="...">
+            <div style="text-align: center">
+              <p>{{userWhoLogin.username}}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+        <div class="col-10">
+          <input style="border-radius: 25px; width: inherit; height: 60px;" (input)="onCommentChance($event)" id="inputComment{{p.id}}" placeholder="Write a comment" type="text"
+                 class="form-control" (keydown.enter)="comment(p.id)">
+        </div>
+    </div>
+    <!--    Comment Box END-->
   </div>
 
 
   <!--List comment END-->
-    <!--    //////////////////////-->
+  <!--    //////////////////////-->
 
-    <!--    Comment Box-->
-    <div class="form-group row">
-			  <span class="col-sm-2 col-form-label col-form-label-sm">
-			   <a href="">
-           <img class="rounded-circle" width="45" height="45" src="{{userWhoLogin.avatar}}" alt="...">
-         <small>{{userWhoLogin.username}}</small>
-         </a>
-			  </span>
-      <div class="col-sm-10">
-        <input (input)="onCommentChance($event)" id="inputComment{{p.id}}" placeholder="Write a comment" type="text" class="form-control form-control-sm" (keydown.enter)="comment(p.id)" >
-      </div>
-    </div>
-    <!--    Comment Box END-->
-  </div>
+
+</div>
 
 <!--modal edit post-->
 <div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -249,7 +260,8 @@
             </div>
             <div class="formGroup">
               <div>
-                <input type="text" class="form-control" placeholder="Image source Link" [(ngModel)]="imgSrc" name="imgSrc">
+                <input type="text" class="form-control" placeholder="Image source Link" [(ngModel)]="imgSrc"
+                       name="imgSrc">
               </div>
               <button class="btn info" (click)="saveEditPhoto()">Add Image</button>
             </div>
