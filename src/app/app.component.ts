@@ -11,5 +11,6 @@ export class AppComponent implements OnInit{
   title = 'FE-social-networt-MazkZTeam';
 
   ngOnInit(): void {
+
   }
 }

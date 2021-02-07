@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {LoginComponent} from "./login/login.component";
 import {LayoutComponent} from "./layout/layout.component";
 import {NewfeedsComponent} from "./layout/newfeeds/newfeeds.component";
-import {FriendComponent} from "./layout/friend/friend.component";
+import {FriendComponent} from "./friend/friend.component";
 import {PersonalpageComponent} from "./layout/personalpage/personalpage.component";
 
 export const routes: Routes = [
@@ -20,6 +20,10 @@ export const routes: Routes = [
     },
   },
   {
+    path: 'friend',
+    component: FriendComponent
+  },
+  {
     path: 'index',
     component: LayoutComponent,
     data: {
@@ -29,10 +33,6 @@ export const routes: Routes = [
       {
         path: 'newfeeds',
         component: NewfeedsComponent ,
-      },
-      {
-        path: 'friends',
-        component: FriendComponent,
       },
       {
         path: 'personal/:username',
