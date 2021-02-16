@@ -31,9 +31,13 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.authService.login(new LoginInfor(this.form.username, this.form.password))
       .pipe(first()).subscribe(data => {
-        console.log(data);
-        this.isLoginFailed = false;
-        this.router.navigateByUrl("/admin");
+        if (this.form.username == "admin"){
+          this.isLoginFailed = false;
+          this.router.navigateByUrl("/admin");
+        }else {
+          this.isLoginFailed = false;
+          this.router.navigateByUrl("/index/newfeeds");
+        }
       },
       error => {
         if (error.status == "401") {
@@ -46,6 +50,7 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = true;
       }
     )
+    // this.router.navigateByUrl("/index/newfeeds");
   }
 
   openModal(): void {
