@@ -420,4 +420,11 @@ export class NewfeedsComponent implements OnInit {
   deletePhotoNewPost(i: any) {
     this.newPost.photoList?.splice(i, 1);
   }
+
+  isULoginEqualUOwnthisPost(username : any) : boolean {
+    if (username == this.userWhoLogin.username){
+      return true;
+    }
+    return false;
+  }
 }

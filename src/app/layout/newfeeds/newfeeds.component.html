@@ -182,7 +182,7 @@
               <div class="float-right">
 
                 <div class="dropdown float-right"
-                     *ngIf="isULoginEqualUOwnthisComment(cm.user.username)">
+                     *ngIf="isULoginEqualUOwnthisComment(cm.user.username) || isULoginEqualUOwnthisPost(p.user.username)">
                   <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop2" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-ellipsis-h"></i>
