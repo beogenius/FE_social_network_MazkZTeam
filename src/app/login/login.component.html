@@ -1,4 +1,3 @@
-
 <form name="form" class="modal-content" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
   <div class="container">
     <div class="form-group">
@@ -7,7 +6,8 @@
 
     <div class="form-group">
       <label for="username">Username</label>
-      <input type="text" class="form-control" name="username" id="username" [(ngModel)]="form.username" #username="ngModel" required="required">
+      <input type="text" class="form-control" name="username" id="username" [(ngModel)]="form.username"
+             #username="ngModel" required="required">
     </div>
     <div *ngIf="f.submitted && username.invalid">
       <div *ngIf="username.errors?.required" class="text-danger">Username is required</div>
@@ -15,7 +15,8 @@
 
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" class="form-control" name="password" id="password" [(ngModel)]="form.password" #password ="ngModel" required="required" minlength="6">
+      <input type="password" class="form-control" name="password" id="password" [(ngModel)]="form.password"
+             #password="ngModel" required="required" minlength="6">
     </div>
     <div *ngIf="f.submitted && password.invalid">
       <div *ngIf="password.errors?.required" class="text-danger">Password is required</div>
@@ -42,8 +43,8 @@
         </button>
       </div>
       <div class="modal-body">
-          <p>Tài Khoản của bạn đã bị khóa, vui lòng liên hệ với admin hoặc tổng đài:
-            <span><a href="#">19001009</a></span> để biết thêm chi tiết</p>
+        <p>Tài Khoản của bạn đã bị khóa, vui lòng liên hệ với admin hoặc tổng đài:
+          <span><a href="#">19001009</a></span> để biết thêm chi tiết</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

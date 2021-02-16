@@ -12,7 +12,8 @@
            routerLink="/index/personal/{{username}}">Personal Page</a>
         <a class="list-group-item list-group-item-action" id="list-friend-list" data-toggle="list" routerLink="/friend">Friend</a>
 
-        <a class="list-group-item list-group-item-action" id="settings" data-toggle="list" href="#list-settings">Settings</a>
+        <a class="list-group-item list-group-item-action" id="settings" data-toggle="list" href="#">Settings</a>
+        <a class="list-group-item list-group-item-action" id="logout" data-toggle="list" routerLink="/login" >Logout</a>
       </div>
     </div>
     <!--  END  LEFT SIDEBAR-->
@@ -25,25 +26,29 @@
 
     <!--    right sidebar-->
     <div class="col-md-3">
-      <div class="card gedf-card">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-            card's content.</p>
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
+      <div class="card">
+        <div class="card-header" id="card-headmk" >
+          <span ><i class="fas fa-users"></i></span> Friends
         </div>
-      </div>
-      <div class="card gedf-card">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-            card's content.</p>
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
-        </div>
+        <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let n of friends">
+          <li class="list-group-item">
+            <div class="row">
+              <div (click)="goToPersonal(n.username)">
+          <span><img src="{{n.avatar}}" alt="" class="img-thumbnail"
+                     style="width: 70px;height: 70px;border-radius: 50%;"></span>
+              </div>
+              <div class="ml-2">
+                <span (click)="goToPersonal(n.username)" style="font-size: large;font-weight: bold"> {{n.first_name }} {{n.last_name}}</span>
+                <div>
+                  <small class="inforFriend">{{n.address}}</small>
+                </div>
+                <div>
+                  <small class="inforFriend">{{n.date_of_birth | date:'dd/MM/yyyy'}}</small>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
     <!--  END  right sidebar-->
