@@ -54,10 +54,6 @@ const routes: Routes = [
             path: 'create',
             component: CreateComponent
           },
-          // {
-          //   path: 'detail/:id',
-          //   component:
-          // },
           {
             path: '',
             redirectTo: '/admin/user/list',
@@ -87,7 +83,14 @@ const routes: Routes = [
         component: PersonalpageComponent,
       }
     ]
-  },
+  }
+  // {
+  //   path: 'socket',
+  //   component: SocketComponent,
+  //   data: {
+  //     title: 'socket'
+  //   }
+  // }
 ];
 
 @NgModule({

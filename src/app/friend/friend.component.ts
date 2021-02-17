@@ -105,7 +105,7 @@ export class FriendComponent implements OnInit {
   addFriend(username: any ,idSender: any, idReceiver: any) {
     this.friendShipService.addFriend(username,idSender, idReceiver).subscribe(data => {
       this.reloaddata();
-      console.log(data.data);
+      // console.log(data.data);
     });
   }
 

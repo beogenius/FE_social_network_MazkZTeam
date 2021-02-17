@@ -34,6 +34,8 @@ import {FriendComponent} from './friend/friend.component';
 import { PersonalpageComponent } from './layout/personalpage/personalpage.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import {PersonalPageService} from './services/personal-page.service';
+import {ChatMessageService} from "./services/chat-message.service";
+import {ChatRoomService} from "./services/chat-room.service";
 
 
 @NgModule({
@@ -89,7 +91,9 @@ import {PersonalPageService} from './services/personal-page.service';
       useClass: JwtInterceptor,
       multi: true
     },
-    PersonalPageService
+    PersonalPageService,
+    ChatMessageService,
+    ChatRoomService
   ],
   bootstrap: [AppComponent]
 })
