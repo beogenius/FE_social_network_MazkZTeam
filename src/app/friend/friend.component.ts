@@ -38,6 +38,7 @@ export class FriendComponent implements OnInit {
     this.receiverFriend = receiverFriendRes.data;
     let friendNotRequest = await this.getFriendListNotRequest(this.username);
     this.friendNotRequestList = friendNotRequest.data;
+    this.friendNotRequestList.shift();
     let senderList = await this.getSenderFriendList(this.username);
     this.senderFriendList = senderList.data;
 
