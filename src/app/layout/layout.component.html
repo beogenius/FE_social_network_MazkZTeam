@@ -54,12 +54,12 @@
     <div class="collapse multi-collapse" id="chatForm">
       <div class="content">
         <div class="chat">
-          <div class="chat-header clearfix">
-            <img alt="avatar" height="55px"
-                 src="https://khoahoc.tv/photos/image/2014/01/02/bong-bong.jpg"
+          <div class="chat-header clearfix" *ngIf="friend">
+            <img class="img-thumbnail" alt="avatar" height="55px"
+                 src="{{friend.avatar}}"
                  width="55px"/>
             <div class="chat-about">
-              <div class="chat-with" id="selectedUserId" *ngIf="friend">
+              <div class="chat-with" id="selectedUserId">
                 {{friend.username}}
                 <button type="button" id="closeChat" class="btn btn-danger" (click)="closeChat()">X</button>
               </div>
@@ -103,26 +103,13 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
-
-
-
           </div> <!-- end chat-history -->
-
           <div class="chat-message clearfix">
-            <textarea id="message-to-send" name="message-to-send" placeholder="Type your message" rows="3"
-                      [(ngModel)]="input"></textarea>
-
-            <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
-            <i class="fa fa-file-image-o"></i>
-
-            <button id="sendBtn" class="btn btn-success" (click)="sendMessage()">Send</button>
-
+            <input id="message-to-send" name="message-to-send" placeholder="Type your message" [(ngModel)]="input" (keydown.enter)= "sendMessage()">
           </div> <!-- end chat-message -->
-
         </div> <!-- end chat -->
       </div>
     </div>

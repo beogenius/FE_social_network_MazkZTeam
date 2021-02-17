@@ -90,14 +90,14 @@ export class LayoutComponent implements OnInit {
         console.log(data);
         this.disconnectSocket();
         this.initializeWebSocketConnection(this.chatroom.name);
+        $("#chat-history").scrollTop($('#chat-history')[0].scrollHeight);
+        $('#chatForm').collapse('show');
       }, error => {
         console.log(error);
       });
     }, error => {
       console.log(error);
     });
-    $('#chatForm').collapse('show');
-    $("#chat-history").animate({ scrollTop: $('#chat-history').prop("scrollHeight")}, 500);
   }
 
   closeChat() {
@@ -141,6 +141,7 @@ export class LayoutComponent implements OnInit {
         if (data) {
           // @ts-ignore
           that.chatMessages.push(data);
+          $("#chat-history").scrollTop($('#chat-history')[0].scrollHeight);
         }
       });
     });

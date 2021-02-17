@@ -28,7 +28,9 @@ body {
 
 .chat {
   width: 490px;
-  background: #F2F5F8;
+  background: linear-gradient(
+    194deg
+    , #b54a3f, rgb(0 0 0));
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   color: #434651;
@@ -50,6 +52,14 @@ body {
   float: left;
   padding-left: 10px;
   margin-top: 6px;
+}
+
+.chat-about {
+  padding-top: 12px;
+  font-size: large;
+  font-family: sans-serif;
+  color: aqua;
+  text-transform: capitalize;
 }
 
 .chat .chat-header .chat-with {
@@ -210,6 +220,11 @@ ul {
 }
 #message-to-send{
   border-radius: 20px;
+  width: 100%;
+  font-size: larger;
+  height: 50px;
+  outline: none;
+  border-color: cornflowerblue;
 }
 #closeChat{
   position: absolute;
@@ -249,7 +264,9 @@ ul {
   bottom: 0;
   right: 0;
   padding: 0;
-  background-color: lavender;
+  background: linear-gradient(
+    45deg
+    , #4d28a7bf, transparent);
   box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15),0 0 0 6px rgba(0, 0, 0, 0.1);
 }
 .friend-detail {
