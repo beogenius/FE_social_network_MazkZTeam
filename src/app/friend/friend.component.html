@@ -3,7 +3,7 @@
   <a routerLink="/index"  class="navbar-brand">Bootsbook</a>
   <form class="form-inline">
     <div class="input-group">
-      <input type="text" class="form-control border-dark " aria-label="Recipient's username" aria-describedby="button-addon2">
+      <input type="text" class="form-control border-dark " aria-label="Recipient's username" aria-describedby="button-addon2" [(ngModel)]="filter">
       <div class="input-group-append">
         <button class="btn btn-outline-light" type="button" id="button-addon2">
           <i class="fa fa-search"></i>
@@ -51,7 +51,7 @@
         <div class="card-header" id="card-headmk" >
           <span ><i class="fas fa-users"></i></span> Friend You May Know
         </div>
-        <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let n of friendNotRequestList">
+        <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let n of friendNotRequestList | filter:filter">
           <li class="list-group-item">
             <div class="row">
               <div (click)="goToPersonal(n.username)">

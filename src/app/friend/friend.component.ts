@@ -17,6 +17,7 @@ export class FriendComponent implements OnInit {
   friendNotRequestList: Friend[] = [];
   senderFriendList: Friend[] = [];
   showMore = false;
+  filter: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
