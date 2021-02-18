@@ -90,8 +90,11 @@ export class LayoutComponent implements OnInit {
         console.log(data);
         this.disconnectSocket();
         this.initializeWebSocketConnection(this.chatroom.name);
-        $("#chat-history").scrollTop($('#chat-history')[0].scrollHeight);
-        $('#chatForm').collapse('show');
+        $(function (){
+          const chatHistory = $('#chat-history')[0];
+          $('#chatForm').collapse('show');
+          $("#chat-history").scrollTop(chatHistory.scrollHeight);
+        })
       }, error => {
         console.log(error);
       });
@@ -141,7 +144,10 @@ export class LayoutComponent implements OnInit {
         if (data) {
           // @ts-ignore
           that.chatMessages.push(data);
-          $("#chat-history").scrollTop($('#chat-history')[0].scrollHeight);
+          $(function (){
+            const chatHistory = $('#chat-history')[0];
+            $("#chat-history").scrollTop(chatHistory.scrollHeight);
+          })
         }
       });
     });
