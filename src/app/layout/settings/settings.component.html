@@ -1,0 +1,78 @@
+
+
+  <h1 class="text-capitalize text-primary">update your info</h1>
+  <div class="d-block m-auto">
+    <form name="form" class="form-group" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+
+      <div class="form-group">
+        <label for="username">Username  </label>
+        <input type="text" class="form-control" name="username" id="username" [(ngModel)]="user.username" #username="ngModel">
+      </div>
+
+
+      <div class="form-group">
+        <label for="firstName">First-name  </label>
+        <input type="text" class="form-control" name="firstName" id="firstName" [(ngModel)]="user.firstName" #firstName="ngModel">
+      </div>
+
+
+      <div class="form-group">
+        <label for="lastName">Last-name  </label>
+        <input type="text" class="form-control" name="lastName" id="lastName" [(ngModel)]="user.lastName" #lastName="ngModel">
+      </div>
+
+
+      <div class="form-group">
+        <label for="email">Email   </label>
+        <input type="text" class="form-control" name="email" id="email" [(ngModel)]="user.email" #email ="ngModel" email="email">
+      </div>
+      <div *ngIf="f.submitted && email.invalid">
+        <div *ngIf="email.errors?.email" class="text-danger">Email must be a valid Email</div>
+      </div>
+      <div class="form-group ">
+        <label for="avatar">Avatar</label>
+        <img *ngIf="imgControl" width="100" height="100" src="{{user.avatar}}" alt="" class="img-thumbnail">
+        <span class="close" aria-hidden="true" (click)="deleteAvatar()">&times;</span>
+        <input type="text" class="form-control" name="avatar" id="avatar" [(ngModel)]="user.avatar" #avatar ="ngModel" (change)="showImg()">
+      </div>
+      <div>
+        Gender:
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" name="male" id="male" [(ngModel)]="user.gender" value="Male" #gender ="ngModel">
+          <label class="form-check-label" for="male">Male</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" name="female" id="female" [(ngModel)]="user.gender" value="Female" #gender ="ngModel">
+          <label class="form-check-label" for="female">Female</label>
+        </div>
+      </div>
+      <br>
+      <div class="form-group ">
+        <label for="address">Address</label>
+        <input type="text" class="form-control" name="address" id="address" [(ngModel)]="user.address" #address ="ngModel">
+      </div>
+      <div class="form-group ">
+        <label for="phone">Phone Number</label>
+        <input type="text" class="form-control" name="phone" id="phone" [(ngModel)]="user.phone" #phone ="ngModel">
+      </div>
+      <div class="form-group ">
+        <label for="detail">Detail</label>
+        <textarea type="text" class="form-control" name="detail" id="detail" [(ngModel)]="user.detail" #detail ="ngModel" cols="20" rows="5"></textarea>
+      </div>
+      <div class="form-group ">
+        <label for="dateOfBirth">Date of birth</label>
+        <input type="text" bsDatepicker autocomplete="OFF" class="form-control" name="dateOfBirth" id="dateOfBirth" [(ngModel)]="user.dateOfBirth" #dob ="ngModel">
+      </div>
+
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-success">Update</button>
+        <button type="button" class="btn btn-warning">Cancel</button>
+      </div>
+    </form>
+
+  </div>
+
+
+
+

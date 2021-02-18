@@ -36,6 +36,8 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 import {PersonalPageService} from './services/personal-page.service';
 import {ChatMessageService} from "./services/chat-message.service";
 import {ChatRoomService} from "./services/chat-room.service";
+import { SettingsComponent } from './layout/settings/settings.component';
+import {SettingsService} from './services/settings.service';
 
 
 @NgModule({
@@ -52,7 +54,8 @@ import {ChatRoomService} from "./services/chat-room.service";
         PersonalpageComponent,
         FriendComponent,
         NavbarComponent,
-        NewfeedsComponent
+        NewfeedsComponent,
+        SettingsComponent
     ],
   imports: [
     BrowserModule,
@@ -93,7 +96,9 @@ import {ChatRoomService} from "./services/chat-room.service";
     },
     PersonalPageService,
     ChatMessageService,
-    ChatRoomService
+    ChatRoomService,
+    PersonalPageService,
+    SettingsService
   ],
   bootstrap: [AppComponent]
 })
