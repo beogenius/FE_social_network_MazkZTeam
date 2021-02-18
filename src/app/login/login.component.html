@@ -1,36 +1,197 @@
-<form name="form" class="modal-content" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-  <div class="container">
-    <div class="form-group">
-      <h1 class="text-primary m-auto">Sign-in</h1>
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header">
+  <div class="container-fluid">
+
+    <div class="logo float-left">
+      <h1 class="text-light"><a href="index.html"><span>MarkZ
+        </span></a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
     </div>
 
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" name="username" id="username" [(ngModel)]="form.username"
-             #username="ngModel" required="required">
-    </div>
-    <div *ngIf="f.submitted && username.invalid">
-      <div *ngIf="username.errors?.required" class="text-danger">Username is required</div>
-    </div>
-
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" name="password" id="password" [(ngModel)]="form.password"
-             #password="ngModel" required="required" minlength="6">
-    </div>
-    <div *ngIf="f.submitted && password.invalid">
-      <div *ngIf="password.errors?.required" class="text-danger">Password is required</div>
-      <div *ngIf="password.errors?.minlength" class="text-danger">Password at least 6 characters</div>
-    </div>
-    <div class="form-group">
-      <button type="submit" class="btn btn-success">Sign in</button>
-      <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger" style="max-width: 300px">
-        {{errorMessage}}
-      </div>
-    </div>
-    <a routerLink="/register">Sign Up</a>
   </div>
-</form>
+</header><!-- End #header -->
+
+<!-- ======= Hero Section ======= -->
+<section id="hero">
+  <div class="hero-container">
+    <h1>Welcome to MarkZ</h1>
+    <h2>Please login with form below to Join the best Social Network in the World !</h2>
+    <form name="form" class="php-email-form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+
+      <div class="row no-gutters">
+        <div class="col-md-6 form-group pr-md-1">
+          <input type="text" class="form-control" name="username" id="username" placeholder="Your Username"
+                 [(ngModel)]="form.username"
+                 #username="ngModel" required="required">
+          <div *ngIf="f.submitted && username.invalid">
+            <div *ngIf="username.errors?.required" class="text-danger">Username is required</div>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-6 form-group pl-md-1">
+          <input type="password" class="form-control" name="password" id="password" placeholder="Your Password"
+                 [(ngModel)]="form.password"
+                 #password="ngModel" required="required" minlength="6">
+          <div *ngIf="f.submitted && password.invalid">
+            <div *ngIf="password.errors?.required" class="text-danger">Password is required</div>
+            <div *ngIf="password.errors?.minlength" class="text-danger">Password at least 6 characters</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-success text-center ">Sign in</button>
+        <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger" style="max-width: 300px">
+          {{errorMessage}}
+        </div>
+      </div>
+      <a class="btn btn-info text-center" style="border-radius: 26px" routerLink="/register">Sign Up / Register</a>
+
+    </form>
+  </div>
+
+</section><!-- #hero -->
+
+<main id="main">
+
+  <!-- ======= About Section ======= -->
+  <section id="about" class="about">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-lg-6">
+          <img src="assets/img/about-img.jpg" class="img-fluid" alt="">
+        </div>
+        <div class="col-lg-6 pt-4 pt-lg-0">
+          <h3>MarkZ's mission and Why we created MarkZ </h3>
+          <p class="font-italic">
+            Social Network like Facebook, MarkZ, Instagram etc are the fastest and the most convenient ways to be
+            connected to our loved ones no matter how far they are from us.
+          </p>
+          <ul>
+            <li><i class="bx bx-check-double"></i> Product Owner: Mai Cong Son</li>
+            <li><i class="bx bx-check-double"></i> Scrum Master : Thai Thi Duyen</li>
+            <li><i class="bx bx-check-double"></i> Founder and Developer: Hieu, Hai, Dung, Viet Anh</li>
+
+          </ul>
+
+        </div>
+      </div>
+
+    </div>
+  </section><!-- End About Section -->
+
+  <!-- ======= Why Us Section ======= -->
+  <section id="why-us" class="why-us section-bg">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="card">
+            <img src="assets/img/why-us-1.jpg" class="card-img-top" alt="...">
+            <div class="card-icon">
+              <i class="bx bx-book-reader"></i>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"><a href="">Our Mission</a></h5>
+              <p class="card-text"> JWT, Realtime Chat With websocket, Upload image 3rd party Firebase Angular, Share
+                status, image , Like, Comment, Add friend, </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="card">
+            <img src="assets/img/why-us-2.jpg" class="card-img-top" alt="...">
+            <div class="card-icon">
+              <i class="bx bx-calendar-edit"></i>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"><a href="">Our Plan</a></h5>
+              <p class="card-text">Bring people together. </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="card">
+            <img src="assets/img/why-us-3.jpg" class="card-img-top" alt="...">
+            <div class="card-icon">
+              <i class="bx bx-landscape"></i>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"><a href="">Our Vision</a></h5>
+              <p class="card-text">Woring for Facebook and Google </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- End Why Us Section -->
+
+
+  <!-- ======= Contact Us Section ======= -->
+  <section id="contact" class="contact section-bg">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Contact Us</h2>
+      </div>
+
+      <div class="row justify-content-center">
+
+        <div class="col-lg-3 col-md-5 mb-5 mb-md-0">
+          <div class="info">
+            <div class="address">
+              <i class="bx bx-map"></i>
+              <p>CODEGYM MON CITY<br>Khu đô thị Mon City, đường Hàm Nghi, Nam Từ Liêm, Hà Nội</p>
+            </div>
+
+            <div class="email">
+              <i class="bx bx-envelope"></i>
+              <p>bacsihai@gmail.com</p>
+            </div>
+
+            <div class="phone">
+              <i class="bx bx-phone-call"></i>
+              <p>+090 6868 6688</p>
+            </div>
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </div>
+  </section><!-- End Contact Us Section -->
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer">
+  <div class="container">
+    <div class="copyright">
+      &copy; Copyright <strong><span>MarkZ</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/free-bootstrap-landing-page/ -->
+      Designed by <a href="https://bootstrapmade.com/">BacSiHai</a>
+    </div>
+  </div>
+</footer><!-- End #footer -->
+
+
+</body>
+
 
 <!-- Modal -->
 <div class="modal fade" id="blockNoti" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
@@ -43,8 +204,9 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Tài Khoản của bạn đã bị khóa, vui lòng liên hệ với admin hoặc tổng đài:
-          <span><a href="#">19001009</a></span> để biết thêm chi tiết</p>
+        <p>Your account has been Blocked, Please contact to Admin with information below !
+          <br>
+          <span><a href="#">090 999 9999</a></span> Ha noi, Viet Nam</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
