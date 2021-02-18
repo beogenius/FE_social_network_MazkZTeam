@@ -39,6 +39,7 @@ export class FriendComponent implements OnInit {
     this.receiverFriend = receiverFriendRes.data;
     let friendNotRequest = await this.getFriendListNotRequest(this.username);
     this.friendNotRequestList = friendNotRequest.data;
+    this.friendNotRequestList.shift();
     let senderList = await this.getSenderFriendList(this.username);
     this.senderFriendList = senderList.data;
 
@@ -106,7 +107,7 @@ export class FriendComponent implements OnInit {
   addFriend(username: any ,idSender: any, idReceiver: any) {
     this.friendShipService.addFriend(username,idSender, idReceiver).subscribe(data => {
       this.reloaddata();
-      console.log(data.data);
+      // console.log(data.data);
     });
   }
 

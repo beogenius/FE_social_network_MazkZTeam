@@ -2,51 +2,115 @@
 
 <div class="container-fluid gedf-wrapper">
   <div class="row">
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="h5">@LeeCross</div>
-          <div class="h7 text-muted">Fullname : Miracles Lee Cross</div>
-          <div class="h7">Developer of web applications, JavaScript, PHP, Java, Python, Ruby, Java, Node.js,
-            etc.
-          </div>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <div class="h6 text-muted">Followers</div>
-            <div class="h5">5.2342</div>
-          </li>
-          <li class="list-group-item">
-            <div class="h6 text-muted">Following</div>
-            <div class="h5">6758</div>
-          </li>
-          <li class="list-group-item">Vestibulum at eros</li>
-        </ul>
+
+    <!--    LEFT SIDEBAR-->
+    <div class="col-md-3 left-sidebar">
+      <div class="list-group" id="list-tab" role="tablist">
+        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
+           routerLink="/index/newfeeds">Home</a>
+        <a class="list-group-item list-group-item-action" id="personal-page" data-toggle="list"
+           routerLink="/index/personal/{{username}}">Personal Page</a>
+        <a class="list-group-item list-group-item-action" id="list-friend-list" data-toggle="list" routerLink="/friend">Friend</a>
+
+        <a class="list-group-item list-group-item-action" id="settings" data-toggle="list" href="#">Settings</a>
+        <a class="list-group-item list-group-item-action" id="logout" data-toggle="list" routerLink="/login" >Logout</a>
       </div>
     </div>
-    <div class="col-md-6 gedf-main">
+    <!--  END  LEFT SIDEBAR-->
+
+    <!--    CENTER-->
+    <div class="col-md-6 gedf-main status-content">
       <router-outlet></router-outlet>
     </div>
-    <div class="col-md-3">
-      <div class="card gedf-card">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-            card's content.</p>
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
+    <!--  END  CENTER-->
+
+    <!--    right sidebar-->
+    <div class="col-md-3 friend-list">
+      <ul style="padding: 5px; margin-bottom: 5px">
+        <li id="card-headmk">
+          <span><i class="fas fa-users"></i></span> Friends
+        </li>
+      </ul>
+      <div class="friend-detail" *ngFor="let n of friends">
+        <div class="row">
+          <div>
+            <span><img src="{{n.avatar}}" alt="" class="img-thumbnail" id="avatar-friend"
+               (click)="goToPersonal(n.username)"></span>
+          </div>
+          <div class="ml-2 mt-2">
+            <span (click)="getUserChatTo(n)" id="friend-name"> {{n.username }}</span>
+          </div>
         </div>
       </div>
-      <div class="card gedf-card">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-            card's content.</p>
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
-        </div>
+    </div>
+    <!--  END  right sidebar-->
+
+  </div>
+</div>
+
+<!--chat form-->
+<div class="row">
+  <div class="col">
+    <div class="collapse multi-collapse" id="chatForm">
+      <div class="content">
+        <div class="chat">
+          <div class="chat-header clearfix" *ngIf="friend">
+            <img class="img-thumbnail" alt="avatar" height="55px"
+                 src="{{friend.avatar}}"
+                 width="55px"/>
+            <div class="chat-about">
+              <div class="chat-with" id="selectedUserId">
+                {{friend.username}}
+                <button type="button" id="closeChat" class="btn btn-danger" (click)="closeChat()">X</button>
+              </div>
+            </div>
+            <i class="fa fa-star"></i>
+          </div> <!-- end chat-header -->
+
+          <div class="chat-history" id="chat-history">
+            <div *ngIf="chatMessages">
+              <div *ngFor="let message of chatMessages">
+                <div *ngIf="message.user_sender_id == user.id">
+                  <div class="clearfix">
+                    <div class="chat-message-me-frame clearfix p-2">
+                      <div class="d-flex flex-row">
+                        <a href="#">
+                          <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">
+                        </a>
+                        <div class="d-flex flex-column justify-content-start ml-2" *ngIf="message">
+                          <a href="#">
+                            <span class="d-block font-weight-bold name">{{message.sender.username}}</span>
+                          </a>
+                          <span class="date text-black-50 createPost">{{message.content}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="message.user_receiver_id == user.id">
+                  <div class="clearfix">
+                    <div class="chat-message-friend-frame  p-2">
+                      <div class="d-flex flex-row">
+                        <a href="#">
+                          <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">
+                        </a>
+                        <div class="d-flex flex-column justify-content-start ml-2" *ngIf="message">
+                          <a href="#" >
+                            <span class="d-block font-weight-bold name">{{message.sender.username}}</span>
+                          </a>
+                          <span class="date text-black-50 createPost">{{message.content}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end chat-history -->
+          <div class="chat-message clearfix">
+            <input id="message-to-send" name="message-to-send" placeholder="Type your message" [(ngModel)]="input" (keydown.enter)= "sendMessage()">
+          </div> <!-- end chat-message -->
+        </div> <!-- end chat -->
       </div>
     </div>
   </div>

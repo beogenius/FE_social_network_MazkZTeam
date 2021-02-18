@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnChanges, Input} from '@angular/core';
 import {PersonalPageService} from '../../services/personal-page.service';
 import {Post} from '../../model/dung/post';
 import {User} from '../../model/dung/user';
@@ -17,6 +17,7 @@ import {Router, ActivatedRoute} from '@angular/router';
   styleUrls: ['./personalpage.component.css']
 })
 export class PersonalpageComponent implements OnInit {
+
 
   imgSrc = '';
 
@@ -77,38 +78,60 @@ export class PersonalpageComponent implements OnInit {
   constructor(public sv: PersonalPageService, private router: Router, private aRouter: ActivatedRoute) {
   }
 
+
+
   ngOnInit(): void {
 
-    // @ts-ignore
-    this.userWhoOwnThisPage.username = this.aRouter.snapshot.paramMap.get('username');
+    // // @ts-ignore
+    // this.userWhoOwnThisPage.username = this.aRouter.snapshot.paramMap.get('username');
 
-    this.sv.getUser(this.userWhoOwnThisPage.username!).subscribe(res => {
-      this.userWhoOwnThisPage = res;
+    this.aRouter.paramMap.subscribe(param =>{
+      console.log(param);
+      this.userWhoOwnThisPage.username = param.get('username')!;
+      this.reloaddata();
     });
 
-    // @ts-ignore
-    this.userWhoLogin.username = sessionStorage.getItem('AuthUsername');
 
-    console.log(this.userWhoLogin.username);
-
-    this.sv.getUser(this.userWhoLogin.username!).subscribe(res => {
-      this.userWhoLogin = res;
-    });
-
-    if (this.userWhoLogin.username == this.userWhoOwnThisPage.username) {
-      this.isULoginEqualUOwn = true;
-    }
-
-    this.sv.getListPost(this.userWhoOwnThisPage.username!).subscribe(res => {
-      this.postList = res;
-      for (let i = 0; i < this.postList.length; i++) {
-        this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
-        for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-          this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
-        }
-      }
-    });
   }
+
+
+reloaddata() {
+  this.sv.getUser(this.userWhoOwnThisPage.username!).subscribe(res => {
+    this.userWhoOwnThisPage = res;
+  });
+
+  // @ts-ignore
+  this.userWhoLogin.username = sessionStorage.getItem('AuthUsername');
+
+  console.log(this.userWhoLogin.username);
+
+  this.sv.getUser(this.userWhoLogin.username!).subscribe(res => {
+    this.userWhoLogin = res;
+  });
+
+  if (this.userWhoLogin.username == this.userWhoOwnThisPage.username) {
+    this.isULoginEqualUOwn = true;
+  }
+  else {
+    this.isULoginEqualUOwn = false;
+  }
+
+  this.sv.getListPost(this.userWhoOwnThisPage.username!).subscribe(res => {
+    this.postList = res;
+    for (let i = 0; i < this.postList.length; i++) {
+      this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+      for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+        this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+      }
+    }
+  });
+}
+
+
+
+
+
+
 
   //Post
   createPost() {

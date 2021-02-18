@@ -70,8 +70,11 @@
               <div class="h7 text-muted">{{p.user.username}}</div>
             </div>
           </div>
-          <div>
-            <div class="dropdown">
+
+        </div>
+        <div>
+          <div class="float-right">
+            <div class="dropdown float-right">
               <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown"
                       aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-ellipsis-h"></i>
@@ -93,7 +96,10 @@
         </div>
       </div>
 
+
     </div>
+
+
     <div class="card-body">
       <div class="text-muted h7 mb-2"><i class="fa fa-clock-o"></i>{{p.createdDate}}</div>
 
@@ -141,15 +147,15 @@
             <div class="col-2" style="padding-left: 40px;">
               <div class="row">
                 <div class="align-items-center">
-                <div (click)="onSelect(cm.user.username!)" class="btn comment-avatar">
-                  <img width="30" height="30" class="rounded-circle" src="{{cm.user.avatar}}" alt="...">
-              </div>
+                  <div (click)="onSelect(cm.user.username!)" class="btn comment-avatar">
+                    <img width="30" height="30" class="rounded-circle" src="{{cm.user.avatar}}" alt="...">
+                  </div>
                 </div>
               </div>
               <div class="row">
                 <p class="btn align-items-center"> {{cm.user.username}}</p>
               </div>
-              </div>
+            </div>
             <div class="col-8">
               <div class="row">
                 <span class="content-2">{{cm.content}}</span>
@@ -176,7 +182,7 @@
               <div class="float-right">
 
                 <div class="dropdown float-right"
-                     *ngIf="isULoginEqualUOwnthisComment(cm.user.username)">
+                     *ngIf="isULoginEqualUOwnthisComment(cm.user.username) || isULoginEqualUOwnthisPost(p.user.username)">
                   <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop2" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-ellipsis-h"></i>
@@ -214,10 +220,11 @@
           </a>
         </div>
       </div>
-        <div class="col-10">
-          <input style="border-radius: 25px; width: inherit; height: 60px;" (input)="onCommentChance($event)" id="inputComment{{p.id}}" placeholder="Write a comment" type="text"
-                 class="form-control" (keydown.enter)="comment(p.id)">
-        </div>
+      <div class="col-10">
+        <input style="border-radius: 25px; width: inherit; height: 60px;" (input)="onCommentChance($event)"
+               id="inputComment{{p.id}}" placeholder="Write a comment" type="text"
+               class="form-control" (keydown.enter)="comment(p.id)">
+      </div>
     </div>
     <!--    Comment Box END-->
   </div>

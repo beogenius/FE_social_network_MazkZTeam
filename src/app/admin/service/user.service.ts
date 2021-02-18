@@ -20,6 +20,9 @@ export class UserService {
   getUser(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`)
   }
+  getUserByUsername(username: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/a/${username}`)
+  }
   createUser(user: User): Observable<any> {
     // const token = this.token.getToken();
     // let headers = new HttpHeaders();

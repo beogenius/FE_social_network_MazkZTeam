@@ -30,12 +30,18 @@
 
 }
 
-#content{
+/*.content{*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*  background-color: #a7fffe;*/
+/*  background-image: linear-gradient(302deg, #a7fffe 0%, #ffffc6 50%, #b7fbff 100%);*/
+/*}*/
+
+:host {
   background-color: #a7fffe;
   background-image: linear-gradient(302deg, #a7fffe 0%, #ffffc6 50%, #b7fbff 100%);
-
-
 }
+
 
 
 

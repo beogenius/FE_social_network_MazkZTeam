@@ -8,7 +8,7 @@ declare var $: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'FE-social-networt-MazkZTeam';
+  title = 'MarkZ';
 
   ngOnInit(): void {
 
