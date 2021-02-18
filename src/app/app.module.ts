@@ -34,6 +34,8 @@ import {FriendComponent} from './friend/friend.component';
 import { PersonalpageComponent } from './layout/personalpage/personalpage.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import {PersonalPageService} from './services/personal-page.service';
+import { SettingsComponent } from './layout/settings/settings.component';
+import {SettingsService} from './services/settings.service';
 
 
 @NgModule({
@@ -50,7 +52,8 @@ import {PersonalPageService} from './services/personal-page.service';
         PersonalpageComponent,
         FriendComponent,
         NavbarComponent,
-        NewfeedsComponent
+        NewfeedsComponent,
+        SettingsComponent
     ],
   imports: [
     BrowserModule,
@@ -89,7 +92,8 @@ import {PersonalPageService} from './services/personal-page.service';
       useClass: JwtInterceptor,
       multi: true
     },
-    PersonalPageService
+    PersonalPageService,
+    SettingsService
   ],
   bootstrap: [AppComponent]
 })

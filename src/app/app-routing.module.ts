@@ -12,6 +12,7 @@ import {LayoutComponent} from "./layout/layout.component";
 import {NewfeedsComponent} from "./layout/newfeeds/newfeeds.component";
 import {FriendComponent} from "./friend/friend.component";
 import {PersonalpageComponent} from "./layout/personalpage/personalpage.component";
+import {SettingsComponent} from './layout/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -80,11 +81,15 @@ const routes: Routes = [
     children: [
       {
         path: 'newfeeds',
-        component: NewfeedsComponent ,
+        component: NewfeedsComponent,
       },
       {
         path: 'personal/:username',
         component: PersonalpageComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
       }
     ]
   },
