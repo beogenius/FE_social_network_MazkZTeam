@@ -13,6 +13,8 @@ import {NewfeedsComponent} from "./layout/newfeeds/newfeeds.component";
 import {FriendComponent} from "./friend/friend.component";
 import {PersonalpageComponent} from "./layout/personalpage/personalpage.component";
 import {SettingsComponent} from './layout/settings/settings.component';
+import {group} from '@angular/animations';
+import {ClubComponent} from './club/club.component';
 
 const routes: Routes = [
   {
@@ -88,14 +90,12 @@ const routes: Routes = [
         component: SettingsComponent,
       }
     ]
+  },
+  {
+    path: 'group',
+    component: ClubComponent
   }
-  // {
-  //   path: 'socket',
-  //   component: SocketComponent,
-  //   data: {
-  //     title: 'socket'
-  //   }
-  // }
+
 ];
 
 @NgModule({

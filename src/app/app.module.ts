@@ -38,6 +38,8 @@ import {ChatMessageService} from "./services/chat-message.service";
 import {ChatRoomService} from "./services/chat-room.service";
 import { SettingsComponent } from './layout/settings/settings.component';
 import {SettingsService} from './services/settings.service';
+import { ClubComponent } from './club/club.component';
+import { ClubMainPageComponent } from './club-main-page/club-main-page.component';
 
 
 @NgModule({
@@ -55,7 +57,9 @@ import {SettingsService} from './services/settings.service';
         FriendComponent,
         NavbarComponent,
         NewfeedsComponent,
-        SettingsComponent
+        SettingsComponent,
+        ClubComponent,
+        ClubMainPageComponent
     ],
   imports: [
     BrowserModule,
