@@ -51,7 +51,7 @@
         <div class="card-header" id="card-headmk" >
           <span ><i class="fas fa-users"></i></span> Friend You May Know
         </div>
-        <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let n of friendNotRequestList">
+        <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let n of friendNotRequestList | slice : startPage:paginationLimit">
           <li class="list-group-item">
             <div class="row">
               <div (click)="goToPersonal(n.username)">
@@ -74,6 +74,8 @@
             </div>
           </li>
         </ul>
+          <button class="btn" *ngIf ="paginationLimit < friendNotRequestList.length" (click)="showMoreItems()" >
+            <i class="fas fa-sync-alt">More</i></button>
       </div>
     </div>
     <div class="col-md-3">

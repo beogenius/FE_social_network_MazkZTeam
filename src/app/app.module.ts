@@ -11,8 +11,6 @@ import {NgxPaginationModule} from "ngx-pagination";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AuthService} from "./admin/service/auth.service";
-import {TokenStorageService} from "./admin/service/token/token-storage.service";
 import {AuthInterceptorService} from "./admin/service/auth-interceptor.service";
 import {JWT_OPTIONS, JwtHelperService, JwtInterceptor} from "@auth0/angular-jwt";
 import {LoginComponent} from "./login/login.component";
@@ -23,8 +21,6 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatListModule} from "@angular/material/list";
 import {MatIconModule} from "@angular/material/icon";
-import { UserComponent } from './admin/components/layout-admin/user/user.component';
-import { ListComponent } from './admin/components/layout-admin/user/list/list.component';
 import { CreateComponent } from './admin/components/layout-admin/user/create/create.component';
 import { EditComponent } from './admin/components/layout-admin/user/edit/edit.component';
 import {UserService} from "./admin/service/user.service";
@@ -38,6 +34,10 @@ import {ChatMessageService} from "./services/chat-message.service";
 import {ChatRoomService} from "./services/chat-room.service";
 import { SettingsComponent } from './layout/settings/settings.component';
 import {SettingsService} from './services/settings.service';
+import {UserComponent} from './admin/components/layout-admin/user/user.component';
+import {ListComponent} from './admin/components/layout-admin/user/list/list.component';
+import {AuthService} from './admin/service/auth.service';
+import {TokenStorageService} from './admin/service/token/token-storage.service';
 
 
 @NgModule({
