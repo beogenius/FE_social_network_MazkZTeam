@@ -49,27 +49,6 @@ export class NewfeedsComponent implements OnInit {
   //Bien edit post
   postToEdit: Post = {};
 
-  // isULoginEqualUOwn = true;
-
-  // commentList : any[] = [];
-  // userWhoLoginFriends: User = {
-  //   address: '',
-  //   avatar: '',
-  //   blocked: false,
-  //   createdDate: '',
-  //   dateOfBirth: '',
-  //   detail: '',
-  //   email: '',
-  //   firstName: '',
-  //   gender: '',
-  //   id: 0,
-  //   lastName: '',
-  //   password: '',
-  //   phone: '',
-  //   roles: [],
-  //   username: 'bacsihai' + "a"
-  // };
-
   //create comment
   newComment: Comment = {
     content: '',
@@ -98,15 +77,24 @@ export class NewfeedsComponent implements OnInit {
     this.ps.getUser(this.userWhoLogin.username!).subscribe(res => {
       this.userWhoLogin = res;
     });
-    this.ps.getAllPost(this.userWhoLogin.username!).subscribe(res => {
-      this.postList = res.data;
+    // this.ps.getAllPost(this.userWhoLogin.username!).subscribe(res => {
+    //   this.postList = res.data;
+    //   for (let i = 0; i < this.postList.length; i++) {
+    //     this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+    //     for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+    //       this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+    //     }
+    //   }
+    // });
+    this.ps.getAllCommonFriendPublicPost(this.userWhoLogin.username!).subscribe(data => {
+      this.postList = data;
       for (let i = 0; i < this.postList.length; i++) {
         this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
         for (let j = 0; j < this.postList[i].commentList!.length; j++) {
           this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
         }
       }
-    });
+    })
   }
 
   isUserWhoLoginLikeThisComment(cm: Comment) {
@@ -140,6 +128,10 @@ export class NewfeedsComponent implements OnInit {
   submit() {
     if(this.imgSrc !==''){
       this.newPost.photoList?.push({linkSrc: this.imgSrc});
+    }
+    console.log(this.newPost);
+    if(!this.newPost.protective) {
+      this.newPost.protective = 1;
     }
     this.ps.createPost(this.newPost, this.userWhoLogin.username!).subscribe(
       res => {
@@ -259,9 +251,10 @@ export class NewfeedsComponent implements OnInit {
       createdDate: p.createdDate,
       modifiedAt: p.modifiedAt,
       photoList: getPL(p.photoList!),
-      commentList: p.commentList
+      commentList: p.commentList,
+      protective: p.protective
     };
-
+    // console.log(this.postToEdit);
     $('#editPostModal').modal('show');
     //edit post end - > show modal
   }
@@ -278,6 +271,7 @@ export class NewfeedsComponent implements OnInit {
   }
 
   saveEditPost() {
+    console.log(this.postToEdit)
     this.ps.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
       for (let i = 0; i < this.postList.length; i++) {
         if (this.postList[i].id == res.id) {

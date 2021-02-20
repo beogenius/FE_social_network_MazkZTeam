@@ -17,6 +17,8 @@ export class FriendComponent implements OnInit {
   friendNotRequestList: Friend[] = [];
   senderFriendList: Friend[] = [];
   showMore = false;
+  startPage: any;
+  paginationLimit: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -41,6 +43,8 @@ export class FriendComponent implements OnInit {
     this.friendNotRequestList.shift();
     let senderList = await this.getSenderFriendList(this.username);
     this.senderFriendList = senderList.data;
+    this.startPage = 0;
+    this.paginationLimit=1;
 
     console.log(this.user);
   }
@@ -112,5 +116,9 @@ export class FriendComponent implements OnInit {
 
   goToPersonal(username: any) {
     this.router.navigate(['index/personal',username])
+  }
+
+  showMoreItems() {
+    this.paginationLimit = Number(this.paginationLimit) + 3;
   }
 }

@@ -4,6 +4,7 @@ body {
 
 .h7 {
   font-size: 0.8rem;
+  /*font-size: smaller;*/
 }
 
 .gedf-wrapper {
@@ -19,6 +20,7 @@ body {
     margin-bottom: 2.77rem;
   }
 }
+
 
 /**Reset Bootstrap*/
 .dropdown-toggle::after {
@@ -277,5 +279,6 @@ ul {
   /*cursor: pointer;*/
   background-color: greenyellow;
 }
+
 
 
