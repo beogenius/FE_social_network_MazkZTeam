@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
@@ -29,7 +29,7 @@ export class NotificationService {
     return this.http.put(`${this.baseUrl}/update/${id}`, notification);
   }
 
-  deleteNotification(senderId: number, username: any ): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete/${senderId}/${username}`, {responseType: 'text'});
+  deleteNotification(senderId: any, username: any){
+    return this.http.delete(`${this.baseUrl}/delete/${senderId}/${username}`);
   }
 }
