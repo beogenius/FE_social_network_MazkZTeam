@@ -14,6 +14,10 @@ export class ClubMainPageService {
   url = 'http://localhost:8080/clubmainpage/';
   constructor(private http: HttpClient) { }
 
+  checkMember(username: any,clubname: any){
+    return this.http.get<boolean>(this.url + username +'/'+ clubname +'/ismember');
+  }
+
   getClub(username: any,clubname: any){
     return this.http.get<Club>(this.url + username +'/'+ clubname);
   }
