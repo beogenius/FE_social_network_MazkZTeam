@@ -16,6 +16,7 @@ export class ClubComponent implements OnInit {
   listClubByUserCreate: Club[] = [];
   listClubNotJoinedYet: Club[] = [];
   listClubJoined: Club[] = [];
+  listClubRequested:Club[] = [];
   permissionx='1';
   user: User = {};
   newClub: Club = {};
@@ -37,9 +38,13 @@ export class ClubComponent implements OnInit {
     this.listClubNotJoinedYet = listClubNotJoinedYet;
     let listClubUserJoined = await this.getListClubsJoined(this.user.username);
     this.listClubJoined = listClubUserJoined;
+    let listClubRequested = await this.getClubsRequested(this.user.username);
+    this.listClubRequested = listClubRequested;
   }
 
-
+  getClubsRequested(username: any){
+    return this.sv.getClubsRequested(username).toPromise();
+  }
   getListClubByUserCreate(username: any) {
     return this.sv.getClubListByUserCreate(username).toPromise();
   }
@@ -109,12 +114,13 @@ export class ClubComponent implements OnInit {
     console.log(username, clubId);
   }
 
-  joinClub(username: any,clubId: any,index: any) {
-    this.sv.requesJoin(username,clubId).subscribe(res => {
+  joinClub(username: any,club: any,index: any) {
+    this.sv.requesJoin(username,club.id).subscribe(res => {
       if (!res) {
         alert('False to request')
       }else {
         this.listClubNotJoinedYet.splice(index,1);
+        this.listClubRequested.unshift(club);
       }
     });
   }
@@ -143,4 +149,12 @@ export class ClubComponent implements OnInit {
     console.log(username, clubId);
   }
 
+  CancelReq(username: string, club: any,index: any) {
+    this.sv.cancelJoinReq(username,club.id).subscribe(data => {
+      if(data){
+        this.listClubRequested.splice(index,1);
+        this.listClubNotJoinedYet.unshift(club);
+      }
+    })
+  }
 }

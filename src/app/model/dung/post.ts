@@ -9,5 +9,8 @@ export interface Post {
   commentList?:any[];
   emoteList?: any[];
   isLiked?: boolean;
+  protective?: any;
+  club?:any;
+  club_id?:number | 9999;
 }
 

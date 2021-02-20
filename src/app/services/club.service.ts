@@ -7,7 +7,17 @@ import {Club} from '../model/dung/club';
 })
 export class ClubService {
   url = 'http://localhost:8080/club/';
+
   constructor(private http: HttpClient) { }
+
+  getClubsRequested(username: any):Observable<any>{
+    return this.http.get(this.url + username + '/getclubsrequested');
+  }
+
+  cancelJoinReq(username: any,club_id: any):Observable<any>{
+    return this.http.delete(this.url + username + '/canceljoinreq/' + club_id);
+  }
+
   getClubListByUserCreate(username: any):Observable<any>{
     return this.http.get(this.url + username + '/listclubbyusercreate');
   }

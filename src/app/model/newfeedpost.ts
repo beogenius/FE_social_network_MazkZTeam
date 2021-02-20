@@ -11,5 +11,5 @@ export class Post {
   isLiked?: any;
   protective?: any;
   club?:any;
-  club_id?:9999;
+  club_id?:number | 9999;
 }

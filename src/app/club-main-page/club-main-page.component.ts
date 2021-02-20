@@ -8,6 +8,8 @@ import {NewfeedservicesService} from '../services/newfeedservices.service';
 import Swal from "sweetalert2";
 import {ClubService} from '../services/club.service';
 import {FriendShipService} from '../services/friendshipservice';
+import {ClubMainPageService} from '../services/club-main-page.service';
+import {Club} from '../model/dung/club';
 
 declare var $: any;
 @Component({
@@ -16,9 +18,12 @@ declare var $: any;
   styleUrls: ['./club-main-page.component.css']
 })
 export class ClubMainPageComponent implements OnInit {
+
+  club: Club = {};
   //get post LIST
   postList: Post[] = [];
   memberList: User[] =[];
+  reqJoinList: User[] =[];
   startPage: any;
   paginationLimit: any;
 
@@ -40,7 +45,6 @@ export class ClubMainPageComponent implements OnInit {
     username: ''
     //se~ get user by session
   };
-
 
   //Create posst
   imgSrc = '';
@@ -69,32 +73,35 @@ export class ClubMainPageComponent implements OnInit {
 
 
   constructor(public ps: NewfeedservicesService,
+              private CmpSv: ClubMainPageService,
               private router: Router,
               private aRouter: ActivatedRoute,
-              private sv: ClubService,
-              private friendShipService: FriendShipService){
+              private sv: ClubService){
   }
 
   ngOnInit(): void {
-    this.reloadData();
+    this.aRouter.paramMap.subscribe(param =>{
+      this.club.name = param.get('clubname')!;
+      this.reloadData();
+    })
+
   }
 
   reloadData() {
     // @ts-ignore
     this.userWhoLogin.username = sessionStorage.getItem('AuthUsername');
+
     this.ps.getUser(this.userWhoLogin.username!).subscribe(res => {
       this.userWhoLogin = res;
+      console.log(this.userWhoLogin.id);
     });
-    // this.ps.getAllPost(this.userWhoLogin.username!).subscribe(res => {
-    //   this.postList = res.data;
-    //   for (let i = 0; i < this.postList.length; i++) {
-    //     this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
-    //     for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-    //       this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
-    //     }
-    //   }
-    // });
-    this.ps.getAllCommonFriendPublicPost(this.userWhoLogin.username!).subscribe(data => {
+
+    this.CmpSv.getClub(this.userWhoLogin.username!,this.club.name).subscribe(res => {
+      this.club = res;
+      console.log(this.club.founder_id);
+    });
+
+    this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
       this.postList = data;
       for (let i = 0; i < this.postList.length; i++) {
         this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
@@ -104,8 +111,12 @@ export class ClubMainPageComponent implements OnInit {
       }
     })
 
-    this.friendShipService.getFriendNotRequest(this.userWhoLogin.username).subscribe(data => {
-      this.memberList = data.data;
+    this.CmpSv.getMemberList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
+      this.memberList = data;
+    })
+
+    this.CmpSv.getReqJoinList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
+      this.reqJoinList = data;
     })
 
   }
@@ -128,8 +139,6 @@ export class ClubMainPageComponent implements OnInit {
     return false;
   }
 
-
-
   moreImg() {
     var linkSrc = this.imgSrc;
     if(this.imgSrc !==''){
@@ -142,10 +151,10 @@ export class ClubMainPageComponent implements OnInit {
     if(this.imgSrc !==''){
       this.newPost.photoList?.push({linkSrc: this.imgSrc});
     }
-    console.log(this.newPost);
     if(!this.newPost.protective) {
       this.newPost.protective = 1;
     }
+    this.newPost.club_id = this.club.id;
     this.ps.createPost(this.newPost, this.userWhoLogin.username!).subscribe(
       res => {
         this.reloadData();
@@ -199,7 +208,6 @@ export class ClubMainPageComponent implements OnInit {
     })
   };
 
-
   onCommentChance(event: any) {
     this.newComment.content = event.target.value;
   }
@@ -221,8 +229,6 @@ export class ClubMainPageComponent implements OnInit {
     })
   }
 
-
-
   likePostAction(post_id: any) {
     let emote: Emote = {
       post_id: post_id,
@@ -240,9 +246,6 @@ export class ClubMainPageComponent implements OnInit {
       console.log('false to like');
     });
   }
-
-
-
 
   editPost(p: Post) {
     //edit post begin
@@ -267,7 +270,6 @@ export class ClubMainPageComponent implements OnInit {
       commentList: p.commentList,
       protective: p.protective
     };
-    // console.log(this.postToEdit);
     $('#editPostModal').modal('show');
     //edit post end - > show modal
   }
@@ -284,7 +286,6 @@ export class ClubMainPageComponent implements OnInit {
   }
 
   saveEditPost() {
-    console.log(this.postToEdit)
     this.ps.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
       for (let i = 0; i < this.postList.length; i++) {
         if (this.postList[i].id == res.id) {
@@ -300,7 +301,6 @@ export class ClubMainPageComponent implements OnInit {
 
   //router
   onSelect(commentUserName: string) {
-    console.log(commentUserName);
     this.router.navigate(['/index/personal', commentUserName]).then(() => {
       window.location.reload();
     });
@@ -325,7 +325,6 @@ export class ClubMainPageComponent implements OnInit {
     $('#editCommentModal').modal('show');
   }
 
-
   deleteComment(comment_id: any, post_index: any, comment_index: any) {
     this.ps.deleteComment(this.userWhoLogin.username, comment_id).subscribe(res => {
       if (res) {
@@ -333,7 +332,6 @@ export class ClubMainPageComponent implements OnInit {
       }
     });
   }
-
 
   saveEditComment() {
     this.ps.updateComment(this.userWhoLogin.username, this.commentToEdit).subscribe(res => {
@@ -375,6 +373,7 @@ export class ClubMainPageComponent implements OnInit {
 
     });
   }
+
   removeEmote(emoteList: Emote[]) {
     for (let i = 0; i < emoteList.length; i++) {
       if (emoteList[i].user_id == this.userWhoLogin.id) {
@@ -433,5 +432,52 @@ export class ClubMainPageComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  kickMember(memberid: any,index: any) {
+    Swal.fire({
+      title: 'Are you sure to Kick this Member ? ',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) =>{
+      if(result.isConfirmed){
+        this.CmpSv.kickMenber(this.userWhoLogin.username,this.club.name,memberid).subscribe(res =>{
+            if(res){
+              this.memberList.splice(index,1);
+            } else {
+              alert("server false");
+            }
+        },error => {alert("server false")})
+      }
+    })
+
+    // dang lam do o day
+
+
+  }
+
+  AcceptReq(userReq: User,index: any) {
+    this.CmpSv.acceptJoinReq(this.userWhoLogin.username,this.club.name,userReq.id).subscribe(res =>{
+      if(res){
+        this.reqJoinList.splice(index,1);
+        this.memberList.unshift(userReq);
+      }else {
+        alert("server false");
+      }
+    },error => {alert("server false")})
+  }
+
+  Deny(userReq: User,index: any) {
+    this.CmpSv.refuseJoinReq(this.userWhoLogin.username,this.club.name,userReq.id).subscribe(res =>{
+      if(res){
+        this.reqJoinList.splice(index,1);
+      }else {
+        alert("server false");
+      }
+    },error => {alert("server false")})
   }
 }

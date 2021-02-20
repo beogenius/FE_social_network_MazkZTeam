@@ -28,6 +28,29 @@
           <a class="list-group-item list-group-item-action" id="group" data-toggle="list" routerLink="/group">Group</a>
           <a class="list-group-item list-group-item-action" id="logout" data-toggle="list" routerLink="/login" >Logout</a>
         </div>
+<!--        start list ReqJoin-->
+        <div class="card" *ngIf="userWhoLogin.id == club.founder_id">
+          <div class="card-header" >
+            <span><i class="fas fa-users"></i></span> User Want To Join Group
+          </div>
+          <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let userReq of reqJoinList ; let i = index">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="ml-2">
+                  <span style="font-size: large;font-weight: bold"> {{userReq.username}}</span>
+                  <div>
+                    <small class="inforFriend">{{userReq.address}}</small>
+                  </div>
+                </div>
+                <div class="ml-auto">
+          <span ><button type="button" (click)="AcceptReq(userReq,i)" class="btn btn-sm btn-primary">Accept</button></span>
+          <span ><button type="button" (click)="Deny(userReq,i)" class="btn btn-sm btn-dark">Deny</button></span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!--     end   list ReqJoin-->
       </div>
       <!--  END  LEFT SIDEBAR-->
 
@@ -50,8 +73,6 @@
                 <label class="mr-2" style="font-size: xx-large" for="protective"><i class="fa fa-globe" aria-hidden="true"></i></label>
                 <select class="form-control" name="protective" id="protective" [(ngModel)]="newPost.protective" >
                   <option value="1" selected>Public</option>
-                  <option value="3">Private</option>
-                  <option value="2">Friend</option>
                 </select>
               </li>
             </ul>
@@ -134,9 +155,9 @@
                       <i class="fa fa-ellipsis-h"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"
-                         *ngIf="userWhoLogin.id==p.user_id">
+                         *ngIf="userWhoLogin.id==p.user_id || userWhoLogin.id==club.founder_id">
                       <div class="h6 dropdown-header">Configuration</div>
-                      <button class="dropdown-item" (click)="editPost(p)">Edit</button>
+                      <button *ngIf="userWhoLogin.id == p.user_id" class="dropdown-item" (click)="editPost(p)">Edit</button>
                       <button class="dropdown-item" (click)="deletePost(p.id)">Delete</button>
                     </div>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"
@@ -203,7 +224,7 @@
                         <!--                edit comment-->
                         <div class="ml-auto">
                           <div class="dropdown"
-                               *ngIf="isULoginEqualUOwnthisComment(cm.user.username) || isULoginEqualUOwnthisPost(p.user.username)">
+                               *ngIf="isULoginEqualUOwnthisComment(cm.user.username) || isULoginEqualUOwnthisPost(p.user.username) || userWhoLogin.id == club.founder_id">
                             <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop2" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
                               <i class="fa fa-ellipsis-h"></i>
@@ -287,8 +308,6 @@
                   <label class="mr-2" style="font-size: xx-large" for="protectiveEdit"><i class="fa fa-globe" aria-hidden="true"></i></label>
                   <select class="form-control" name="protectiveEdit" id="protectiveEdit" [(ngModel)]="postToEdit.protective" >
                     <option value="1" selected>Public</option>
-                    <option value="3">Private</option>
-                    <option value="2">Friend</option>
                   </select>
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -372,18 +391,20 @@
           <div class="card-header" id="card-headmk">
             <span><i class="fas fa-users"></i></span> Group Member
           </div>
-          <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let c of memberList ; let i = index">
+          <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let member of memberList ; let i = index">
             <li class="list-group-item">
               <div class="row">
                 <div class="ml-2">
-                  <span style="font-size: large;font-weight: bold"> {{c.username}}</span>
+                  <span style="font-size: large;font-weight: bold"> {{member.username}}</span>
                   <div>
-                    <small class="inforFriend">{{c.address}}</small>
+                    <small class="inforFriend">{{member.address}}</small>
                   </div>
                 </div>
                 <div class="ml-auto">
-          <span><button type="button" class="btn btn-sm btn-primary"
-                        >Join Club</button></span>
+                    <span *ngIf="userWhoLogin.id == club.founder_id">
+                      <button type="button" (click)="kickMember(member.id,i)"
+                        class="btn btn-sm btn-primary">Kick</button>
+                    </span>
                 </div>
               </div>
             </li>

@@ -93,14 +93,14 @@
             <li class="list-group-item">
               <div class="row">
                 <div class="ml-2">
-                  <span style="font-size: large;font-weight: bold"> {{c.name}}</span>
+                  <span (click)="goToClub(c.name!)" style="font-size: large;font-weight: bold"> {{c.name}}</span>
                   <div>
                     <small class="inforFriend">Member: {{c.members!.length}}</small>
                   </div>
                 </div>
                 <div class="ml-auto">
           <span><button type="button" class="btn btn-sm btn-primary"
-                        (click)="joinClub(user.username,c.id,i)">Join Club</button></span>
+                        (click)="joinClub(user.username,c,i)">Join Club</button></span>
                 </div>
               </div>
             </li>
@@ -118,7 +118,7 @@
             <li class="list-group-item">
               <div class="row">
                 <div class="ml-2">
-                  <span style="font-size: large;font-weight: bold"> {{c.name}}</span>
+                  <span (click)="goToClub(c.name!)" style="font-size: large;font-weight: bold"> {{c.name}}</span>
                   <div>
                     <small class="inforFriend">Member: {{c.members!.length}}</small>
                   </div>
@@ -126,6 +126,28 @@
                 <div class="ml-auto">
           <span><button type="button" class="btn btn-sm btn-primary"
                         (click)="leaveGroup(user.username,c.id)">Leave Club</button></span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-header" >
+            <span><i class="fas fa-users"></i></span> Group You Have Requested
+          </div>
+          <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let c of listClubRequested ; let i = index">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="ml-2">
+                  <span (click)="goToClub(c.name!)" style="font-size: large;font-weight: bold"> {{c.name}}</span>
+                  <div>
+                    <small class="inforFriend">Member: {{c.members!.length}}</small>
+                  </div>
+                </div>
+                <div class="ml-auto">
+          <span><button type="button" class="btn btn-sm btn-primary"
+                        (click)="CancelReq(user.username,c,i)">Cancel</button></span>
                 </div>
               </div>
             </li>
