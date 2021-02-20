@@ -1,0 +1,397 @@
+<div class="content">
+  <nav class="navbar navbar-dark bg-primary" id="nav">
+    <a routerLink="/index/newfeeds" class="navbar-brand">MarkZ</a>
+    <form class="form-inline">
+      <div class="input-group">
+        <input type="text" class="form-control border-dark " aria-label="Recipient's username"
+               aria-describedby="button-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-light" type="button" id="button-addon2">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </nav>
+  <div class="container-fluid gedf-wrapper">
+    <div class="row">
+
+      <!--    LEFT SIDEBAR-->
+      <div class="col-md-3 left-sidebar">
+        <div class="list-group" id="list-tab" role="tablist">
+          <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
+             routerLink="/index/newfeeds">Home</a>
+          <a class="list-group-item list-group-item-action" id="personal-page" data-toggle="list"
+             routerLink="/index/personal/{{userWhoLogin.username}}">Personal Page</a>
+          <a class="list-group-item list-group-item-action" id="list-friend-list" data-toggle="list" routerLink="/friend">Friend</a>
+          <a class="list-group-item list-group-item-action" id="settings" data-toggle="list" routerLink="/index/settings">Settings</a>
+          <a class="list-group-item list-group-item-action" id="group" data-toggle="list" routerLink="/group">Group</a>
+          <a class="list-group-item list-group-item-action" id="logout" data-toggle="list" routerLink="/login" >Logout</a>
+        </div>
+      </div>
+      <!--  END  LEFT SIDEBAR-->
+
+      <!--    CENTER-->
+      <div class="col-md-6 gedf-main status-content">
+        <!--- \\\\\\\CREATE Post-->
+        <div class="card gedf-card">
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts"
+                   aria-selected="true">
+                  Make a publication</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false"
+                   href="#images">Images</a>
+              </li>
+              <li class="ml-auto form-inline">
+                <label class="mr-2" style="font-size: xx-large" for="protective"><i class="fa fa-globe" aria-hidden="true"></i></label>
+                <select class="form-control" name="protective" id="protective" [(ngModel)]="newPost.protective" >
+                  <option value="1" selected>Public</option>
+                  <option value="3">Private</option>
+                  <option value="2">Friend</option>
+                </select>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                  <div class="form-group">
+                    <label class="sr-only" for="message">post</label>
+                    <textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"
+                              [(ngModel)]="newPost.content" name="content"></textarea>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                  <div class="form-group">
+                    <div *ngIf="newPost&&newPost.photoList&&newPost.photoList.length!==0">
+                      <div style="float: left" *ngFor="let photo of newPost.photoList;let i = index">
+                        <a href="{{photo.linkSrc}}">
+                          <img width="100" height="100" src="{{photo.linkSrc}}" alt="" class="img-thumbnail">
+                        </a>
+                        <span class="close" aria-hidden="true" (click)="deletePhoto(i)">&times;</span>
+                      </div>
+                    </div>
+                    <div>
+                      <input type="text" class="form-control" id="customFile" placeholder="Please Input Link Image Here"
+                             [(ngModel)]="imgSrc"
+                             name="imgSrc">
+                    </div>
+                    <button class="btn info" (click)="moreImg()">Click to Add Image</button>
+                  </div>
+                  <div class="py-4"></div>
+                </div>
+              </div>
+              <div class="btn-toolbar justify-content-between">
+                <div class="btn-group">
+                  <button type="submit" class="btn btn-primary" (click)="submit()">share</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+        <!-- CREATE Post END /////-->
+
+
+        <!--- LIST  Post-->
+        <div class="mt-3" *ngFor="let p of postList; let pi = index ">
+          <div class="card gedf-card">
+            <!--    header-->
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div (click)="onSelect(p.user.username!)" class="d-flex justify-content-between align-items-center">
+                    <div class="mr-2 post-avatar">
+                      <img class="rounded-circle" width="45" height="45" src="{{p.user.avatar}}" alt="">
+                    </div>
+                    <div class="ml-2">
+                      <div class="h5 m-0 post-name">{{p.user.firstName}} {{p.user.lastName}}</div>
+                      <div class="h7 text-muted">{{p.user.username}}</div>
+                    </div>
+                  </div>
+                </div>
+                <!--        edit button-->
+                <div class="ml-auto d-inline-flex">
+                  <div class="mt-2">
+                    <ng-container *ngIf="p.protective==1">
+                      <i class="fa fa-globe" style="font-size: x-large" aria-hidden="true"></i>
+                    </ng-container>
+                    <ng-container *ngIf="p.protective==2">
+                      <i class="fa fa-users" style="font-size: x-large" aria-hidden="true"></i>
+                    </ng-container>
+                    <ng-container *ngIf="p.protective==3">
+                      <i class="fa fa-lock" style="font-size: x-large" aria-hidden="true"></i>
+                    </ng-container>
+                  </div>
+                  <div class="">
+                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-ellipsis-h"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"
+                         *ngIf="userWhoLogin.id==p.user_id">
+                      <div class="h6 dropdown-header">Configuration</div>
+                      <button class="dropdown-item" (click)="editPost(p)">Edit</button>
+                      <button class="dropdown-item" (click)="deletePost(p.id)">Delete</button>
+                    </div>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"
+                         *ngIf="userWhoLogin.id!=p.user_id">
+                      <div class="h6 dropdown-header">Configuration</div>
+                      <button class="dropdown-item" href="#">Share</button>
+                      <button class="dropdown-item">Save</button>
+                    </div>
+                  </div>
+                </div>
+                <!--        end edit button-->
+              </div>
+            </div> <!--end header>-->
+
+
+            <div class="card-body content-post">
+              <div class="text-muted h7 mb-2 time"><i class="fa fa-clock-o">
+              </i>{{p.createdDate}}
+              </div>
+              <p class="card-text ml-2">
+                {{p.content}}
+              </p>
+              <div class="img-bunch" *ngIf="p&&p.photoList&&p.photoList.length!=0">
+                <div class="d-block w-100 ml-1 mb-1" *ngFor="let photo of p.photoList">
+                  <div>
+                    <a class="strip" href="{{photo.linkSrc}}" title="" data-strip-group="mygroup"
+                       data-strip-group-options="loop: false">
+                      <img src="{{photo&&photo.linkSrc}}" alt="" class="img-fluid" width="900" height="600">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--    like and dislike -->
+            <div class="card-footer">
+              <div class="row comment-count">
+                <div class="" *ngIf="!p.isLiked">
+                  <a (click)="likePostAction(p.id)" class="likes btn ml-2"><i class="black2 fa fa-gittip"></i> Like</a>
+                  <span class="ml-1" *ngIf="p && p.emoteList && p.emoteList.length!=0">{{p.emoteList.length}}</span>
+                </div>
+                <div class="d-inline-flex" *ngIf="p.isLiked">
+                  <a (click)="dislikePostAction(p.id)" class="dislikes btn ml-1"><i class="blue2 fa fa-gittip"></i> DisLike</a>
+                  <span class="ml-1 mt-1" *ngIf="p && p.emoteList && p.emoteList.length!=0">{{p.emoteList.length}}</span>
+                </div>
+                <div class="ml-auto mt-1" *ngIf="p&&p.commentList&&p.commentList.length!==0">
+                  <span>{{p.commentList.length}} Comment</span>
+                </div>
+              </div>
+            </div>
+            <!--    List comment-->
+            <div *ngIf="p&&p.commentList&&p.commentList!.length!=0">
+              <div *ngFor="let cm of p.commentList;let cmi = index">
+                <div class="bg-light pl-2 pr-2">
+                  <div class="d-flex flex-row">
+                    <div (click)="onSelect(cm.user.username!)" class="btn comment-avatar">
+                      <img class="rounded-circle" src="{{cm.user.avatar}}" width="40">
+                    </div>
+                    <div class="d-flex flex-column justify-content-start ml-0">
+                      <div class="d-flex flex-row">
+                        <a (click)="onSelect(cm.user.username!)">
+                  <span class="d-block text-primary ml-1 text-capitalize user-comment"
+                        style="margin-top: 8px">{{cm.user.username}}</span>
+                        </a>
+                        <!--                edit comment-->
+                        <div class="ml-auto">
+                          <div class="dropdown"
+                               *ngIf="isULoginEqualUOwnthisComment(cm.user.username) || isULoginEqualUOwnthisPost(p.user.username)">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop2" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                              <i class="fa fa-ellipsis-h"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
+                              <div class="h6 dropdown-header">Configuration</div>
+                              <button class="dropdown-item" (click)="editComment(cm)"
+                                      *ngIf="isULoginEqualUOwnthisComment(cm.user.username)">Edit
+                              </button>
+                              <button class="dropdown-item" (click)="deleteComment(cm.id,pi,cmi)">Delete</button>
+                            </div>
+                          </div>
+                          <!--  end edit comment -->
+                        </div>
+                      </div>
+                      <!--              display comment-->
+                      <span class="text-black-50 comment-h">{{cm.content}}</span>
+                      <!--              like comment-->
+                      <div class="d-flex flex-row fs-12">
+                        <div class="row">
+                          <div class="p-2 cursor">
+                            <div class="" *ngIf="!cm.isLiked">
+                              <a (click)="likeCommentAction(cm.id,p.id)" class="likes btn ml-2"><i
+                                class="black2 fa fa-gittip"></i>
+                                Like</a>
+                              <span class="ml-1" *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">{{cm.emoteList.length}} <i
+                                class="fa fa-gittip text-danger"></i></span>
+                            </div>
+                            <div class="" *ngIf="cm.isLiked">
+                              <a (click)="dislikeCommentAction(cm.id,p.id)" class="dislikes btn ml-2"><i
+                                class="blue2 fa fa-gittip"></i>
+                                DisLike</a>
+                              <span class="ml-1" *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">{{cm.emoteList.length}} <i
+                                class="fa fa-gittip text-danger"></i></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--              end like comment-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--      end comment list-->
+            </div>
+            <!--List comment END-->
+            <!--    //////////////////////-->
+            <!--    Comment Box-->
+            <div class="mb-auto">
+              <div class="pl-2 pr-2">
+                <div class="d-flex flex-row">
+                  <div (click)="onSelect(p.user.username!)" class="btn comment-avatar">
+                    <img class="rounded-circle" src="{{userWhoLogin.avatar}}" width="40">
+                  </div>
+                  <div class="d-flex flex-column justify-content-start ml-0 w-100">
+                    <div class="d-flex flex-row">
+                      <a>
+                  <span class="d-block text-primary ml-1 text-capitalize user-comment"
+                        style="margin-top: 8px">{{userWhoLogin.username}}</span>
+                      </a>
+                    </div>
+                    <input style="border-radius: 25px; width: inherit; height: 60px;" (input)="onCommentChance($event)"
+                           id="inputComment{{p.id}}" placeholder="Write a comment" type="text"
+                           class="form-control" (keydown.enter)="comment(p.id)">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--    Comment Box END-->
+          </div>
+        </div>
+
+        <!--modal edit post-->
+        <div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title font-weight-bold text-capitalize text-primary header-edit" id="exampleModalLabel">Edit post</h5>
+                <div class="ml-auto form-inline">
+                  <label class="mr-2" style="font-size: xx-large" for="protectiveEdit"><i class="fa fa-globe" aria-hidden="true"></i></label>
+                  <select class="form-control" name="protectiveEdit" id="protectiveEdit" [(ngModel)]="postToEdit.protective" >
+                    <option value="1" selected>Public</option>
+                    <option value="3">Private</option>
+                    <option value="2">Friend</option>
+                  </select>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="tab-content">
+                  <div class="tab-content">
+                    <div aria-labelledby="posts-tab">
+                      <div class="form-group">
+                        <label class="sr-only" for="message">post</label>
+                        <textarea class="form-control" rows="3" placeholder="What are you thinking?"
+                                  [(ngModel)]="postToEdit.content" name="content"></textarea>
+                      </div>
+                    </div>
+                    <div>
+                      <div style="float: left" *ngFor="let photo of postToEdit.photoList;let i = index">
+                        <a href="{{photo.linkSrc}}">
+                          <img width="100" height="100" src="{{photo.linkSrc}}" alt="" class="img-thumbnail">
+                        </a>
+                        <span class="close" aria-hidden="true" (click)="deletePhoto(i)">&times;</span>
+                      </div>
+                    </div>
+                    <div class="formGroup">
+                      <div>
+                        <input type="text" class="form-control" placeholder="Image source Link" [(ngModel)]="imgSrc"
+                               name="imgSrc">
+                      </div>
+                      <button class="btn btn-primary mt-2" (click)="saveEditPhoto()">Add Image</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="saveEditPost()">Edit Post</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--modal edit comment-->
+        <div class="modal fade" id="editCommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">New message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="tab-content">
+                  <div class="tab-content">
+                    <div aria-labelledby="posts-tab">
+                      <div class="form-group">
+                        <label class="sr-only" for="message">post</label>
+                        <textarea class="form-control" rows="3" placeholder="What are you thinking?"
+                                  [(ngModel)]="commentToEdit.content" name="content"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="saveEditComment()">Send message</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--  END  CENTER-->
+
+      <!--    right sidebar-->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-header" id="card-headmk">
+            <span><i class="fas fa-users"></i></span> Group Member
+          </div>
+          <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let c of memberList ; let i = index">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="ml-2">
+                  <span style="font-size: large;font-weight: bold"> {{c.username}}</span>
+                  <div>
+                    <small class="inforFriend">{{c.address}}</small>
+                  </div>
+                </div>
+                <div class="ml-auto">
+          <span><button type="button" class="btn btn-sm btn-primary"
+                        >Join Club</button></span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--  END  right sidebar-->
+
+    </div>
+  </div>
+</div>
