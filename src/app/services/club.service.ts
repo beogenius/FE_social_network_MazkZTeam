@@ -9,15 +9,24 @@ export class ClubService {
   url = 'http://localhost:8080/club/';
   constructor(private http: HttpClient) { }
   getClubListByUserCreate(username: any):Observable<any>{
-    return this.http.get(this.url + username + '/listclubbyusercreate')
+    return this.http.get(this.url + username + '/listclubbyusercreate');
   }
   createClub(club: Club,username: any):Observable<any>{
-    return this.http.post(this.url + username + '/create',club)
+    return this.http.post(this.url + username + '/create',club);
   }
   getClubNotJoinedYet(username: any):Observable<any>{
-    return this.http.get(this.url + username + '/getclubsnotjoinedyet')
+    return this.http.get(this.url + username + '/getclubsnotjoinedyet');
   }
   deleteClub(username: any,clubId: any):Observable<any>{
-    return this.http.delete(this.url + username +'/deleteclub/' + clubId)
+    return this.http.delete(this.url + username +'/deleteclub/' + clubId);
+  }
+  getClubsUserJoined(username: any):Observable<any>{
+    return this.http.get(this.url + username + '/getclubsjoined');
+  }
+  leaveClub(username: any,clubId: any):Observable<any>{
+    return this.http.delete(this.url + username + '/leaveclub/' + clubId);
+  }
+  requesJoin(username: any,clubId: any):Observable<any>{
+    return this.http.get(this.url + username + '/reqjoin/' + clubId);
   }
 }

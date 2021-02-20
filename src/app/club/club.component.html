@@ -40,12 +40,12 @@
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="permissionx" id="inlineRadio1"
                          value="1" [(ngModel)]="permissionx">
-                  <label class="form-check-label" for="inlineRadio1">Public</label>
+                  <label class="form-check-label" for="inlineRadio1">Public <i class="fas fa-globe-americas"></i></label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="permissionx" id="inlineRadio2"
                          value="2" [(ngModel)]="permissionx">
-                  <label class="form-check-label" for="inlineRadio2">Private</label>
+                  <label class="form-check-label" for="inlineRadio2">Private <i class="fas fa-lock"></i></label>
                 </div>
               </div>
               <div class="pt-1 mb-3 row">
@@ -89,7 +89,7 @@
           <div class="card-header" id="card-headmk">
             <span><i class="fas fa-users"></i></span> Group
           </div>
-          <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let c of listClubNotJoinedYet">
+          <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let c of listClubNotJoinedYet ; let i = index">
             <li class="list-group-item">
               <div class="row">
                 <div class="ml-2">
@@ -100,7 +100,7 @@
                 </div>
                 <div class="ml-auto">
           <span><button type="button" class="btn btn-sm btn-primary"
-                        (click)="joinClub()">Join Club</button></span>
+                        (click)="joinClub(user.username,c.id,i)">Join Club</button></span>
                 </div>
               </div>
             </li>
@@ -108,15 +108,31 @@
         </div>
       </div>
       <!--       het gr chua join-->
-      <!--       gr request-->
+      <!--       gr joined-->
       <div class="col-md-3">
         <div class="card">
           <div class="card-header" id="card-headrr">
-            <span><i class="fas fa-users"></i></span> Group Sending Request <i class="fas fa-arrow-right"></i>
+            <span><i class="fas fa-users"></i></span> Group You Have Joined
           </div>
+          <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let c of listClubJoined">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="ml-2">
+                  <span style="font-size: large;font-weight: bold"> {{c.name}}</span>
+                  <div>
+                    <small class="inforFriend">Member: {{c.members!.length}}</small>
+                  </div>
+                </div>
+                <div class="ml-auto">
+          <span><button type="button" class="btn btn-sm btn-primary"
+                        (click)="leaveGroup(user.username,c.id)">Leave Club</button></span>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
-      <!--       het gr request-->
+      <!--       het gr joined-->
 
     </div>
   </div>

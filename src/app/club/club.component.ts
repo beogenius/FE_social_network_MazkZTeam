@@ -15,6 +15,7 @@ import {migrateLegacyGlobalConfig} from '@angular/cli/utilities/config';
 export class ClubComponent implements OnInit {
   listClubByUserCreate: Club[] = [];
   listClubNotJoinedYet: Club[] = [];
+  listClubJoined: Club[] = [];
   permissionx='1';
   user: User = {};
   newClub: Club = {};
@@ -34,6 +35,8 @@ export class ClubComponent implements OnInit {
     this.listClubByUserCreate = listClubByUserCreate;
     let listClubNotJoinedYet = await this.getListClubNotJoinedYet(this.user.username);
     this.listClubNotJoinedYet = listClubNotJoinedYet;
+    let listClubUserJoined = await this.getListClubsJoined(this.user.username);
+    this.listClubJoined = listClubUserJoined;
   }
 
 
@@ -42,6 +45,9 @@ export class ClubComponent implements OnInit {
   }
   getListClubNotJoinedYet(username: any){
     return this.sv.getClubNotJoinedYet(username).toPromise();
+  }
+  getListClubsJoined(username: any){
+    return this.sv.getClubsUserJoined(username).toPromise();
   }
 
   goToClub(name: string) {
@@ -103,7 +109,38 @@ export class ClubComponent implements OnInit {
     console.log(username, clubId);
   }
 
-  joinClub() {
-
+  joinClub(username: any,clubId: any,index: any) {
+    this.sv.requesJoin(username,clubId).subscribe(res => {
+      if (!res) {
+        alert('False to request')
+      }else {
+        this.listClubNotJoinedYet.splice(index,1);
+      }
+    });
   }
+
+  leaveGroup(username: any,clubId:any) {
+    Swal.fire({
+      title: 'Are you sure to leave group ?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Leave'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.sv.leaveClub(username,clubId).subscribe(data => {
+          this.reloaddata();
+          Swal.fire(
+            'Leave Group!',
+            'Success',
+            'success'
+          );
+        });
+      }
+    });
+    console.log(username, clubId);
+  }
+
 }
