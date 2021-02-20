@@ -25,6 +25,10 @@ export class NewfeedservicesService {
   getAllPost(username:string): Observable<any> {
     return this.http.get<Post[]>(`${this.url}/${username}/posts`);
   }
+  //hieu
+  getAllCommonFriendPublicPost(username:string): Observable<any> {
+    return this.http.get(`${this.url}/${username}/public`)
+  }
 
   createComment(comment: Comment,username: string){
     return this.http.post(`${this.url}/${username}/create/comment`,comment)

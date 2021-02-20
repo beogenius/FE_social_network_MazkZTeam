@@ -9,7 +9,7 @@ export class Post {
   commentList ?: any[];
   emoteList ?: any[];
   isLiked?: any;
-  // protective?: any;
-  // club?:any;
-  // club_id?:any;
+  protective?: any;
+  club?:any;
+  club_id?:9999;
 }
