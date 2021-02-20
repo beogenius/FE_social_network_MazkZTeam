@@ -7,7 +7,6 @@ import {Emote} from '../model/hai/emote';
 import {NewfeedservicesService} from '../services/newfeedservices.service';
 import Swal from "sweetalert2";
 import {ClubService} from '../services/club.service';
-import {FriendShipService} from '../services/friendshipservice';
 import {ClubMainPageService} from '../services/club-main-page.service';
 import {Club} from '../model/dung/club';
 
@@ -26,6 +25,12 @@ export class ClubMainPageComponent implements OnInit {
   reqJoinList: User[] =[];
   startPage: any;
   paginationLimit: any;
+
+  userLoginIsAMember = false;
+
+  clubPrivateAndNotAMember = false;
+
+  requestedToJoin = false;
 
   userWhoLogin: User = {
     address: '',
@@ -101,24 +106,60 @@ export class ClubMainPageComponent implements OnInit {
       console.log(this.club.founder_id);
     });
 
-    this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
-      this.postList = data;
-      for (let i = 0; i < this.postList.length; i++) {
-        this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
-        for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-          this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
-        }
-      }
-    })
-
     this.CmpSv.getMemberList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
       this.memberList = data;
-    })
+    });
 
     this.CmpSv.getReqJoinList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
       this.reqJoinList = data;
-    })
+    });
 
+    this.CmpSv.checkMember(this.userWhoLogin.username,this.club.name).subscribe(res => {
+      if(res){
+        this.userLoginIsAMember = true;
+        this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
+          this.postList = data;
+          for (let i = 0; i < this.postList.length; i++) {
+            this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+            for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+              this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+            }
+          }
+        });
+      }else{
+        if(this.club.permission == 1){
+          this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
+            this.postList = data;
+            for (let i = 0; i < this.postList.length; i++) {
+              this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+              for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+                this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+              }
+            }
+          });
+        }else{
+          this.clubPrivateAndNotAMember = true;
+          if(this.isContainUser(this.userWhoLogin.id,this.reqJoinList)){
+            this.requestedToJoin = true;
+          }
+        }
+      }
+    });
+
+
+
+
+
+
+  }
+
+  isContainUser(user_id: any,listUser :User[]){
+    for (let i = 0; i < listUser.length; i++) {
+      if(listUser[i].id == user_id){
+        return true;
+      }
+    }
+    return false;
   }
 
   isUserWhoLoginLikeThisComment(cm: Comment) {
@@ -479,5 +520,13 @@ export class ClubMainPageComponent implements OnInit {
         alert("server false");
       }
     },error => {alert("server false")})
+  }
+
+  joinClub() {
+    this.sv.requesJoin(this.userWhoLogin.username,this.club.id).subscribe(res => {
+      if (res) {
+        this.requestedToJoin = true;
+      }
+    });
   }
 }
