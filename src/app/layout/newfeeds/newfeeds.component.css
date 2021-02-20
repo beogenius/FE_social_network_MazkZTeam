@@ -193,6 +193,10 @@
 .user-comment:hover {
   cursor: pointer;
 }
+.header-edit{
+  font-size: 1.3rem;
+  padding-top: 10px;
+}
 
 
 

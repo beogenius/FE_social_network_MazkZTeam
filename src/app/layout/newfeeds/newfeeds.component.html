@@ -247,7 +247,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title font-weight-bold text-capitalize text-primary" id="exampleModalLabel">New message</h5>
+        <h5 class="modal-title font-weight-bold text-capitalize text-primary header-edit" id="exampleModalLabel">Edit post</h5>
         <div class="ml-auto form-inline">
           <label class="mr-2" style="font-size: xx-large" for="protectiveEdit"><i class="fa fa-globe" aria-hidden="true"></i></label>
           <select class="form-control" name="protectiveEdit" id="protectiveEdit" [(ngModel)]="postToEdit.protective" >
@@ -283,7 +283,7 @@
                 <input type="text" class="form-control" placeholder="Image source Link" [(ngModel)]="imgSrc"
                        name="imgSrc">
               </div>
-              <button class="btn info" (click)="saveEditPhoto()">Add Image</button>
+              <button class="btn btn-primary mt-2" (click)="saveEditPhoto()">Add Image</button>
             </div>
           </div>
         </div>
@@ -326,5 +326,4 @@
       </div>
     </div>
   </div>
-<div>
-
+</div>
