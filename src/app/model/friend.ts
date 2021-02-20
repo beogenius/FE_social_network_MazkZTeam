@@ -10,4 +10,5 @@ export class Friend{
   address?: any;
   status?: any;
   totalNotification?:any;
+  totalPostNotification?:any;
 }

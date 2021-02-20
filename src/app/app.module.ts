@@ -100,7 +100,8 @@ import {NotificationService} from "./services/notification.service";
     ChatRoomService,
     PersonalPageService,
     SettingsService,
-    NotificationService
+    NotificationService,
+    LayoutComponent
   ],
   bootstrap: [AppComponent]
 })

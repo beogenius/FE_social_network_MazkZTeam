@@ -1,4 +1,66 @@
-<app-navbar></app-navbar>
+<!--navbar-->
+<nav class="navbar navbar-light bg-white">
+  <a href="/index/newfeeds" class="navbar-brand">MarkZ</a>
+  <form class="form-inline">
+    <div class="input-group">
+      <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-primary" type="button" id="button-addon2">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+  <!--notification-->
+  <ng-container>
+      <a class="btn btn-primary" data-toggle="collapse" href="#notification" role="button" aria-expanded="false"
+         aria-controls="collapseExample" (click)="clearPostNotification()">
+        <i class="fa fa-bell-o" aria-hidden="true" > {{totalPostNotification}} Notifications</i>
+      </a>
+  </ng-container>
+<!--  <ng-container *ngIf="totalPostNotification==0">-->
+<!--      <a class="btn btn-primary" data-toggle="collapse" href="#notification" role="button" aria-expanded="false"-->
+<!--         aria-controls="collapseExample">-->
+<!--        <i class="fa fa-bell-o" aria-hidden="true" > 0 Notifications</i>-->
+<!--      </a>-->
+<!--  </ng-container>-->
+
+  <div class="collapse" id="notification">
+    <!--  <div class="card card-body">-->
+    <h1 class="card-title text-primary" style="padding: 10px">Notifications</h1>
+    <div *ngIf="postNotiList.length!=0">
+      <div class="w-100" *ngFor="let n of postNotiList">
+        <div class="d-flex flex-row notificationNavbar">
+          <i class="fa fa-bell-o" height="35" width="35"></i>
+          <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">{{n.userSender.firstName}} {{n.userSender.lastName}} created New Post. Check it in NewFeeds !
+          </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div>
+      <div class="w-100" *ngIf="postNotiList.length==0">
+        <div class="d-flex flex-row notificationNavbar">
+          <i class="fa fa-bell-o" height="35" width="35"></i>
+          <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">You have no Notification nows.
+          </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!--  </div>-->
+  </div>
+</nav>
+
+<!--navbar-end-->
+
+
 
 <div class="container-fluid gedf-wrapper">
   <div class="row">
@@ -37,21 +99,15 @@
             <span><img src="{{f.avatar}}" alt="" class="img-thumbnail" id="avatar-friend"
                        (click)="goToPersonal(f.username)"></span>
           </div>
-          <div class="ml-2 mt-2" (click)="getUserChatTo(f)">
+          <div class="ml-2 mt-2" (click)="getUserChatToAndDeleteNotification(f, f.id)">
             <span id="friend-name"> {{f.username }}
-
-                <ng-container *ngIf="f.totalNotification != 0" (click)="deleteNotification(f.id)">
+                <ng-container *ngIf="f.totalNotification != 0"  >
                     <p class="bi bi-chat-fill">
                       <span class="badge badge-danger" > {{f.totalNotification}} new message
                       </span>
                     </p>
                 </ng-container>
-
-
-
             </span>
-
-
           </div>
         </div>
       </div>
