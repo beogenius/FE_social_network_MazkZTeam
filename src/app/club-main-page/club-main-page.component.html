@@ -63,6 +63,22 @@
 
       <!--    CENTER-->
       <div class="col-md-6 gedf-main status-content">
+        <div *ngIf="clubPublicAndNotAMember">
+          <!--          clubdetail-->
+          <div class="card">
+            <div class="card-header">
+              Group: {{club.name}}
+            </div>
+            <div class="card-body">
+              <span> <img class="rounded-circle" src="{{club.founder.avatar}}" alt="" width="40"> </span>
+              Admin: {{club.founder.firstName}} {{club.founder.lastName}}<br>
+              Detail: {{club.detail}}<br>
+              Member: {{club!.members!.length}}
+            </div>
+          </div>
+          <button class="btn btn-primary" *ngIf="!requestedToJoin" (click)="joinClub()">Join Group</button>
+          <button class="btn btn-danger" *ngIf="requestedToJoin" (click)="cancelRequest()">Cancel Request Join</button>
+        </div>
         <!--- \\\\\\\CREATE Post-->
         <div *ngIf="userLoginIsAMember" class="card gedf-card">
           <div class="card-header">

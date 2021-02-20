@@ -23,12 +23,12 @@ export class ClubMainPageComponent implements OnInit {
   postList: Post[] = [];
   memberList: User[] =[];
   reqJoinList: User[] =[];
-  startPage: any;
-  paginationLimit: any;
 
   userLoginIsAMember = false;
 
   clubPrivateAndNotAMember = false;
+
+  clubPublicAndNotAMember = false;
 
   requestedToJoin = false;
 
@@ -128,6 +128,10 @@ export class ClubMainPageComponent implements OnInit {
         });
       }else{
         if(this.club.permission == 1){
+          this.clubPublicAndNotAMember = true;
+          if(this.isContainUser(this.userWhoLogin.id,this.reqJoinList)){
+            this.requestedToJoin = true;
+          }
           this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
             this.postList = data;
             for (let i = 0; i < this.postList.length; i++) {
@@ -145,12 +149,6 @@ export class ClubMainPageComponent implements OnInit {
         }
       }
     });
-
-
-
-
-
-
   }
 
   isContainUser(user_id: any,listUser :User[]){
