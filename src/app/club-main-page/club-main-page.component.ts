@@ -145,12 +145,6 @@ export class ClubMainPageComponent implements OnInit {
         }
       }
     });
-
-
-
-
-
-
   }
 
   isContainUser(user_id: any,listUser :User[]){
