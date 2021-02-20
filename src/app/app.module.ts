@@ -38,6 +38,7 @@ import {ChatMessageService} from "./services/chat-message.service";
 import {ChatRoomService} from "./services/chat-room.service";
 import { SettingsComponent } from './layout/settings/settings.component';
 import {SettingsService} from './services/settings.service';
+import {NotificationService} from "./services/notification.service";
 
 
 @NgModule({
@@ -98,7 +99,8 @@ import {SettingsService} from './services/settings.service';
     ChatMessageService,
     ChatRoomService,
     PersonalPageService,
-    SettingsService
+    SettingsService,
+    NotificationService
   ],
   bootstrap: [AppComponent]
 })

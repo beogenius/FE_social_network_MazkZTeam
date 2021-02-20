@@ -13,7 +13,7 @@
         <a class="list-group-item list-group-item-action" id="list-friend-list" data-toggle="list" routerLink="/friend">Friend</a>
 
         <a class="list-group-item list-group-item-action" id="settings" data-toggle="list" routerLink="/index/settings">Settings</a>
-        <a class="list-group-item list-group-item-action" id="logout" data-toggle="list" routerLink="/login" >Logout</a>
+        <a class="list-group-item list-group-item-action" id="logout" data-toggle="list" routerLink="/login">Logout</a>
       </div>
     </div>
     <!--  END  LEFT SIDEBAR-->
@@ -31,14 +31,27 @@
           <span><i class="fas fa-users"></i></span> Friends
         </li>
       </ul>
-      <div class="friend-detail" *ngFor="let n of friends">
+      <div class="friend-detail" *ngFor="let f of friends">
         <div class="row">
           <div>
-            <span><img src="{{n.avatar}}" alt="" class="img-thumbnail" id="avatar-friend"
-               (click)="goToPersonal(n.username)"></span>
+            <span><img src="{{f.avatar}}" alt="" class="img-thumbnail" id="avatar-friend"
+                       (click)="goToPersonal(f.username)"></span>
           </div>
-          <div class="ml-2 mt-2">
-            <span (click)="getUserChatTo(n)" id="friend-name"> {{n.username }}</span>
+          <div class="ml-2 mt-2" (click)="getUserChatTo(f)">
+            <span id="friend-name"> {{f.username }}
+
+                <ng-container *ngIf="f.totalNotification != 0" (click)="deleteNotification(f.id)">
+                    <p class="bi bi-chat-fill">
+                      <span class="badge badge-danger" > {{f.totalNotification}} new message
+                      </span>
+                    </p>
+                </ng-container>
+
+
+
+            </span>
+
+
           </div>
         </div>
       </div>
@@ -95,7 +108,7 @@
                           <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">
                         </a>
                         <div class="d-flex flex-column justify-content-start ml-2" *ngIf="message">
-                          <a href="#" >
+                          <a href="#">
                             <span class="d-block font-weight-bold name">{{message.sender.username}}</span>
                           </a>
                           <span class="date text-black-50 createPost">{{message.content}}</span>
@@ -108,7 +121,8 @@
             </div>
           </div> <!-- end chat-history -->
           <div class="chat-message clearfix">
-            <input id="message-to-send" name="message-to-send" placeholder="Type your message" [(ngModel)]="input" (keydown.enter)= "sendMessage()">
+            <input id="message-to-send" name="message-to-send" placeholder="Type your message" [(ngModel)]="input"
+                   (keydown.enter)="sendMessage()">
           </div> <!-- end chat-message -->
         </div> <!-- end chat -->
       </div>
