@@ -50,8 +50,8 @@ export class ClubComponent implements OnInit {
     return this.sv.getClubsUserJoined(username).toPromise();
   }
 
-  goToClub(name: string) {
-
+  goToClub(clubname: string) {
+    this.router.navigate(['grouppage',clubname])
   }
 
   createClub(club: Club) {

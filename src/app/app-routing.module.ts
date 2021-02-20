@@ -15,6 +15,7 @@ import {PersonalpageComponent} from "./layout/personalpage/personalpage.componen
 import {SettingsComponent} from './layout/settings/settings.component';
 import {group} from '@angular/animations';
 import {ClubComponent} from './club/club.component';
+import {ClubMainPageComponent} from './club-main-page/club-main-page.component';
 
 const routes: Routes = [
   {
@@ -94,6 +95,10 @@ const routes: Routes = [
   {
     path: 'group',
     component: ClubComponent
+  },
+  {
+    path: 'grouppage/:clubname',
+    component: ClubMainPageComponent
   }
 
 ];

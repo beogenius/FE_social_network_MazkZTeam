@@ -67,7 +67,7 @@
               <li class="list-group-item">
                 <div class="row">
                   <div class="ml-2">
-                    <span style="font-size: large;font-weight: bold"> {{c.name}}</span>
+                    <span (click)="goToClub(c.name!)" style="font-size: large;font-weight: bold"> {{c.name}}</span>
                     <div>
                       <small class="inforFriend">Member: {{c.members!.length}}</small>
                     </div>
