@@ -67,10 +67,12 @@
 
 .likes{
   color: black;
+  padding: unset;
 }
 .dislikes{
   color: deepskyblue;
   text-decoration: deepskyblue;
+  padding: unset;
 }
 
 .black2{
@@ -102,9 +104,9 @@
 }
 
 .comment-count{
-  position: relative;
-  align-self: center;
-  text-align: center;
+  /*position: relative;*/
+  /*align-self: center;*/
+  /*text-align: center;*/
 }
 
 
@@ -126,4 +128,75 @@
 #comment-box{
   padding-left: 60px;
 }
+
+/*hieu*/
+.post-avatar:hover {
+  cursor: pointer;
+}
+.post-name {
+  color: darkblue;
+}
+.post-name:hover {
+  cursor: pointer;
+  color: greenyellow;
+}
+.h7 {
+  font-size: 0.8rem;
+}
+
+.content-post {
+  padding-top: 0.2rem;
+  padding-left: 0.5rem;
+  font-size: large;
+}
+.gedf-card{
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 2px rgb(15 43 245 / 21%);
+  padding-bottom: 10px;
+}
+.gedf-wrapper {
+  margin-top: 0.97rem;
+}
+
+@media (min-width: 992px) {
+  .gedf-main {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  .gedf-card {
+    margin-bottom: 2.77rem;
+  }
+}
+.comment-h {
+  border-radius: 20px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  /*display: block;*/
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  width: 100%;
+}
+.comment-h:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.user-comment {
+  font-size: large
+}
+.user-comment:hover {
+  cursor: pointer;
+}
+.header-edit{
+  font-size: 1.3rem;
+  padding-top: 10px;
+}
+
+
 
