@@ -23,32 +23,39 @@
              routerLink="/index/newfeeds">Home</a>
           <a class="list-group-item list-group-item-action" id="personal-page" data-toggle="list"
              routerLink="/index/personal/{{userWhoLogin.username}}">Personal Page</a>
-          <a class="list-group-item list-group-item-action" id="list-friend-list" data-toggle="list" routerLink="/friend">Friend</a>
-          <a class="list-group-item list-group-item-action" id="settings" data-toggle="list" routerLink="/index/settings">Settings</a>
+          <a class="list-group-item list-group-item-action" id="list-friend-list" data-toggle="list"
+             routerLink="/friend">Friend</a>
+          <a class="list-group-item list-group-item-action" id="settings" data-toggle="list"
+             routerLink="/index/settings">Settings</a>
           <a class="list-group-item list-group-item-action" id="group" data-toggle="list" routerLink="/group">Group</a>
-          <a class="list-group-item list-group-item-action" id="logout" data-toggle="list" routerLink="/login" >Logout</a>
+          <a class="list-group-item list-group-item-action" id="logout" data-toggle="list"
+             routerLink="/login">Logout</a>
         </div>
-<!--        start list ReqJoin-->
-        <div class="card" *ngIf="userWhoLogin.id == club.founder_id">
-          <div class="card-header" >
-            <span><i class="fas fa-users"></i></span> User Want To Join Group
-          </div>
-          <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let userReq of reqJoinList ; let i = index">
-            <li class="list-group-item">
-              <div class="row">
-                <div class="ml-2">
-                  <span style="font-size: large;font-weight: bold"> {{userReq.username}}</span>
-                  <div>
-                    <small class="inforFriend">{{userReq.address}}</small>
+        <!--        start list ReqJoin-->
+        <div class="pt-2">
+          <div class="card " *ngIf="userWhoLogin.id == club.founder_id">
+            <div class="card-header">
+              <span><i class="fas fa-users"></i></span> User Want To Join Group
+            </div>
+            <ul class="list-group list-group-flush mb-2 shadow" *ngFor="let userReq of reqJoinList ; let i = index">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="ml-2">
+                    <span style="font-size: large;font-weight: bold"> {{userReq.username}}</span>
+                    <div>
+                      <small class="inforFriend">{{userReq.address}}</small>
+                    </div>
+                  </div>
+                  <div class="ml-auto">
+                    <span><button type="button" (click)="AcceptReq(userReq,i)"
+                                  class="btn btn-sm btn-primary">Accept</button></span>
+                    <span><button type="button" (click)="Deny(userReq,i)"
+                                  class="btn btn-sm btn-dark">Deny</button></span>
                   </div>
                 </div>
-                <div class="ml-auto">
-          <span ><button type="button" (click)="AcceptReq(userReq,i)" class="btn btn-sm btn-primary">Accept</button></span>
-          <span ><button type="button" (click)="Deny(userReq,i)" class="btn btn-sm btn-dark">Deny</button></span>
-                </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
         </div>
         <!--     end   list ReqJoin-->
       </div>
@@ -61,17 +68,20 @@
           <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts"
+                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab"
+                   aria-controls="posts"
                    aria-selected="true">
                   Make a publication</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false"
+                <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images"
+                   aria-selected="false"
                    href="#images">Images</a>
               </li>
               <li class="ml-auto form-inline">
-                <label class="mr-2" style="font-size: xx-large" for="protective"><i class="fa fa-globe" aria-hidden="true"></i></label>
-                <select class="form-control" name="protective" id="protective" [(ngModel)]="newPost.protective" >
+                <label class="mr-2" style="font-size: xx-large" for="protective"><i class="fa fa-globe"
+                                                                                    aria-hidden="true"></i></label>
+                <select class="form-control" name="protective" id="protective" [(ngModel)]="newPost.protective">
                   <option value="1" selected>Public</option>
                 </select>
               </li>
@@ -119,9 +129,23 @@
         <!-- CREATE Post END /////-->
 
         <div *ngIf="clubPrivateAndNotAMember">
-<!--          clubdetail-->
-          <h1>group nay private ban can phai la thanh vien de xem thong tin</h1>
-          <button *ngIf="!requestedToJoin" (click)="joinClub()">fgfdgdfgdfgdf</button>
+          <!--          clubdetail-->
+          <div class="card">
+            <div class="card-header">
+              Group: {{club.name}}
+            </div>
+            <div class="card-body">
+              <span> <img class="rounded-circle" src="{{club.founder.avatar}}" alt="" width="40"> </span>
+              Admin: {{club.founder.firstName}} {{club.founder.lastName}}<br>
+              Detail: {{club.detail}}<br>
+              Member: {{club!.members!.length}}
+            </div>
+          </div>
+          <div class="card-body pt-2">
+            <h2 class="badge badge-warning text-white">Group is private.Please join group to see more content!</h2>
+          </div>
+          <button class="btn btn-primary" *ngIf="!requestedToJoin" (click)="joinClub()">Join Group</button>
+          <button class="btn btn-danger" *ngIf="requestedToJoin" (click)="cancelRequest()">Cancel Request Join</button>
         </div>
 
         <!--- LIST  Post-->
@@ -162,7 +186,8 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"
                          *ngIf="userWhoLogin.id==p.user_id || userWhoLogin.id==club.founder_id">
                       <div class="h6 dropdown-header">Configuration</div>
-                      <button *ngIf="userWhoLogin.id == p.user_id" class="dropdown-item" (click)="editPost(p)">Edit</button>
+                      <button *ngIf="userWhoLogin.id == p.user_id" class="dropdown-item" (click)="editPost(p)">Edit
+                      </button>
                       <button class="dropdown-item" (click)="deletePost(p.id)">Delete</button>
                     </div>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1"
@@ -204,8 +229,10 @@
                   <span class="ml-1" *ngIf="p && p.emoteList && p.emoteList.length!=0">{{p.emoteList.length}}</span>
                 </div>
                 <div class="d-inline-flex" *ngIf="p.isLiked">
-                  <a (click)="dislikePostAction(p.id)" class="dislikes btn ml-1"><i class="blue2 fa fa-gittip"></i> DisLike</a>
-                  <span class="ml-1 mt-1" *ngIf="p && p.emoteList && p.emoteList.length!=0">{{p.emoteList.length}}</span>
+                  <a (click)="dislikePostAction(p.id)" class="dislikes btn ml-1"><i class="blue2 fa fa-gittip"></i>
+                    DisLike</a>
+                  <span class="ml-1 mt-1"
+                        *ngIf="p && p.emoteList && p.emoteList.length!=0">{{p.emoteList.length}}</span>
                 </div>
                 <div class="ml-auto mt-1" *ngIf="p&&p.commentList&&p.commentList.length!==0">
                   <span>{{p.commentList.length}} Comment</span>
@@ -230,7 +257,8 @@
                         <div class="ml-auto">
                           <div class="dropdown"
                                *ngIf="isULoginEqualUOwnthisComment(cm.user.username) || isULoginEqualUOwnthisPost(p.user.username) || userWhoLogin.id == club.founder_id">
-                            <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop2" data-toggle="dropdown"
+                            <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop2"
+                                    data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
                               <i class="fa fa-ellipsis-h"></i>
                             </button>
@@ -255,14 +283,16 @@
                               <a (click)="likeCommentAction(cm.id,p.id)" class="likes btn ml-2"><i
                                 class="black2 fa fa-gittip"></i>
                                 Like</a>
-                              <span class="ml-1" *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">{{cm.emoteList.length}} <i
+                              <span class="ml-1"
+                                    *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">{{cm.emoteList.length}} <i
                                 class="fa fa-gittip text-danger"></i></span>
                             </div>
                             <div class="" *ngIf="cm.isLiked">
                               <a (click)="dislikeCommentAction(cm.id,p.id)" class="dislikes btn ml-2"><i
                                 class="blue2 fa fa-gittip"></i>
                                 DisLike</a>
-                              <span class="ml-1" *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">{{cm.emoteList.length}} <i
+                              <span class="ml-1"
+                                    *ngIf="cm && cm.emoteList && cm.emoteList.length!=0">{{cm.emoteList.length}} <i
                                 class="fa fa-gittip text-danger"></i></span>
                             </div>
                           </div>
@@ -308,10 +338,13 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title font-weight-bold text-capitalize text-primary header-edit" id="exampleModalLabel">Edit post</h5>
+                <h5 class="modal-title font-weight-bold text-capitalize text-primary header-edit"
+                    id="exampleModalLabel">Edit post</h5>
                 <div class="ml-auto form-inline">
-                  <label class="mr-2" style="font-size: xx-large" for="protectiveEdit"><i class="fa fa-globe" aria-hidden="true"></i></label>
-                  <select class="form-control" name="protectiveEdit" id="protectiveEdit" [(ngModel)]="postToEdit.protective" >
+                  <label class="mr-2" style="font-size: xx-large" for="protectiveEdit"><i class="fa fa-globe"
+                                                                                          aria-hidden="true"></i></label>
+                  <select class="form-control" name="protectiveEdit" id="protectiveEdit"
+                          [(ngModel)]="postToEdit.protective">
                     <option value="1" selected>Public</option>
                   </select>
                 </div>
@@ -408,7 +441,7 @@
                 <div class="ml-auto">
                     <span *ngIf="userWhoLogin.id == club.founder_id">
                       <button type="button" (click)="kickMember(member.id,i)"
-                        class="btn btn-sm btn-primary">Kick</button>
+                              class="btn btn-sm btn-primary">Kick</button>
                     </span>
                 </div>
               </div>

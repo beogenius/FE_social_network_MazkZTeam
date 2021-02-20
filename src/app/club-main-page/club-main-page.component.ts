@@ -529,4 +529,12 @@ export class ClubMainPageComponent implements OnInit {
       }
     });
   }
+
+  cancelRequest() {
+    this.sv.cancelJoinReq(this.userWhoLogin.username,this.club.id).subscribe(data => {
+      if(data){
+        this.requestedToJoin = false;
+      }
+    })
+  }
 }
