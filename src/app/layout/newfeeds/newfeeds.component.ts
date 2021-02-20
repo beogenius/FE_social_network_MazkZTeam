@@ -335,6 +335,7 @@ export class NewfeedsComponent implements OnInit {
 
         for (let i = 0; i < post.commentList!.length; i++) {
           if (post.commentList![i].id == res.id) {
+            res.isLiked = post.commentList![i].isLiked;
             post.commentList![i] = res;
           }
         }

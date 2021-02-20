@@ -212,6 +212,7 @@ reloaddata() {
     this.sv.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
       for (let i = 0; i < this.postList.length; i++) {
         if (this.postList[i].id == res.id) {
+          res.isLiked = this.postList[i].isLiked;
           this.postList[i] = res;
           $('#editPostModal').modal('toggle');
         }
@@ -311,6 +312,7 @@ reloaddata() {
 
         for (let i = 0; i < post.commentList!.length; i++) {
           if (post.commentList![i].id == res.id) {
+            res.isLiked = post.commentList![i].isLiked;
             post.commentList![i] = res;
           }
         }
