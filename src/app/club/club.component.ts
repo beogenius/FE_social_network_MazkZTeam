@@ -149,7 +149,7 @@ export class ClubComponent implements OnInit {
     console.log(username, clubId);
   }
 
-  CancelReq(username: string, club: any,index: any) {
+  CancelReq(username: any, club: any,index: any) {
     this.sv.cancelJoinReq(username,club.id).subscribe(data => {
       if(data){
         this.listClubRequested.splice(index,1);

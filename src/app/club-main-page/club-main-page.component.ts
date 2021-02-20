@@ -176,7 +176,7 @@ export class ClubMainPageComponent implements OnInit {
     this.imgSrc = '';
   }
 
-  deletePost(postid: number) {
+  deletePost(postid: any) {
     Swal.fire({
       title: 'Are you sure to Delete this POST ? ',
       text: 'You won\'t be able to revert this!',
@@ -212,7 +212,7 @@ export class ClubMainPageComponent implements OnInit {
     this.newComment.content = event.target.value;
   }
 
-  comment(postid: number) {
+  comment(postid: any) {
 
     this.newComment.post_id = postid;
     this.newComment.user_id = this.userWhoLogin.id;
@@ -274,7 +274,7 @@ export class ClubMainPageComponent implements OnInit {
     //edit post end - > show modal
   }
 
-  deletePhoto(i: number) {
+  deletePhoto(i: any) {
     this.postToEdit.photoList?.splice(i, 1);
   }
 
@@ -300,7 +300,7 @@ export class ClubMainPageComponent implements OnInit {
   }
 
   //router
-  onSelect(commentUserName: string) {
+  onSelect(commentUserName: any) {
     this.router.navigate(['/index/personal', commentUserName]).then(() => {
       window.location.reload();
     });
