@@ -13,6 +13,10 @@ export class NotificationService {
   ) {
   }
 
+  deleteNotification(senderId: any, username: any){
+    return this.http.delete(`${this.baseUrl}/delete/${senderId}/${username}`);
+  }
+
   getAllNotifications(id: any): Observable<any> {
     return this.http.get(`${this.baseUrl}/all/${id}`)
   }
@@ -29,7 +33,5 @@ export class NotificationService {
     return this.http.put(`${this.baseUrl}/update/${id}`, notification);
   }
 
-  deleteNotification(senderId: any, username: any){
-    return this.http.delete(`${this.baseUrl}/delete/${senderId}/${username}`);
-  }
+
 }
