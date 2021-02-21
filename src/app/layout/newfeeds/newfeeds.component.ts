@@ -6,6 +6,12 @@ import {Comment} from "src/app/model/hai/Comment"
 import Swal from 'sweetalert2';
 import {Emote} from "../../model/hai/emote";
 import {ActivatedRoute, Router} from "@angular/router";
+import {LayoutComponent} from "../layout.component";
+import {FriendShipService} from "../../services/friendshipservice";
+import {UserService} from "../../admin/service/user.service";
+import {ChatRoomService} from "../../services/chat-room.service";
+import {ChatMessageService} from "../../services/chat-message.service";
+import {NotificationService} from "../../services/notification.service";
 
 declare var $: any;
 
@@ -14,6 +20,8 @@ declare var $: any;
   templateUrl: './newfeeds.component.html',
   styleUrls: ['./newfeeds.component.css']
 })
+
+
 export class NewfeedsComponent implements OnInit {
   //get post LIST
   postList: Post[] = [];
@@ -43,7 +51,8 @@ export class NewfeedsComponent implements OnInit {
 
   newPost: Post = {
     content: '',
-    photoList: []
+    photoList: [],
+    protective: 1
   };
 
   //Bien edit post
@@ -64,7 +73,9 @@ export class NewfeedsComponent implements OnInit {
   };
 
 
-  constructor(public ps: NewfeedservicesService, private router: Router, private aRouter: ActivatedRoute) {
+
+
+  constructor(public ps: NewfeedservicesService, private router: Router, private aRouter: ActivatedRoute, private layoutComponent: LayoutComponent) {
   }
 
   ngOnInit(): void {
@@ -77,15 +88,6 @@ export class NewfeedsComponent implements OnInit {
     this.ps.getUser(this.userWhoLogin.username!).subscribe(res => {
       this.userWhoLogin = res;
     });
-    // this.ps.getAllPost(this.userWhoLogin.username!).subscribe(res => {
-    //   this.postList = res.data;
-    //   for (let i = 0; i < this.postList.length; i++) {
-    //     this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
-    //     for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-    //       this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
-    //     }
-    //   }
-    // });
     this.ps.getAllCommonFriendPublicPost(this.userWhoLogin.username!).subscribe(data => {
       this.postList = data;
       for (let i = 0; i < this.postList.length; i++) {
@@ -133,6 +135,13 @@ export class NewfeedsComponent implements OnInit {
     if(!this.newPost.protective) {
       this.newPost.protective = 1;
     }
+
+    console.log(this.layoutComponent.friends);
+    this.layoutComponent.friends.map(friend =>{
+      // console.log(friend);
+      this.layoutComponent.createPostNotificationToAllFriends(friend.id);
+    })
+
     this.ps.createPost(this.newPost, this.userWhoLogin.username!).subscribe(
       res => {
         this.reloadData();

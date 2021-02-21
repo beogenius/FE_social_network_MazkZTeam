@@ -41,12 +41,12 @@
                 <span class="close" aria-hidden="true" (click)="deletePhoto(i)">&times;</span>
               </div>
             </div>
-            <div>
+            <div style="padding-bottom: 10px">
               <input type="text" class="form-control" id="customFile" placeholder="Please Input Link Image Here"
                      [(ngModel)]="imgSrc"
                      name="imgSrc">
             </div>
-            <button class="btn info" (click)="moreImg()">Click to Add Image</button>
+            <button class="btn btn-primary" (click)="moreImg()">Click to Add Image or Enter</button>
           </div>
           <div class="py-4"></div>
         </div>

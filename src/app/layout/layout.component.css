@@ -260,7 +260,7 @@ ul {
 }
 .friend-list {
   overflow-y: scroll;
-  height: 800px;
+  height: 80%;
   border-radius: 10px;
   position: fixed;
   bottom: 0;
@@ -268,8 +268,8 @@ ul {
   padding: 0;
   background: linear-gradient(
     45deg
-    , #4d28a7bf, transparent);
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15),0 0 0 6px rgba(0, 0, 0, 0.1);
+    , #28a778, transparent);
+  box-shadow: 0 0 5px 2px rgb(101 9 255 / 74%);
 }
 .friend-detail {
   border-radius: 10px;
@@ -280,5 +280,29 @@ ul {
   background-color: greenyellow;
 }
 
+/*notification*/
+#notification{
+  overflow: auto;
+  height: 1000%;
+  border: 1px solid black;
+  border-radius: 10px;
+  position: absolute;
+  top:70px;
+  width: 25%;
+  background: radial-gradient(#f5ff07, #e83e3e);
+  right: 0;
+  padding: 0;
+  box-shadow: -1px 1px 4px 4px rgba(47 39 210 / 19%);
+  font-size: large;
+  font-family: sans-serif;
+  z-index: 1;
+}
+.notificationNavbar {
+  padding: 10px;
+}
+.notificationNavbar:hover {
+  background: #94C2ED;
+  cursor: pointer;
+}
 
 

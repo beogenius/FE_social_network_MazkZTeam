@@ -9,4 +9,6 @@ export class Friend{
   last_name?: any;
   address?: any;
   status?: any;
+  totalNotification?:any;
+  totalPostNotification?:any;
 }
