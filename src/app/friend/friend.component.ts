@@ -124,7 +124,7 @@ export class FriendComponent implements OnInit {
   //   });
   // }
   addFriend(username: any ,idSender: any, idReceiver: any) {
-    this.stompClientFriends.send("/app/friends/add/"+idSender+"/"+idReceiver)
+    this.stompClientFriends.send("/app/friends/add/"+idSender+"/"+idReceiver);
   }
 
   goToPersonal(username: any) {
