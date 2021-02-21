@@ -43,7 +43,8 @@ export class NewfeedsComponent implements OnInit {
 
   newPost: Post = {
     content: '',
-    photoList: []
+    photoList: [],
+    protective: 1
   };
 
   //Bien edit post
@@ -77,15 +78,6 @@ export class NewfeedsComponent implements OnInit {
     this.ps.getUser(this.userWhoLogin.username!).subscribe(res => {
       this.userWhoLogin = res;
     });
-    // this.ps.getAllPost(this.userWhoLogin.username!).subscribe(res => {
-    //   this.postList = res.data;
-    //   for (let i = 0; i < this.postList.length; i++) {
-    //     this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
-    //     for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-    //       this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
-    //     }
-    //   }
-    // });
     this.ps.getAllCommonFriendPublicPost(this.userWhoLogin.username!).subscribe(data => {
       this.postList = data;
       for (let i = 0; i < this.postList.length; i++) {

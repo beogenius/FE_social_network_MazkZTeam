@@ -59,7 +59,6 @@ export class LayoutComponent implements OnInit {
 
   goToPersonal(username: any) {
     this.router.navigate(['index/personal',username]);
-
   }
 
   getFriendList(username: any) {
@@ -164,4 +163,5 @@ export class LayoutComponent implements OnInit {
     console.log(chatMessage);
     this.stompClient.send('/app/send/message/'+ this.chatroom.id, {}, JSON.stringify(chatMessage));
   }
+
 }

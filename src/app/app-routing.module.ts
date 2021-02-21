@@ -15,6 +15,7 @@ import {PersonalpageComponent} from "./layout/personalpage/personalpage.componen
 import {SettingsComponent} from './layout/settings/settings.component';
 import {group} from '@angular/animations';
 import {ClubComponent} from './club/club.component';
+import {UserGuardsGuard} from "./services/guards/user-guards.guard";
 
 const routes: Routes = [
   {
@@ -95,7 +96,6 @@ const routes: Routes = [
     path: 'group',
     component: ClubComponent
   }
-
 ];
 
 @NgModule({
