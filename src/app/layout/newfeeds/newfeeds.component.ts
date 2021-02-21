@@ -6,6 +6,12 @@ import {Comment} from "src/app/model/hai/Comment"
 import Swal from 'sweetalert2';
 import {Emote} from "../../model/hai/emote";
 import {ActivatedRoute, Router} from "@angular/router";
+import {LayoutComponent} from "../layout.component";
+import {FriendShipService} from "../../services/friendshipservice";
+import {UserService} from "../../admin/service/user.service";
+import {ChatRoomService} from "../../services/chat-room.service";
+import {ChatMessageService} from "../../services/chat-message.service";
+import {NotificationService} from "../../services/notification.service";
 
 declare var $: any;
 
@@ -14,6 +20,8 @@ declare var $: any;
   templateUrl: './newfeeds.component.html',
   styleUrls: ['./newfeeds.component.css']
 })
+
+
 export class NewfeedsComponent implements OnInit {
   //get post LIST
   postList: Post[] = [];
@@ -65,7 +73,9 @@ export class NewfeedsComponent implements OnInit {
   };
 
 
-  constructor(public ps: NewfeedservicesService, private router: Router, private aRouter: ActivatedRoute) {
+
+
+  constructor(public ps: NewfeedservicesService, private router: Router, private aRouter: ActivatedRoute, private layoutComponent: LayoutComponent) {
   }
 
   ngOnInit(): void {
@@ -125,6 +135,13 @@ export class NewfeedsComponent implements OnInit {
     if(!this.newPost.protective) {
       this.newPost.protective = 1;
     }
+
+
+    this.layoutComponent.friends.map(friend =>{
+      // console.log(friend);
+      this.layoutComponent.createPostNotificationToAllFriends(friend.id);
+    })
+
     this.ps.createPost(this.newPost, this.userWhoLogin.username!).subscribe(
       res => {
         this.reloadData();

@@ -17,7 +17,7 @@ export class UserService {
   getAllUsers(): Observable<any> {
     return this.http.get(`${this.baseUrl}/all`)
   }
-  getUser(id: number): Observable<any> {
+  getUser(id: any): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`)
   }
   getUserByUsername(username: any): Observable<any> {

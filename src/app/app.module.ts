@@ -40,6 +40,7 @@ import { SettingsComponent } from './layout/settings/settings.component';
 import {SettingsService} from './services/settings.service';
 import { ClubComponent } from './club/club.component';
 import { ClubMainPageComponent } from './club-main-page/club-main-page.component';
+import {NotificationService} from "./services/notification.service";
 
 
 @NgModule({
@@ -102,7 +103,9 @@ import { ClubMainPageComponent } from './club-main-page/club-main-page.component
     ChatMessageService,
     ChatRoomService,
     PersonalPageService,
-    SettingsService
+    SettingsService,
+    NotificationService,
+    LayoutComponent
   ],
   bootstrap: [AppComponent]
 })
