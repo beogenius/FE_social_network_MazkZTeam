@@ -136,7 +136,7 @@ export class NewfeedsComponent implements OnInit {
       this.newPost.protective = 1;
     }
 
-
+    console.log(this.layoutComponent.friends);
     this.layoutComponent.friends.map(friend =>{
       // console.log(friend);
       this.layoutComponent.createPostNotificationToAllFriends(friend.id);

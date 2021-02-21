@@ -1,0 +1,147 @@
+<nav class="navbar navbar-light mb-1 border navbar-top">
+  <a href="/index/newfeeds" class="navbar-brand logo"><span style="color: #2e8bfa">♔</span> 𝕄𝕒𝕣𝕜ℤ</a>
+  <form class="form-inline">
+    <div class="input-group">
+      <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-prim ary" type="button" id="button-addon2">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+  <!--notification-->
+  <div class="d-inline-flex">
+    <div class="d-inline-flex user-navbar" (click)="goToPersonal(username)" *ngIf="user">
+      <div>
+            <span><img src="{{user.avatar}}" alt="" class="img-thumbnail" id="avatar-friend"
+            ></span>
+      </div>
+      <div class="ml-1 mt-2 mr-1 text-capitalize">
+        <span id="user-name-navbar" > {{username}}</span>
+      </div>
+    </div>
+    <a class="icon-navbar" data-toggle="collapse" href="#notification" role="button" aria-expanded="false"
+       aria-controls="collapseExample">
+      <i class="fa fa-bell-o" aria-hidden="true"></i>
+    </a>
+    <a class="icon-navbar" role="button" aria-expanded="false" (click)="logout()">
+      <i class="fa fa-sign-out" aria-hidden="true"></i>
+    </a>
+  </div>
+  <div class="collapse" id="notification">
+    <!--  <div class="card card-body">-->
+    <h1 class="card-title text-primary" style="padding: 10px">Notifications</h1>
+    <div class="w-100">
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+      <div class="d-flex flex-row notificationNavbar">
+        <img class="rounded-circle" src="https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg"
+             alt="loading" height="30" width="30"/>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <span
+            class="card-text">Noi dung thong bao cua toi den day la ket thuc nhi a b c d e f dsf cvvfv sdfsd
+          </span>
+        </div>
+      </div>
+    </div>
+    <!--  </div>-->
+  </div>
+</nav>
