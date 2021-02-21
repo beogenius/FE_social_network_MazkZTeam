@@ -69,16 +69,20 @@ export class LayoutComponent implements OnInit {
   postNotiList: any[] = [];
 
   countpostNoti() {
+    this.totalPostNotification = 0
     this.friends.map(friend => {
       let CountPost = 0;
       this.notifications.map(noti => {
         if (noti.typeNoti == 'newPost' && friend.id == noti.user_sender_id && this.userWhoLogin.id == noti.user_receiver_id && noti.status == false) {
-          this.postNotiList.push(noti);
+          this.postNotiList.unshift(noti);
           CountPost++;
+        }
+        else if (noti.typeNoti == 'newPost' && friend.id == noti.user_sender_id && this.userWhoLogin.id == noti.user_receiver_id && noti.status == true){
+          this.postNotiList.push(noti);
         }
       });
       this.totalPostNotification += CountPost;
-      console.log(parseInt(String(this.totalPostNotification)));
+      // console.log(this.totalPostNotification);
     });
   }
 
@@ -122,11 +126,17 @@ export class LayoutComponent implements OnInit {
     let user = await this.userService.getUserByUsername(this.username).toPromise();
     this.notificationService.getAllNotifications(user.id).subscribe(async data => {
       this.notifications = data;
+      // console.log(data);
       let friendResponse = await this.getFriendList(this.username);
       this.friends = friendResponse.data;
+
+      //post noti setup
       this.postNotiList = [];
       this.countpostNoti();
+      //post noti setup end
 
+
+      //message noti setup
       this.friends.map(friend => {
         let countMessNoti = 0;
         this.notifications.map(noti => {
@@ -136,6 +146,8 @@ export class LayoutComponent implements OnInit {
         });
         friend.totalNotification = countMessNoti;
       });
+
+      //message noti setup end
       // console.log(this.notifications);
     }, error => {
       console.log(error)
@@ -162,7 +174,10 @@ export class LayoutComponent implements OnInit {
             // @ts-ignore
             that.notifications.push(data);
             that.getNotifications();
-            console.log('total noti post ' + that.totalPostNotification);
+            // that.pushReadedNotificationBackToNotification();
+
+            console.log(that.postNotiList);
+            // console.log('total noti post ' + that.totalPostNotification);
             // console.log("notifications: " + that.notifications);
           }
         }
@@ -330,8 +345,21 @@ export class LayoutComponent implements OnInit {
 
   clearPostNotification() {
     this.totalPostNotification = 0;
-    //update false -> true;
+    //update notiStatus false -> true;
+    this.postNotiList.map(noti => {
+      this.notificationService.readNotification(noti).subscribe(res => {
+      });
+    });
+  }
 
-
+  pushReadedNotificationBackToNotification() {
+    this.postNotiList = [];
+    this.friends.map(friend => {
+      this.notifications.map(noti => {
+        if (noti.typeNoti == 'newPost' && friend.id == noti.user_sender_id && this.userWhoLogin.id == noti.user_receiver_id && noti.status == true) {
+          this.postNotiList.unshift(noti);
+        }
+      });
+    });
   }
 }

@@ -31,11 +31,11 @@
               </a>
               <span class="close" aria-hidden="true" (click)="deletePhotoNewPost(i)">&times;</span>
             </div>
-            <div>
+            <div style="padding-bottom: 10px">
               <input type="text" class="form-control" id="customFile" placeholder="image link"
                      [(ngModel)]="imgSrc" name="imgSrc" (keydown.enter)="moreImg()">
             </div>
-            <button class="btn info" (click)="moreImg()">more image?</button>
+            <button class="btn btn-primary" (click)="moreImg()">Click to add image or Enter</button>
           </div>
           <div class="py-4"></div>
         </div>

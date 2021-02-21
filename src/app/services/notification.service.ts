@@ -33,5 +33,7 @@ export class NotificationService {
     return this.http.put(`${this.baseUrl}/update/${id}`, notification);
   }
 
-
+  readNotification(notification: Notification) {
+    return this.http.put(`${this.baseUrl}/read`, notification);
+  }
 }

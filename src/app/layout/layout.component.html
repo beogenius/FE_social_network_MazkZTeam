@@ -12,11 +12,13 @@
     </div>
   </form>
   <!--notification-->
-  <ng-container>
+  <ng-container >
+    <div (click)="clearPostNotification()">
       <a class="btn btn-primary" data-toggle="collapse" href="#notification" role="button" aria-expanded="false"
-         aria-controls="collapseExample" (click)="clearPostNotification()">
+         aria-controls="collapseExample" >
         <i class="fa fa-bell-o" aria-hidden="true" > {{totalPostNotification}} Notifications</i>
       </a>
+    </div>
   </ng-container>
 <!--  <ng-container *ngIf="totalPostNotification==0">-->
 <!--      <a class="btn btn-primary" data-toggle="collapse" href="#notification" role="button" aria-expanded="false"-->
@@ -41,19 +43,7 @@
 
       </div>
     </div>
-    <div>
-      <div class="w-100" *ngIf="postNotiList.length==0">
-        <div class="d-flex flex-row notificationNavbar">
-          <i class="fa fa-bell-o" height="35" width="35"></i>
-          <div class="d-flex flex-column justify-content-start ml-2">
-          <span
-            class="card-text">You have no Notification nows.
-          </span>
-          </div>
-        </div>
 
-      </div>
-    </div>
     <!--  </div>-->
   </div>
 </nav>
