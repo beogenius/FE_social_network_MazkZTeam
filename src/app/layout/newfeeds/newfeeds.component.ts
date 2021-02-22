@@ -13,7 +13,12 @@ import {ChatRoomService} from "../../services/chat-room.service";
 import {ChatMessageService} from "../../services/chat-message.service";
 import {NotificationService} from "../../services/notification.service";
 
-declare var $: any;
+// @ts-ignore
+declare var $;
+// @ts-ignore
+declare var SockJS;
+// @ts-ignore
+declare var Stomp;
 
 @Component({
   selector: 'app-newfeeds',
@@ -74,11 +79,11 @@ export class NewfeedsComponent implements OnInit {
     user_id: '',
     comment_id: '',
   };
-
-
-
+  public newsFeedstompClient:any;
 
   constructor(public ps: NewfeedservicesService, private router: Router, private aRouter: ActivatedRoute, private layoutComponent: LayoutComponent) {
+    this.disconnectSocket();
+    this.initializeNewsFeedWebSocketConnection();
   }
 
   ngOnInit(): void {
@@ -146,21 +151,22 @@ export class NewfeedsComponent implements OnInit {
       // console.log(friend);
       this.layoutComponent.createPostNotificationToAllFriends(friend.id);
     })
+    this.createNewPost(this.newPost);
 
-    this.ps.createPost(this.newPost, this.userWhoLogin.username!).subscribe(
-      res => {
-        this.reloadData();
-        Swal.fire({
-          icon: 'success',
-          title: 'Post create successfully!',
-          showConfirmButton: false,
-          timer: 500
-        })
-      },
-      error => {
-        alert("false to post");
-      }
-    );
+    // this.ps.createPost(this.newPost, this.userWhoLogin.username!).subscribe(
+    //   res => {
+    //     this.reloadData();
+    //     Swal.fire({
+    //       icon: 'success',
+    //       title: 'Post create successfully!',
+    //       showConfirmButton: false,
+    //       timer: 500
+    //     })
+    //   },
+    //   error => {
+    //     alert("false to post");
+    //   }
+    // );
     this.newPost = {
       content: '',
       photoList: [],
@@ -180,23 +186,24 @@ export class NewfeedsComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.ps.deletePost(this.userWhoLogin.username!, postid).subscribe(res => {
-          if (res) {
-            let a = 0;
-            for (let i = 0; i < this.postList.length; i++) {
-              if (this.postList[i].id == postid) {
-                a = i;
-              }
-            }
-            this.postList.splice(a, 1);
-            Swal.fire(
-              'Deleted!',
-              'Your file has been deleted.',
-              'success'
-            );
-          }
-
-        });
+        // this.ps.deletePost(this.userWhoLogin.username!, postid).subscribe(res => {
+        //   if (res) {
+        //     let a = 0;
+        //     for (let i = 0; i < this.postList.length; i++) {
+        //       if (this.postList[i].id == postid) {
+        //         a = i;
+        //       }
+        //     }
+        //     this.postList.splice(a, 1);
+        //     Swal.fire(
+        //       'Deleted!',
+        //       'Your file has been deleted.',
+        //       'success'
+        //     );
+        //   }
+        //
+        // });
+        this.deletePostSK(postid);
       }
     })
   };
@@ -210,19 +217,19 @@ export class NewfeedsComponent implements OnInit {
 
     this.newComment.post_id = postid;
     this.newComment.user_id = this.userWhoLogin.id;
-    this.ps.createComment(this.newComment, this.userWhoLogin.username!).subscribe(res => {
-      for (let i = 0; i < this.postList.length; i++) {
-        if (this.postList[i].id == postid) {
-          this.postList[i].commentList?.push(res);
-          $(`#inputComment${this.postList[i].id}`).val('');
-          break;
-        } else {
-
-        }
-      }
-    })
+    // this.ps.createComment(this.newComment, this.userWhoLogin.username!).subscribe(res => {
+    //   for (let i = 0; i < this.postList.length; i++) {
+    //     if (this.postList[i].id == postid) {
+    //       this.postList[i].commentList?.push(res);
+    //       $(`#inputComment${this.postList[i].id}`).val('');
+    //       break;
+    //     } else {
+    //
+    //     }
+    //   }
+    // })
+    this.createNewCommentSK(this.newComment);
   }
-
 
 
   likePostAction(post_id: any) {
@@ -231,16 +238,17 @@ export class NewfeedsComponent implements OnInit {
       user_id: this.userWhoLogin.id
     };
 
-    this.ps.addLike(this.userWhoLogin.username!, emote).subscribe(res => {
-      for (let i = 0; i < this.postList.length; i++) {
-        if (this.postList[i].id == post_id) {
-          this.postList[i].emoteList!.push(res);
-          this.postList[i].isLiked = true;
-        }
-      }
-    }, error => {
-      console.log('false to like');
-    });
+    // this.ps.addLike(this.userWhoLogin.username!, emote).subscribe(res => {
+    //   for (let i = 0; i < this.postList.length; i++) {
+    //     if (this.postList[i].id == post_id) {
+    //       this.postList[i].emoteList!.push(res);
+    //       this.postList[i].isLiked = true;
+    //     }
+    //   }
+    // }, error => {
+    //   console.log('false to like');
+    // });
+    this.createNewEmoteSK(emote);
   }
 
 
@@ -269,6 +277,7 @@ export class NewfeedsComponent implements OnInit {
       commentList: p.commentList,
       protective: p.protective
     };
+
     // console.log(this.postToEdit);
     $('#editPostModal').modal('show');
     //edit post end - > show modal
@@ -287,17 +296,19 @@ export class NewfeedsComponent implements OnInit {
 
   saveEditPost() {
     console.log(this.postToEdit)
-    this.ps.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
-      for (let i = 0; i < this.postList.length; i++) {
-        if (this.postList[i].id == res.id) {
-          this.postList[i] = res;
-          $('#editPostModal').modal('toggle');
-          this.reloadData();
-        }
-      }
-    }, error => {
-      alert('server false to update post');
-    });
+    // this.ps.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
+    //   for (let i = 0; i < this.postList.length; i++) {
+    //     if (this.postList[i].id == res.id) {
+    //       this.postList[i] = res;
+    //       $('#editPostModal').modal('toggle');
+    //       this.reloadData();
+    //     }
+    //   }
+    // }, error => {
+    //   alert('server false to update post');
+    // });
+    this.updatePostSK(this.postToEdit);
+    $('#editPostModal').modal('toggle');
   }
 
   //router
@@ -329,55 +340,59 @@ export class NewfeedsComponent implements OnInit {
 
 
   deleteComment(comment_id: any, post_index: any, comment_index: any) {
-    this.ps.deleteComment(this.userWhoLogin.username, comment_id).subscribe(res => {
-      if (res) {
-        this.postList[post_index].commentList!.splice(comment_index, 1);
-      }
-    });
+    // this.ps.deleteComment(this.userWhoLogin.username, comment_id).subscribe(res => {
+    //   if (res) {
+    //     this.postList[post_index].commentList!.splice(comment_index, 1);
+    //   }
+    // });
+    this.deleteCommentSK(comment_id);
   }
 
 
   saveEditComment() {
-    this.ps.updateComment(this.userWhoLogin.username, this.commentToEdit).subscribe(res => {
-        let post: Post = {};
-        for (let i = 0; i < this.postList.length; i++) {
-          if (this.postList[i].id == res.post_id) {
-            post = this.postList[i];
-          }
-        }
-
-        post.commentList;
-
-        for (let i = 0; i < post.commentList!.length; i++) {
-          if (post.commentList![i].id == res.id) {
-            res.isLiked = post.commentList![i].isLiked;
-            post.commentList![i] = res;
-          }
-        }
-
-        $('#editCommentModal').modal('toggle');
-      },
-      error => {
-        $('#editCommentModal').modal('toggle');
-        alert('server false to update comment');
-      });
+    // this.ps.updateComment(this.userWhoLogin.username, this.commentToEdit).subscribe(res => {
+    //     let post: Post = {};
+    //     for (let i = 0; i < this.postList.length; i++) {
+    //       if (this.postList[i].id == res.post_id) {
+    //         post = this.postList[i];
+    //       }
+    //     }
+    //
+    //     post.commentList;
+    //
+    //     for (let i = 0; i < post.commentList!.length; i++) {
+    //       if (post.commentList![i].id == res.id) {
+    //         res.isLiked = post.commentList![i].isLiked;
+    //         post.commentList![i] = res;
+    //       }
+    //     }
+    //
+    //     $('#editCommentModal').modal('toggle');
+    //   },
+    //   error => {
+    //     $('#editCommentModal').modal('toggle');
+    //     alert('server false to update comment');
+    //   });
+    this.updateCommentSK(this.commentToEdit);
+    $('#editCommentModal').modal('toggle');
   }
 
   dislikePostAction(post_id: any) {
-    this.ps.disLike( post_id,this.userWhoLogin.username!).subscribe(res => {
-      if (res) {
-        for (let i = 0; i < this.postList.length; i++) {
-          if (this.postList[i].id == post_id) {
-            this.removeEmote(this.postList[i].emoteList!);
-            this.postList[i].isLiked = false;
-          }
-        }
-      } else {
-        alert('loi server');
-      }
-
-    });
+    // this.ps.disLike( post_id,this.userWhoLogin.username!).subscribe(res => {
+    //   if (res) {
+    //     for (let i = 0; i < this.postList.length; i++) {
+    //       if (this.postList[i].id == post_id) {
+    //         this.removeEmote(this.postList[i].emoteList!);
+    //         this.postList[i].isLiked = false;
+    //       }
+    //     }
+    //   } else {
+    //     alert('loi server');
+    //   }
+    // });
+    this.deleteEmotePostSK(post_id);
   }
+
   removeEmote(emoteList: Emote[]) {
     for (let i = 0; i < emoteList.length; i++) {
       if (emoteList[i].user_id == this.userWhoLogin.id) {
@@ -392,39 +407,41 @@ export class NewfeedsComponent implements OnInit {
       comment_id: cm_id,
       user_id: this.userWhoLogin.id
     };
-    this.ps.addLike(this.userWhoLogin.username!, emote).subscribe(res => {
-      for (let i = 0; i < this.postList.length; i++) {
-        if (this.postList[i].id == post_id) {
-          for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-            if (this.postList[i].commentList![j].id == cm_id) {
-              this.postList[i].commentList![j].emoteList.push(res);
-              this.postList[i].commentList![j].isLiked = true;
-            }
-          }
-        }
-      }
-    }, error => {
-      console.log('false to like');
-    });
+    // this.ps.addLike(this.userWhoLogin.username!, emote).subscribe(res => {
+    //   for (let i = 0; i < this.postList.length; i++) {
+    //     if (this.postList[i].id == post_id) {
+    //       for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+    //         if (this.postList[i].commentList![j].id == cm_id) {
+    //           this.postList[i].commentList![j].emoteList.push(res);
+    //           this.postList[i].commentList![j].isLiked = true;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }, error => {
+    //   console.log('false to like');
+    // });
+    this.createNewEmoteSK(emote);
   }
 
   dislikeCommentAction(cm_id: any, post_id: any) {
-    this.ps.disLikeComment(this.userWhoLogin.username, cm_id).subscribe(res => {
-      if (res) {
-        for (let i = 0; i < this.postList.length; i++) {
-          if (this.postList[i].id == post_id) {
-            for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-              if (this.postList[i].commentList![j].id == cm_id) {
-                this.removeEmote(this.postList[i].commentList![j].emoteList);
-                this.postList[i].commentList![j].isLiked = false;
-              }
-            }
-          }
-        }
-      } else {
-        alert('loi server');
-      }
-    });
+    // this.ps.disLikeComment(this.userWhoLogin.username, cm_id).subscribe(res => {
+    //   if (res) {
+    //     for (let i = 0; i < this.postList.length; i++) {
+    //       if (this.postList[i].id == post_id) {
+    //         for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+    //           if (this.postList[i].commentList![j].id == cm_id) {
+    //             this.removeEmote(this.postList[i].commentList![j].emoteList);
+    //             this.postList[i].commentList![j].isLiked = false;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   } else {
+    //     alert('loi server');
+    //   }
+    // });
+    this.deleteEmoteCommentSK(cm_id);
   }
 
   deletePhotoNewPost(i: any) {
@@ -440,5 +457,74 @@ export class NewfeedsComponent implements OnInit {
 
   showMoreItems() {
     this.paginationLimit = Number(this.paginationLimit) + 5;
+  }
+
+  public initializeNewsFeedWebSocketConnection() {
+    const serverUrl = 'http://localhost:8080/socket';
+    const ws = new SockJS(serverUrl);
+    // console.log(ws);
+    this.newsFeedstompClient = Stomp.over(ws);
+    const that = this;
+    // tslint:disable-next-line:only-arrow-functions
+    this.newsFeedstompClient.connect({}, function(frame: any) {
+      // console.log(frame)
+      that.newsFeedstompClient.subscribe("/newsfeed", (res: any) => {
+        // console.log(res);
+        that.ngOnInit();
+        // let data = JSON.parse(res.body)
+        // console.log(data);
+        // if (data) {
+        //   // @ts-ignore
+        //   that.chatMessages.push(data);
+        //   $(function (){
+        //     const chatHistory = $('#chat-history')[0];
+        //     $("#chat-history").scrollTop(chatHistory.scrollHeight);
+        //   })
+        // }
+      });
+    });
+  }
+
+  disconnectSocket() {
+    if (this.newsFeedstompClient) {
+      this.newsFeedstompClient.disconnect();
+    }
+    console.log("Disconnected")
+  }
+
+  createNewPost(post:any) {
+    this.newsFeedstompClient.send("/app/newsfeed/"+ this.userWhoLogin.username +"/createPost", {}, JSON.stringify(post));
+  }
+
+  updatePostSK(post: any) {
+    this.newsFeedstompClient.send("/app/newsfeed/"+ this.userWhoLogin.username +"/editPost", {}, JSON.stringify(post));
+  }
+
+  deletePostSK(id:any) {
+    this.newsFeedstompClient.send("/app/newsfeed/deletePost/"+ id);
+  }
+
+  createNewCommentSK(post:any) {
+    this.newsFeedstompClient.send("/app/newsfeed/createComment", {}, JSON.stringify(post));
+  }
+
+  updateCommentSK(post: any) {
+    this.newsFeedstompClient.send("/app/newsfeed/updateComment", {}, JSON.stringify(post));
+  }
+
+  deleteCommentSK(id:any) {
+    this.newsFeedstompClient.send("/app/newsfeed/deleteComment/" + id);
+  }
+
+  createNewEmoteSK(emote:any) {
+    this.newsFeedstompClient.send("/app/newsfeed/createEmote", {}, JSON.stringify(emote));
+  }
+
+  deleteEmotePostSK(id: any) {
+    this.newsFeedstompClient.send("/app/newsfeed/deleteEmotePost/"+ this.userWhoLogin.username +"/" + id);
+  }
+
+  deleteEmoteCommentSK(id:any) {
+    this.newsFeedstompClient.send("/app/newsfeed/deleteEmoteComment/"+ this.userWhoLogin.username +"/" + id);
   }
 }
