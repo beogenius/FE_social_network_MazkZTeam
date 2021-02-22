@@ -359,4 +359,9 @@ export class LayoutComponent implements OnInit {
       });
     });
   }
+
+  logout() {
+    sessionStorage.clear();
+    this.router.navigateByUrl("/login");
+  }
 }

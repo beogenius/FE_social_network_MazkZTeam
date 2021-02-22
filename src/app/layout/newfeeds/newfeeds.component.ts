@@ -26,6 +26,9 @@ export class NewfeedsComponent implements OnInit {
   //get post LIST
   postList: Post[] = [];
 
+  startPage: any;
+  paginationLimit: any;
+
   userWhoLogin: User = {
     address: '',
     avatar: '',
@@ -97,6 +100,8 @@ export class NewfeedsComponent implements OnInit {
         }
       }
     })
+    this.startPage=0;
+    this.paginationLimit=5;
   }
 
   isUserWhoLoginLikeThisComment(cm: Comment) {
@@ -158,7 +163,8 @@ export class NewfeedsComponent implements OnInit {
     );
     this.newPost = {
       content: '',
-      photoList: []
+      photoList: [],
+      protective: 1
     };
     this.imgSrc = '';
   }
@@ -430,5 +436,9 @@ export class NewfeedsComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  showMoreItems() {
+    this.paginationLimit = Number(this.paginationLimit) + 5;
   }
 }

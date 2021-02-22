@@ -181,4 +181,9 @@ export class FriendComponent implements OnInit {
   showMoreItems() {
     this.paginationLimit = Number(this.paginationLimit) + 3;
   }
+
+  logout() {
+    sessionStorage.clear();
+    this.router.navigateByUrl("/login");
+  }
 }
