@@ -4,6 +4,7 @@ import {Post} from '../model/dung/post';
 import {User} from '../model/dung/user';
 import {Comment} from '../model/dung/comment';
 import {Emote} from '../model/dung/emote';
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,14 @@ export class PersonalPageService {
 
   getListPost(username:string){
     return this.http.get<Post[]>(`${this.url}/${username}/posts`);
+  }
+
+  getPublicUserPosts(username:string) {
+    return this.http.get<Post[]>(`${this.url}/${username}/posts/public-guest`);
+  }
+
+  getPublicFriendUserPosts(username:string) {
+    return this.http.get<Post[]>(`${this.url}/${username}/posts/public-notOwner`);
   }
 
   getUser(username:string){

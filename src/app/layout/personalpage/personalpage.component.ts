@@ -23,7 +23,8 @@ export class PersonalpageComponent implements OnInit {
 
   newPost: Post = {
     content: '',
-    photoList: []
+    photoList: [],
+    protective: 1
   };
 
   isULoginEqualUOwn = false;
@@ -111,34 +112,42 @@ reloaddata() {
 
   if (this.userWhoLogin.username == this.userWhoOwnThisPage.username) {
     this.isULoginEqualUOwn = true;
-  }
-  else {
-    this.isULoginEqualUOwn = false;
-  }
-
-  this.sv.getListPost(this.userWhoOwnThisPage.username!).subscribe(res => {
-    this.postList = res;
-    for (let i = 0; i < this.postList.length; i++) {
-      this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
-      for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-        this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+    this.sv.getListPost(this.userWhoOwnThisPage.username!).subscribe(res => {
+      this.postList = res;
+      for (let i = 0; i < this.postList.length; i++) {
+        this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+        for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+          this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+        }
       }
+    });
+  } else {
+    this.isULoginEqualUOwn = false;
+    if (this.userWhoLogin.username) {
+      this.sv.getPublicFriendUserPosts(this.userWhoOwnThisPage.username!).subscribe(res => {
+        this.postList = res;
+        for (let i = 0; i < this.postList.length; i++) {
+          this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+          for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+            this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+          }
+        }
+      }, error => {
+        console.log(error);
+      });
     }
-  });
+  }
+
 }
-
-
-
-
-
-
 
   //Post
   createPost() {
     if (this.imgSrc != '') {
       this.newPost.photoList?.push({linkSrc: this.imgSrc});
     }
-
+    if(!this.newPost.protective) {
+      this.newPost.protective = 1;
+    }
     this.sv.createPost(this.newPost, this.userWhoLogin.username!).subscribe(
       res => {
         this.postList.unshift(res);
@@ -155,7 +164,8 @@ reloaddata() {
     );
     this.newPost = {
       content: '',
-      photoList: []
+      photoList: [],
+      protective: 1
     };
     this.imgSrc = '';
 
@@ -190,9 +200,10 @@ reloaddata() {
       createdDate: p.createdDate,
       modifiedAt: p.modifiedAt,
       photoList: getPL(p.photoList!),
-      commentList: p.commentList
+      commentList: p.commentList,
+      protective: p.protective
     };
-
+    // console.log(typeof this.postToEdit.protective);
     $('#editPostModal').modal('show');
   }
 
@@ -209,6 +220,9 @@ reloaddata() {
 
 
   saveEditPost() {
+    if(!this.postToEdit.protective) {
+      this.postToEdit.protective =1;
+    }
     this.sv.updatePost(this.userWhoLogin.username, this.postToEdit).subscribe(res => {
       for (let i = 0; i < this.postList.length; i++) {
         if (this.postList[i].id == res.id) {
