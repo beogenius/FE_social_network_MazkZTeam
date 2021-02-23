@@ -1,18 +1,38 @@
 <div class="content">
-  <nav class="navbar navbar-dark bg-primary" id="nav">
-    <a routerLink="/index/newfeeds" class="navbar-brand">MarkZ</a>
-    <form class="form-inline">
-      <div class="input-group">
-        <input type="text" class="form-control border-dark " aria-label="Recipient's username"
-               aria-describedby="button-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-outline-light" type="button" id="button-addon2">
-            <i class="fa fa-search"></i>
-          </button>
+
+  <nav class="navbar navbar-light mb-1 border navbar-top">
+    <a href="/index/newfeeds" class="navbar-brand logo"> <span style="color: #2e8bfa">♔</span> 𝕄𝕒𝕣𝕜ℤ</a>
+    <ng-container >
+      <div class="d-inline-flex">
+        <div class="d-inline-flex user-navbar mr-2" (click)="goToPersonal(user.username)" *ngIf="user">
+          <div>
+            <span><img src="{{user.avatar}}" alt="" class="img-thumbnail" id="avatar-user-navbar"
+            ></span>
+          </div>
+          <div class="ml-1 mt-2 mr-1 text-capitalize">
+            <span id="user-name-navbar" > {{user.username}}</span>
+          </div>
         </div>
+        <a class="icon-navbar" role="button" aria-expanded="false" (click)="logout()">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </a>
       </div>
-    </form>
+    </ng-container>
   </nav>
+<!--  <nav class="navbar navbar-dark bg-primary" id="nav">-->
+<!--    <a routerLink="/index/newfeeds" class="navbar-brand">MarkZ</a>-->
+<!--    <form class="form-inline">-->
+<!--      <div class="input-group">-->
+<!--        <input type="text" class="form-control border-dark " aria-label="Recipient's username"-->
+<!--               aria-describedby="button-addon2">-->
+<!--        <div class="input-group-append">-->
+<!--          <button class="btn btn-outline-light" type="button" id="button-addon2">-->
+<!--            <i class="fa fa-search"></i>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--  </nav>-->
 
   <div class="container-fluid gedf-wrapper mt-5">
     <div class="row">

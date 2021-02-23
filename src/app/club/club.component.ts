@@ -57,6 +57,15 @@ export class ClubComponent implements OnInit {
     this.listClubRequested = listClubRequested;
   }
 
+  goToPersonal(username: any) {
+    this.router.navigate(['index/personal',username])
+  }
+
+  logout() {
+    sessionStorage.clear();
+    this.router.navigateByUrl("/login");
+  }
+
   getClubsRequested(username: any){
     return this.sv.getClubsRequested(username).toPromise();
   }

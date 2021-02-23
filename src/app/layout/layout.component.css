@@ -353,7 +353,14 @@ ul {
   margin-left: 20px;
   color: blue;
 }
-
+.left-sidebar {
+  font-size: large;
+  font-weight: bold;
+}
+.border-left-SB {
+  border-top: none;
+  border-bottom: none;
+}
 
 
 

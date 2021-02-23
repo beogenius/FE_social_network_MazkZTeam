@@ -11,6 +11,9 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>Social network</span>
+      <a class="icon-navbar ml-auto" role="button" aria-expanded="false" (click)="logout()">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </a>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
