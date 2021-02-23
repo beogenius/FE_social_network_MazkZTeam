@@ -1,35 +1,53 @@
 <div class="content">
-  <nav class="navbar navbar-dark bg-primary" id="nav">
-    <a routerLink="/index/newfeeds" class="navbar-brand">MarkZ</a>
-    <form class="form-inline">
-      <div class="input-group">
-        <input type="text" class="form-control border-dark " aria-label="Recipient's username"
-               aria-describedby="button-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-outline-light" type="button" id="button-addon2">
-            <i class="fa fa-search"></i>
-          </button>
+  <nav class="navbar navbar-light mb-1 border navbar-top">
+    <a href="/index/newfeeds" class="navbar-brand logo"> <span style="color: #2e8bfa">♔</span> 𝕄𝕒𝕣𝕜ℤ</a>
+    <!--  <form class="form-inline">-->
+    <!--    <div class="input-group">-->
+    <!--      <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">-->
+    <!--      <div class="input-group-append">-->
+    <!--        <button class="btn btn-outline-primary" type="button" id="button-addon2">-->
+    <!--          <i class="fa fa-search"></i>-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--  </form>-->
+    <!--notification-->
+    <ng-container >
+      <div class="d-inline-flex">
+        <div class="d-inline-flex user-navbar mr-2" (click)="goToPersonal(userWhoLogin.username)" *ngIf="userWhoLogin">
+          <div>
+            <span><img src="{{userWhoLogin.avatar}}" alt="" class="img-thumbnail" id="avatar-user-navbar"
+            ></span>
+          </div>
+          <div class="ml-1 mt-2 mr-1 text-capitalize">
+            <span id="user-name-navbar" > {{userWhoLogin.username}}</span>
+          </div>
         </div>
+        <a class="icon-navbar" role="button" aria-expanded="false" (click)="logout()">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </a>
       </div>
-    </form>
+      <!--    <div (click)="clearPostNotification()">-->
+      <!--      <a class="btn btn-primary" data-toggle="collapse" href="#notification" role="button" aria-expanded="false"-->
+      <!--         aria-controls="collapseExample" >-->
+      <!--        <i class="fa fa-bell-o" aria-hidden="true" > {{totalPostNotification}} Notifications</i>-->
+      <!--      </a>-->
+      <!--    </div>-->
+    </ng-container>
   </nav>
   <div class="container-fluid gedf-wrapper">
     <div class="row">
 
       <!--    LEFT SIDEBAR-->
-      <div class="col-md-3 left-sidebar">
-        <div class="list-group" id="list-tab" role="tablist">
-          <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
+      <div class="col-md-3">
+        <div class="list-group left-sidebar shadow" id="list-tab" role="tablist">
+          <a class="list-group-item list-group-item-action active border-left-SB" id="list-home-list" data-toggle="list"
              routerLink="/index/newfeeds">Home</a>
-          <a class="list-group-item list-group-item-action" id="personal-page" data-toggle="list"
+          <a class="list-group-item list-group-item-action border-left-SB" id="personal-page" data-toggle="list"
              routerLink="/index/personal/{{userWhoLogin.username}}">Personal Page</a>
-          <a class="list-group-item list-group-item-action" id="list-friend-list" data-toggle="list"
-             routerLink="/friend">Friend</a>
-          <a class="list-group-item list-group-item-action" id="settings" data-toggle="list"
-             routerLink="/index/settings">Settings</a>
-          <a class="list-group-item list-group-item-action" id="group" data-toggle="list" routerLink="/group">Group</a>
-          <a class="list-group-item list-group-item-action" id="logout" data-toggle="list"
-             routerLink="/login">Logout</a>
+          <a class="list-group-item list-group-item-action border-left-SB" id="list-friend-list" data-toggle="list" routerLink="/friend">Friend</a>
+          <a class="list-group-item list-group-item-action border-left-SB" id="group" data-toggle="list" routerLink="/group">Group</a>
+          <a class="list-group-item list-group-item-action" id="settings" data-toggle="list" routerLink="/index/settings">Settings</a>
         </div>
         <!--        start list ReqJoin-->
         <div class="pt-2">
@@ -70,7 +88,7 @@
             <div class="card-header">
               Group: {{club.name}}
             </div>
-            <div class="card-body">
+            <div class="card-body" *ngIf="club.founder">
               <span> <img class="rounded-circle" src="{{club.founder.avatar}}" alt="" width="40"> </span>
               Admin: {{club.founder.firstName}} {{club.founder.lastName}}<br>
               Detail: {{club.detail}}<br>

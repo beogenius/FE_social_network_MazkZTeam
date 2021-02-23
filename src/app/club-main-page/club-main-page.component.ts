@@ -577,4 +577,13 @@ export class ClubMainPageComponent implements OnInit {
       }
     })
   }
+
+  goToPersonal(username: any) {
+    this.router.navigate(['index/personal',username])
+  }
+
+  logout() {
+    sessionStorage.clear();
+    this.router.navigateByUrl("/login");
+  }
 }
