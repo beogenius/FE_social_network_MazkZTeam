@@ -7,5 +7,5 @@ export interface Club {
   founder?: any;
   founder_id?:any;
   members?:any[];
-  userReqToJoin?:any[];
+  userReqToJoi?:any[];
 }

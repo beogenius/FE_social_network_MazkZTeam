@@ -21,8 +21,8 @@ export class ClubMainPageComponent implements OnInit {
   club: Club = {};
   //get post LIST
   postList: Post[] = [];
-  memberList: User[] =[];
-  reqJoinList: User[] =[];
+  memberList: any[] | undefined =[];
+  reqJoinList: any[] | undefined =[];
 
   userLoginIsAMember = false;
 
@@ -96,56 +96,98 @@ export class ClubMainPageComponent implements OnInit {
     // @ts-ignore
     this.userWhoLogin.username = sessionStorage.getItem('AuthUsername');
 
-    this.ps.getUser(this.userWhoLogin.username!).subscribe(res => {
-      this.userWhoLogin = res;
-      console.log(this.userWhoLogin.id);
-    });
+    this.ps.getUser(this.userWhoLogin.username!).subscribe(user => {
+      this.userWhoLogin = user;
+      this.CmpSv.getClub(this.userWhoLogin.username!,this.club.name).subscribe(club => {
+        this.club = club;
+        this.memberList = this.club.members;
+        this.reqJoinList = this.club.userReqToJoi;
 
-    this.CmpSv.getClub(this.userWhoLogin.username!,this.club.name).subscribe(res => {
-      this.club = res;
-      console.log(this.club.founder_id);
-    });
+        console.log("0000000000000"+this.reqJoinList!.length)
 
-    this.CmpSv.getMemberList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
-      this.memberList = data;
-    });
+        if(this.isContainUser(this.userWhoLogin.id,this.memberList!)){
+          //load post list
+          this.userLoginIsAMember = true;
+          this.getPostList();
 
-    this.CmpSv.getReqJoinList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
-      this.reqJoinList = data;
-    });
-
-    this.CmpSv.checkMember(this.userWhoLogin.username,this.club.name).subscribe(res => {
-      if(res){
-        this.userLoginIsAMember = true;
-        this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
-          this.postList = data;
-          for (let i = 0; i < this.postList.length; i++) {
-            this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
-            for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-              this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
-            }
-          }
-        });
-      }else{
-        if(this.club.permission == 1){
-          this.clubPublicAndNotAMember = true;
-          if(this.isContainUser(this.userWhoLogin.id,this.reqJoinList)){
-            this.requestedToJoin = true;
-          }
-          this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
-            this.postList = data;
-            for (let i = 0; i < this.postList.length; i++) {
-              this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
-              for (let j = 0; j < this.postList[i].commentList!.length; j++) {
-                this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
-              }
-            }
-          });
         }else{
-          this.clubPrivateAndNotAMember = true;
-          if(this.isContainUser(this.userWhoLogin.id,this.reqJoinList)){
-            this.requestedToJoin = true;
+          this.userLoginIsAMember = false;
+
+          this.requestedToJoin = this.isContainUser(this.userWhoLogin.id, this.reqJoinList!);
+
+          if(this.club.permission == 1){
+            this.clubPublicAndNotAMember = true;
+            this.getPostList();
+          }else{
+            this.clubPrivateAndNotAMember = true;
           }
+        }
+
+
+      });
+    });
+
+
+
+    // this.CmpSv.getMemberList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
+    //   this.memberList = data;
+    // });
+
+    // this.CmpSv.getReqJoinList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
+    //   this.reqJoinList = data;
+    // });
+
+    // this.CmpSv.checkMember(this.userWhoLogin.username,this.club.name).subscribe(res => {
+    //   if(res){
+    //     this.userLoginIsAMember = true;
+    //     this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
+    //       this.postList = data;
+    //       for (let i = 0; i < this.postList.length; i++) {
+    //         this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+    //         for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+    //           this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+    //         }
+    //       }
+    //     });
+    //
+    //   }else{
+    //     if(this.club.permission == 1){
+    //       this.clubPublicAndNotAMember = true;
+    //       if(this.isContainUser(this.userWhoLogin.id,this.reqJoinList)){
+    //         this.requestedToJoin = true;
+    //       }else{
+    //         this.requestedToJoin = false;
+    //       }
+    //
+    //       this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
+    //         this.postList = data;
+    //         for (let i = 0; i < this.postList.length; i++) {
+    //           this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+    //           for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+    //             this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
+    //           }
+    //         }
+    //       });
+    //     }else{
+    //       this.clubPrivateAndNotAMember = true;
+    //       if(this.isContainUser(this.userWhoLogin.id,this.reqJoinList)){
+    //         this.requestedToJoin = true;
+    //       }
+    //       else{
+    //         this.requestedToJoin = false;
+    //       }
+    //     }
+    //   }
+    // });
+  }
+
+  getPostList(){
+    this.CmpSv.getPostList(this.userWhoLogin.username!,this.club.name).subscribe(data => {
+      this.postList = data;
+      for (let i = 0; i < this.postList.length; i++) {
+        this.postList[i].isLiked = this.isUserWhoLoginLikeThisPost(this.postList[i]);
+        for (let j = 0; j < this.postList[i].commentList!.length; j++) {
+          this.postList[i].commentList![j].isLiked = this.isUserWhoLoginLikeThisComment(this.postList[i].commentList![j]);
         }
       }
     });
@@ -486,7 +528,7 @@ export class ClubMainPageComponent implements OnInit {
       if(result.isConfirmed){
         this.CmpSv.kickMenber(this.userWhoLogin.username,this.club.name,memberid).subscribe(res =>{
             if(res){
-              this.memberList.splice(index,1);
+              this.memberList!.splice(index,1);
             } else {
               alert("server false");
             }
@@ -502,8 +544,8 @@ export class ClubMainPageComponent implements OnInit {
   AcceptReq(userReq: User,index: any) {
     this.CmpSv.acceptJoinReq(this.userWhoLogin.username,this.club.name,userReq.id).subscribe(res =>{
       if(res){
-        this.reqJoinList.splice(index,1);
-        this.memberList.unshift(userReq);
+        this.reqJoinList!.splice(index,1);
+        this.memberList!.unshift(userReq);
       }else {
         alert("server false");
       }
@@ -513,7 +555,7 @@ export class ClubMainPageComponent implements OnInit {
   Deny(userReq: User,index: any) {
     this.CmpSv.refuseJoinReq(this.userWhoLogin.username,this.club.name,userReq.id).subscribe(res =>{
       if(res){
-        this.reqJoinList.splice(index,1);
+        this.reqJoinList!.splice(index,1);
       }else {
         alert("server false");
       }
